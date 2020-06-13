@@ -1,3 +1,6 @@
 # CaveEscape
 
-Godot-engine-based cave exploring/escape adventure
+Multiplayer cave exploring/escape adventure
+
+! Godot Engine
+! Aseprite

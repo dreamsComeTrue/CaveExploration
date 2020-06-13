@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="Cave Escape"
 run/main_scene="res://scenes/GameplayScene.tscn"
-config/icon="res://icon.png"
+config/icon="res://textures/flash_light.png"
 
 [input]
 
