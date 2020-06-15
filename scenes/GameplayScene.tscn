@@ -17,6 +17,9 @@ background_mode = 3
 background_sky = SubResource( 2 )
 background_color = Color( 0.219608, 0.219608, 0.219608, 1 )
 ambient_light_energy = 0.15
+ssao_enabled = true
+ssao_color = Color( 0.0470588, 0.0470588, 0.0470588, 1 )
+ssao_quality = 0
 
 [node name="Spatial" type="Spatial"]
 
