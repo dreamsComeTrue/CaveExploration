@@ -19,6 +19,10 @@ config/name="Cave Escape"
 run/main_scene="res://scenes/GameplayScene.tscn"
 config/icon="res://textures/flash_light.png"
 
+[autoload]
+
+GameManager="*res://scripts/GameManager.cs"
+
 [input]
 
 move_forward={
