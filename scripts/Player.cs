@@ -13,16 +13,14 @@ public class Player : KinematicBody
 
     private float angleAccumulator = 0.0f;
 
-    private float deltaAccumulator = 0.0f;
-    private float floatInitialHeight;
-    private float floatAmplitude = 0.02f;
-    private float floatFrequency = 120.0f;
+    private ObjectFloater objectFloater;
 
     public override void _Ready()
     {
         flashLight = GetNode<SpotLight>("FlashLight");
         mesh = GetNode<MeshInstance>("Mesh");
-        floatInitialHeight = mesh.Translation.y;
+        objectFloater = new ObjectFloater();
+        objectFloater.Initialize(mesh.Translation.y);
     }
 
     public override void _Process(float delta)
@@ -59,13 +57,7 @@ public class Player : KinematicBody
 
     private void _UpdateMeshFloat(float delta)
     {
-        deltaAccumulator += delta;
-
-        Vector3 newTranslation = mesh.Translation;
-
-        newTranslation.y = floatInitialHeight;
-        newTranslation.y += Mathf.Sin(Mathf.Deg2Rad(deltaAccumulator * (float)Math.PI * floatFrequency)) * floatAmplitude;
-        mesh.Translation = newTranslation;
+        mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation);
     }
 
     private void _FaceMeshToDirection(float delta)
@@ -95,10 +87,6 @@ public class Player : KinematicBody
                 angleAccumulator += delta * 0.4f;
                 mesh.Rotation = new Vector3(0.0f, angle, 0.0f);
             }
-
-            // GD.Print("A > " + currentRotationDegress);
-            // GD.Print("B > " + targetAngleDegress);
-            // GD.Print("C > " + angleAccumulator);
 
             lastDirection = directionNormalized;
         }
