@@ -3,7 +3,8 @@ using System;
 
 public class Player : KinematicBody
 {
-    private const float MOVE_SPEED = 1.1f;
+    [Export]
+    public float MOVE_SPEED = 1.3f;
 
     private SpotLight flashLight;
     private MeshInstance mesh;
@@ -27,37 +28,56 @@ public class Player : KinematicBody
     {
         movementDirection = Vector3.Zero;
 
+        _HandleKeyInputs();
+
+        this.MoveAndCollide(movementDirection.Normalized() * delta * MOVE_SPEED);
+
+        _UpdateMeshFloat(delta);
+        _FaceMeshToDirection(delta);
+    }
+
+    private bool inMovement = false;
+    private void _HandleKeyInputs()
+    {
+        inMovement = false;
+
         if (Input.IsActionPressed("move_forward"))
         {
             movementDirection.z -= 1.0f;
+            inMovement = true;
         }
         if (Input.IsActionPressed("move_backward"))
         {
             movementDirection.z += 1.0f;
+            inMovement = true;
         }
         if (Input.IsActionPressed("move_left"))
         {
             movementDirection.x -= 1.0f;
+            inMovement = true;
         }
         if (Input.IsActionPressed("move_right"))
         {
             movementDirection.x += 1.0f;
+            inMovement = true;
         }
 
         if (Input.IsActionJustPressed("action_tool"))
         {
             flashLight.Visible = !flashLight.Visible;
         }
-
-        this.Translation += movementDirection.Normalized() * delta;
-
-        _UpdateMeshFloat(delta);
-        _FaceMeshToDirection(delta);
     }
 
     private void _UpdateMeshFloat(float delta)
     {
-        mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation);
+        float floatFrequency = objectFloater.FloatFrequency;
+
+        if (inMovement)
+        {
+            floatFrequency *= 1.5f;
+        }
+
+        mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation, floatFrequency);
     }
 
     private void _FaceMeshToDirection(float delta)
@@ -75,17 +95,16 @@ public class Player : KinematicBody
                 targetAngleDegress = 360.0f + targetAngleDegress;
             }
 
-            if (Mathf.IsEqualApprox(currentRotationDegress, targetAngleDegress, 0.1f) || angleAccumulator > 1.0f
-            || lastDirection != directionNormalized)
+            if (Mathf.IsEqualApprox(currentRotationDegress, targetAngleDegress, 0.1f) || lastDirection != directionNormalized)
             {
                 angleAccumulator = 0.0f;
             }
             else
             {
                 float angle = Mathf.LerpAngle(mesh.Rotation.y, targetAngle, angleAccumulator);
+                mesh.Rotation = new Vector3(0.0f, angle, 0.0f);
 
                 angleAccumulator += delta * 0.4f;
-                mesh.Rotation = new Vector3(0.0f, angle, 0.0f);
             }
 
             lastDirection = directionNormalized;

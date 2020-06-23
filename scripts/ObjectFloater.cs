@@ -13,15 +13,20 @@ public class ObjectFloater
         floatInitialHeight = inputHeight;
     }
 
-    public Vector3 CalculateMeshFloat(float delta, Vector3 inputPos)
+    public Vector3 CalculateMeshFloat(float delta, Vector3 inputPos, float frequencyOverride = -1.0f)
     {
+        if (Mathf.IsEqualApprox(frequencyOverride, -1.0f))
+        {
+            frequencyOverride = FloatFrequency;
+        }
+
         deltaAccumulator += delta;
 
         Vector3 newTranslation = inputPos;
 
         newTranslation.y = floatInitialHeight;
-        newTranslation.y += Mathf.Sin(Mathf.Deg2Rad(deltaAccumulator * (float)Math.PI * FloatFrequency)) * FloatAmplitude;
-        
+        newTranslation.y += Mathf.Sin(Mathf.Deg2Rad(deltaAccumulator * (float)Math.PI * frequencyOverride)) * FloatAmplitude;
+
         return newTranslation;
     }
 }

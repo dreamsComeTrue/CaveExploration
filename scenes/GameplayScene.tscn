@@ -25,7 +25,8 @@ ssao_quality = 0
 [node name="Gameplay" type="Spatial"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.105989, 1.14538 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.218407, 1.14538 )
+MOVE_SPEED = 1.3
 
 [node name="GroundBox" type="CSGBox" parent="."]
 transform = Transform( 0.999999, 0.000569679, -0.00161876, -0.000566307, 0.999998, 0.00206913, 0.00161994, -0.0020682, 0.999997, 0, 0, 0 )
