@@ -17,11 +17,16 @@ _global_script_class_icons={
 
 config/name="Cave Escape"
 run/main_scene="res://scenes/GameplayScene.tscn"
-config/icon="res://textures/flash_light.png"
+config/icon="res://textures/ui/flash_light.png"
 
 [autoload]
 
 GameManager="*res://scripts/GameManager.cs"
+
+[display]
+
+window/size/width=1200
+window/size/height=800
 
 [input]
 

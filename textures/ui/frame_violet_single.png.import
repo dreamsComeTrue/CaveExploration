@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/light_bar.png-740a6c5dd2b997431276922e7a47ad62.stex"
+path="res://.import/frame_violet_single.png-4adf0e415ea592d8016af4013e55686b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/light_bar.png"
-dest_files=[ "res://.import/light_bar.png-740a6c5dd2b997431276922e7a47ad62.stex" ]
+source_file="res://textures/ui/frame_violet_single.png"
+dest_files=[ "res://.import/frame_violet_single.png-4adf0e415ea592d8016af4013e55686b.stex" ]
 
 [params]
 
