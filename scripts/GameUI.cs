@@ -14,7 +14,7 @@ public class GameUI : Control
     {
         if ((KeyList)@event.Scancode == KeyList.Escape && @event.Pressed)
         {
-           inGameMenu.ToggleVisibility();
+            inGameMenu.ToggleVisibility();
         }
     }
 
