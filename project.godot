@@ -22,12 +22,13 @@ config/icon="res://textures/ui/flash_light.png"
 [autoload]
 
 GameManager="*res://scripts/GameManager.cs"
+Signals="*res://scripts/Signals.cs"
 
 [display]
 
 window/size/width=1200
 window/size/height=800
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
 [input]

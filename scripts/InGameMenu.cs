@@ -3,9 +3,13 @@ using System;
 
 public class InGameMenu : Control
 {
+    private Signals signals;
+
     public override void _Ready()
     {
         Visible = false;
+
+        signals = (Signals)GetNode("/root/Signals");
     }
 
     public void ToggleVisibility()
@@ -15,10 +19,12 @@ public class InGameMenu : Control
         if (!Visible)
         {
             animationPlayer.Play("slide");
+            signals.EmitSignal(nameof(Signals.InGameMenuVisibilityChanged), true);
         }
         else
         {
             animationPlayer.PlayBackwards("slide");
+            signals.EmitSignal(nameof(Signals.InGameMenuVisibilityChanged), false);
         }
     }
 }

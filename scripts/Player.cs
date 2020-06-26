@@ -3,111 +3,128 @@ using System;
 
 public class Player : KinematicBody
 {
-    [Export]
-    public float MOVE_SPEED = 1.3f;
+	[Export]
+	public float MOVE_SPEED = 1.3f;
 
-    private SpotLight flashLight;
-    private MeshInstance mesh;
+	private SpotLight flashLight;
+	private MeshInstance mesh;
 
-    private Vector3 movementDirection = Vector3.Zero;
-    private Vector3 lastDirection = Vector3.Zero;
+	private Vector3 movementDirection = Vector3.Zero;
+	private Vector3 lastDirection = Vector3.Zero;
 
-    private float angleAccumulator = 0.0f;
+	private float angleAccumulator = 0.0f;
 
-    private ObjectFloater objectFloater;
+	private bool inputEnabled = true;
 
-    public override void _Ready()
-    {
-        flashLight = GetNode<SpotLight>("FlashLight");
-        mesh = GetNode<MeshInstance>("Mesh");
-        objectFloater = new ObjectFloater();
-        objectFloater.Initialize(mesh.Translation.y);
-    }
+	private ObjectFloater objectFloater;
 
-    public override void _Process(float delta)
-    {
-        movementDirection = Vector3.Zero;
+	private Signals signals;
 
-        _HandleKeyInputs();
+	public override void _Ready()
+	{
+		signals = (Signals)GetNode("/root/Signals");
+		flashLight = GetNode<SpotLight>("FlashLight");
+		mesh = GetNode<MeshInstance>("Mesh");
+		objectFloater = new ObjectFloater();
+		objectFloater.Initialize(mesh.Translation.y);
 
-        this.MoveAndCollide(movementDirection.Normalized() * delta * MOVE_SPEED);
+		signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(_On_InGameMenuVisibilityChanged));
+	}
 
-        _UpdateMeshFloat(delta);
-        _FaceMeshToDirection(delta);
-    }
+	public override void _Process(float delta)
+	{
+		movementDirection = Vector3.Zero;
 
-    private bool inMovement = false;
-    private void _HandleKeyInputs()
-    {
-        inMovement = false;
+		_HandleKeyInputs();
 
-        if (Input.IsActionPressed("move_forward"))
-        {
-            movementDirection.z -= 1.0f;
-            inMovement = true;
-        }
-        if (Input.IsActionPressed("move_backward"))
-        {
-            movementDirection.z += 1.0f;
-            inMovement = true;
-        }
-        if (Input.IsActionPressed("move_left"))
-        {
-            movementDirection.x -= 1.0f;
-            inMovement = true;
-        }
-        if (Input.IsActionPressed("move_right"))
-        {
-            movementDirection.x += 1.0f;
-            inMovement = true;
-        }
+		this.MoveAndCollide(movementDirection.Normalized() * delta * MOVE_SPEED);
 
-        if (Input.IsActionJustPressed("action_tool"))
-        {
-            flashLight.Visible = !flashLight.Visible;
-        }
-    }
+		_UpdateMeshFloat(delta);
+		_FaceMeshToDirection(delta);
+	}
 
-    private void _UpdateMeshFloat(float delta)
-    {
-        float floatFrequency = objectFloater.FloatFrequency;
+	private bool inMovement = false;
+	private void _HandleKeyInputs()
+	{
+		if (!inputEnabled)
+		{
+			return;
+		}
 
-        if (inMovement)
-        {
-            floatFrequency *= 1.5f;
-        }
+		inMovement = false;
 
-        mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation, floatFrequency);
-    }
+		if (Input.IsActionPressed("move_forward"))
+		{
+			movementDirection.z -= 1.0f;
+			inMovement = true;
+		}
+		if (Input.IsActionPressed("move_backward"))
+		{
+			movementDirection.z += 1.0f;
+			inMovement = true;
+		}
+		if (Input.IsActionPressed("move_left"))
+		{
+			movementDirection.x -= 1.0f;
+			inMovement = true;
+		}
+		if (Input.IsActionPressed("move_right"))
+		{
+			movementDirection.x += 1.0f;
+			inMovement = true;
+		}
 
-    private void _FaceMeshToDirection(float delta)
-    {
-        Vector3 directionNormalized = movementDirection.Normalized();
+		if (Input.IsActionJustPressed("action_tool"))
+		{
+			flashLight.Visible = !flashLight.Visible;
+		}
+	}
 
-        if (directionNormalized.Length() >= 0.001f)
-        {
-            float currentRotationDegress = (mesh.RotationDegrees.y % 360.0f);
-            float targetAngle = Mathf.Atan2(directionNormalized.x, directionNormalized.z);
-            float targetAngleDegress = (Mathf.Rad2Deg(targetAngle) % 360.0f);
+	public void _On_InGameMenuVisibilityChanged(bool visible)
+	{
+		inputEnabled = !visible;
+	}
 
-            if (targetAngleDegress < 0)
-            {
-                targetAngleDegress = 360.0f + targetAngleDegress;
-            }
+	private void _UpdateMeshFloat(float delta)
+	{
+		float floatFrequency = objectFloater.FloatFrequency;
 
-            if (Mathf.IsEqualApprox(currentRotationDegress, targetAngleDegress, 0.1f) || lastDirection != directionNormalized)
-            {
-                angleAccumulator = 0.0f;
-            }
-            else
-            {
-                float angle = Mathf.LerpAngle(mesh.Rotation.y, targetAngle, angleAccumulator);
-                mesh.Rotation = new Vector3(0.0f, angle, 0.0f);
+		if (inMovement)
+		{
+			floatFrequency *= 1.5f;
+		}
 
-                angleAccumulator += delta * 0.4f;
-            }
+		mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation, floatFrequency);
+	}
 
-            lastDirection = directionNormalized;
-        }
-    }
+	private void _FaceMeshToDirection(float delta)
+	{
+		Vector3 directionNormalized = movementDirection.Normalized();
+
+		if (directionNormalized.Length() >= 0.001f)
+		{
+			float currentRotationDegress = (mesh.RotationDegrees.y % 360.0f);
+			float targetAngle = Mathf.Atan2(directionNormalized.x, directionNormalized.z);
+			float targetAngleDegress = (Mathf.Rad2Deg(targetAngle) % 360.0f);
+
+			if (targetAngleDegress < 0)
+			{
+				targetAngleDegress = 360.0f + targetAngleDegress;
+			}
+
+			if (Mathf.IsEqualApprox(currentRotationDegress, targetAngleDegress, 0.1f) || lastDirection != directionNormalized)
+			{
+				angleAccumulator = 0.0f;
+			}
+			else
+			{
+				float angle = Mathf.LerpAngle(mesh.Rotation.y, targetAngle, angleAccumulator);
+				mesh.Rotation = new Vector3(0.0f, angle, 0.0f);
+
+				angleAccumulator += delta * 0.4f;
+			}
+
+			lastDirection = directionNormalized;
+		}
+	}
 }
