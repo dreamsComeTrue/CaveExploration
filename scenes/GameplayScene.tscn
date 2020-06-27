@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/UI/GameUI.tscn" type="PackedScene" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
+flags_disable_ambient_light = true
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 100, 100, 100 )
 
@@ -16,8 +17,10 @@ sun_longitude = 139.76
 [sub_resource type="Environment" id=3]
 background_mode = 3
 background_sky = SubResource( 2 )
-background_color = Color( 0.235294, 0.235294, 0.235294, 1 )
-ambient_light_energy = 0.33
+background_color = Color( 0.0431373, 0.164706, 0.337255, 1 )
+background_energy = 3.0
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.1
 ssao_enabled = true
 ssao_color = Color( 0.0470588, 0.0470588, 0.0470588, 1 )
 ssao_quality = 0
@@ -57,3 +60,9 @@ transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 1, 0.280227, 0 )
 transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 1, 0.280227, 0.5 )
 
 [node name="GameUI" parent="." instance=ExtResource( 4 )]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.5, -5.16191e-08, 0.866025, -0.866025, -2.98023e-08, 0.5, 0, -1, -5.96046e-08, 0, 4, 0 )
+light_energy = 0.02
+
+[editable path="Player"]

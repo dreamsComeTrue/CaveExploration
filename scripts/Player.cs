@@ -28,7 +28,7 @@ public class Player : KinematicBody
 		objectFloater = new ObjectFloater();
 		objectFloater.Initialize(mesh.Translation.y);
 
-		signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(_On_InGameMenuVisibilityChanged));
+		signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(On_InGameMenuVisibilityChanged));
 	}
 
 	public override void _Process(float delta)
@@ -39,8 +39,8 @@ public class Player : KinematicBody
 
 		this.MoveAndCollide(movementDirection.Normalized() * delta * MOVE_SPEED);
 
-		_UpdateMeshFloat(delta);
-		_FaceMeshToDirection(delta);
+		UpdateMeshFloat(delta);
+		FaceMeshToDirection(delta);
 	}
 
 	private bool inMovement = false;
@@ -76,16 +76,24 @@ public class Player : KinematicBody
 
 		if (Input.IsActionJustPressed("action_tool"))
 		{
-			flashLight.Visible = !flashLight.Visible;
+			ToggleFlashligh();
 		}
 	}
+	
+	private void ToggleFlashligh()
+	{
+		flashLight.Visible = !flashLight.Visible;
+		
+		(mesh.GetSurfaceMaterial(0) as SpatialMaterial).FlagsDisableAmbientLight = !flashLight.Visible;
+		(mesh.GetSurfaceMaterial(1) as SpatialMaterial).FlagsDisableAmbientLight = !flashLight.Visible;
+	}
 
-	public void _On_InGameMenuVisibilityChanged(bool visible)
+	private void On_InGameMenuVisibilityChanged(bool visible)
 	{
 		inputEnabled = !visible;
 	}
 
-	private void _UpdateMeshFloat(float delta)
+	private void UpdateMeshFloat(float delta)
 	{
 		float floatFrequency = objectFloater.FloatFrequency;
 
@@ -97,7 +105,7 @@ public class Player : KinematicBody
 		mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation, floatFrequency);
 	}
 
-	private void _FaceMeshToDirection(float delta)
+	private void FaceMeshToDirection(float delta)
 	{
 		Vector3 directionNormalized = movementDirection.Normalized();
 
