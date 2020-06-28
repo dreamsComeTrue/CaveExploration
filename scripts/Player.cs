@@ -28,7 +28,7 @@ public class Player : KinematicBody
 		objectFloater = new ObjectFloater();
 		objectFloater.Initialize(mesh.Translation.y);
 
-		signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(On_InGameMenuVisibilityChanged));
+		signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
 	}
 
 	public override void _Process(float delta)
@@ -88,7 +88,7 @@ public class Player : KinematicBody
 		(mesh.GetSurfaceMaterial(1) as SpatialMaterial).FlagsDisableAmbientLight = !flashLight.Visible;
 	}
 
-	private void On_InGameMenuVisibilityChanged(bool visible)
+	private void OnInGameMenuVisibilityChanged(bool visible)
 	{
 		inputEnabled = !visible;
 	}
