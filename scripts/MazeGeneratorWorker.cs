@@ -4,141 +4,154 @@ using System.Collections.Generic;
 
 public class MazeGeneratorWorker
 {
-	public enum CellType
-	{
-		Empty,
-		Wall,
-		Start,
-		End
-	}
+    public enum CellType
+    {
+        Empty,
+        Wall,
+        Start,
+        End
+    }
 
-	public int GridWidth;
-	public int GridHeight;
+    public int GridWidth;
+    public int GridHeight;
 
-	public CellType[,] data;
+    public int MaxRoomsCount;
 
-	public MazeGeneratorWorker(int width, int height)
-	{
-		GridWidth = width;
-		GridHeight = height;
-	}
+    public CellType[,] data;
+    public List<Room> rooms;
+    public List<Triangle> triangles;
 
-	private Random rng = new Random();
+    public MazeGeneratorWorker(int width, int height, int maxRoomsCount)
+    {
+        GridWidth = width;
+        GridHeight = height;
+        MaxRoomsCount = maxRoomsCount;
+    }
 
-	private void Shuffle(List<Vector2> list)
-	{
-		int n = list.Count;
-		while (n > 1)
-		{
-			n--;
-			int k = rng.Next(n + 1);
-			Vector2 value = list[k];
-			list[k] = list[n];
-			list[n] = value;
-		}
-	}
+    public CellType[,] Generate()
+    {
+        GD.Randomize();
 
-	public CellType[,] Generate()
-	{
-		data = new CellType[GridWidth, GridHeight];
+        data = new CellType[GridWidth, GridHeight];
+        rooms = GenerateRooms();
+        triangles = Triangulate(rooms);
 
-		int FILLED_TILES_RATIO = (int)(Mathf.Floor((GridWidth * GridHeight) / 2));
+        for (int y = 0; y < GridHeight; ++y)
+        {
+            for (int x = 0; x < GridWidth; ++x)
+            {
+                bool foundRoom = false;
 
-		for (int j = 0; j < GridHeight; ++j)
-		{
-			for (int i = 0; i < GridWidth; ++i)
-			{
-				data[i, j] = CellType.Wall;
-			}
-		}
+                foreach (Room room in rooms)
+                {
+                    if (x >= room.rect.Position.x && x <= room.rect.End.x &&
+                    y >= room.rect.Position.y && y <= room.rect.End.y)
+                    {
+                        foundRoom = true;
+                        break;
+                    }
+                }
 
-		int filledTilesCounter = 0;
-		List<Vector2> openTiles = new List<Vector2>();
-		List<Vector2> allOpenTiles = new List<Vector2>();
+                if (!foundRoom)
+                {
+                    data[x, y] = CellType.Empty;
+                }
+                else
+                {
+                    data[x, y] = CellType.Wall;
+                }
+            }
+        }
 
-		GD.Randomize();
+        return data;
+    }
 
-		long xStart = GD.Randi() % GridWidth;
-		long yStart = GD.Randi() % GridHeight;
+    private List<Room> GenerateRooms()
+    {
+        int maxRoomWidth = (int)(GridWidth / 4.0f);
+        int minRoomWidth = (int)(0.3f * maxRoomWidth);
 
-		while (filledTilesCounter < FILLED_TILES_RATIO)
-		{
-			Shuffle(openTiles);
-			Shuffle(allOpenTiles);
+        int maxRoomHeight = (int)(GridHeight / 4.0f);
+        int minRoomHeight = (int)(0.3f * maxRoomHeight);
 
-			int x = -1;
-			int y = -1;
+        List<Room> rooms = new List<Room>();
+        int numberOfOverlappingAttempts = 0;
+        while (rooms.Count < MaxRoomsCount || numberOfOverlappingAttempts < 10)
+        {
+            int xStart = (int)(GD.Randi() % GridWidth);
+            int yStart = (int)(GD.Randi() % GridHeight);
+            int width = (int)(GD.RandRange(minRoomWidth, maxRoomWidth));
+            int height = (int)(GD.RandRange(minRoomHeight, maxRoomHeight));
 
-			if (openTiles.Count > 0)
-			{
-				Vector2 tile = openTiles[openTiles.Count - 1];
-				x = (int)tile.x;
-				y = (int)tile.y;
+            Room room = new Room(xStart, yStart, width, height);
 
-				openTiles.RemoveAt(openTiles.Count - 1);
+            if (room.rect.End.x > GridWidth || room.rect.End.y > GridHeight)
+            {
+                continue;
+            }
 
-				if (openTiles.Count > 1 && GD.RandRange(0, 20) > 4)
-				{
-					openTiles.RemoveAt(openTiles.Count - 1);
-				}
-				if (openTiles.Count > 1 && GD.RandRange(0, 20) > 2)
-				{
-					openTiles.RemoveAt(openTiles.Count - 1);
-				}
-			}
+            bool overlapingRooms = false;
+            foreach (Room existingRoom in rooms)
+            {
+                if (room.rect.Grow(2.0f).Intersects(existingRoom.rect, true))
+                {
+                    overlapingRooms = true;
+                    break;
+                }
+            }
 
-			if (x < 0 && allOpenTiles.Count > 0)
-			{
-				Vector2 tile = allOpenTiles[0];
-				x = (int)tile.x;
-				y = (int)tile.y;
-			}
+            if (!overlapingRooms)
+            {
+                rooms.Add(room);
+            }
+            else
+            {
+                numberOfOverlappingAttempts++;
+            }
+        }
 
-			// if x is set then we expect y to be set too, so we do not check at this point for it
-			if (x < 0)
-			{
-				x = (int)xStart;
-				y = (int)yStart;
-			}
+        return rooms;
+    }
 
-			if (data[x, y] != CellType.Wall)
-			{
-				continue;
-			}
+    private List<Triangle> Triangulate(List<Room> rooms)
+    {
+        Vector2[] middlePoints = new Vector2[rooms.Count];
 
-			data[x, y] = CellType.Empty;
-			filledTilesCounter++;
+        for (int i = 0; i < rooms.Count; ++i)
+        {
+            middlePoints[i] = rooms[i].rect.Position + rooms[i].rect.Size / 2;
+        }
 
-			// north
-			if (y > 0 && data[x, y - 1] == CellType.Wall)
-			{
-				Vector2 newTile = new Vector2(x, y - 1);
-				openTiles.Add(newTile);
-				allOpenTiles.Add(newTile);
-			}
-			// east
-			if (x < GridWidth - 1 && data[x + 1, y] == CellType.Wall)
-			{
-				Vector2 newTile = new Vector2(x + 1, y);
-				openTiles.Add(newTile);
-				allOpenTiles.Add(newTile);
-			}
-			// south
-			if (y < GridHeight - 1 && data[x, y + 1] == CellType.Wall)
-			{
-				Vector2 newTile = new Vector2(x, y + 1);
-				openTiles.Add(newTile);
-				allOpenTiles.Add(newTile);
-			}
-			// west
-			if (x > 0 && data[x - 1, y] == CellType.Wall)
-			{
-				Vector2 newTile = new Vector2(x - 1, y);
-				openTiles.Add(newTile);
-				allOpenTiles.Add(newTile);
-			}
-		}
+        int[] indicies = Geometry.TriangulateDelaunay2d(middlePoints);
+        List<Triangle> triangles = new List<Triangle>();
 
-		return data;
-	}
+        for (int i = 0; i < indicies.Length; i += 3)
+        {
+            Triangle triangle = new Triangle();
+            triangle.pointA = middlePoints[indicies[i]];
+            triangle.pointB = middlePoints[indicies[i + 1]];
+            triangle.pointC = middlePoints[indicies[i + 2]];
+
+            triangles.Add(triangle);
+        }
+
+        return triangles;
+    }
+
+    public class Triangle
+    {
+        public Vector2 pointA;
+        public Vector2 pointB;
+        public Vector2 pointC;
+    }
+
+    public class Room
+    {
+        public Rect2 rect;
+
+        public Room(int x, int y, int width, int height)
+        {
+            rect = new Rect2(x, y, width, height);
+        }
+    }
 }

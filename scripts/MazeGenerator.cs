@@ -1,73 +1,86 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class MazeGenerator : Spatial
 {
-	private MazeGeneratorWorker worker;
+    private MazeGeneratorWorker worker;
 
-	PackedScene wallScene;
+    PackedScene wallScene;
 
-	private int MapSize = 32;
+    private Signals signals;
 
-	public override void _Ready()
-	{
-		wallScene = (PackedScene)ResourceLoader.Load("res://scenes/Wall.tscn");
-		worker = new MazeGeneratorWorker(MapSize, MapSize);
+    private int MapSize = 64;
 
-		GenerateMaze();
-	}
-	private void GenerateMaze()
-	{
-		foreach (Node child in GetChildren())
-		{
-			RemoveChild(child);
-			child.QueueFree();
-		}
+    public MazeGeneratorWorker.CellType[,] mapData;
+    public List<MazeGeneratorWorker.Room> rooms;
+    public List<MazeGeneratorWorker.Triangle> triangles;
 
-		int xOffset = (int)(MapSize / 2 * 0.5);
-		int yOffset = (int)(MapSize / 2 * 0.5);
+    public override void _Ready()
+    {
+        wallScene = (PackedScene)ResourceLoader.Load("res://scenes/Wall.tscn");
+        worker = new MazeGeneratorWorker(MapSize, MapSize, 12);
 
-		MazeGeneratorWorker.CellType[,] data = worker.Generate();
+        signals = (Signals)GetNode("/root/Signals");
 
-		for (int y = data.GetLowerBound(1); y <= data.GetUpperBound(1); y++)
-		{
-			//   string line = "";
-			for (int x = data.GetLowerBound(0); x <= data.GetUpperBound(0); x++)
-			{
-				if (x == data.GetLowerBound(0) || x == data.GetUpperBound(0) || y == data.GetLowerBound(1) || y == data.GetUpperBound(1))
-				{
-					GenerateWallSegment(x * 0.5f - xOffset, y * 0.5f - yOffset);
-				}
+        GenerateMaze();
+    }
+    private void GenerateMaze()
+    {
+        foreach (Node child in GetChildren())
+        {
+            RemoveChild(child);
+            child.QueueFree();
+        }
 
-				switch (data[x, y])
-				{
-					case MazeGeneratorWorker.CellType.Empty:
-						//     line += "O ";
-						break;
-					case MazeGeneratorWorker.CellType.Wall:
-						GenerateWallSegment(x * 0.5f - xOffset, y * 0.5f - yOffset);
-						//  line += "X ";
-						break;
-				}
-			}
+        int xOffset = (int)(MapSize / 2 * 0.5);
+        int yOffset = (int)(MapSize / 2 * 0.5);
 
-			// GD.Print(line);
-		}
-	}
+        mapData = worker.Generate();
+        rooms = worker.rooms;
+        triangles = worker.triangles;
 
-	private void GenerateWallSegment(float x, float y)
-	{
-		Spatial wallSegment = (Spatial)wallScene.Instance();
-		wallSegment.Translation = new Vector3(x, 0.28f, y);
+        for (int y = mapData.GetLowerBound(1); y <= mapData.GetUpperBound(1); y++)
+        {
+            //   string line = "";
+            for (int x = mapData.GetLowerBound(0); x <= mapData.GetUpperBound(0); x++)
+            {
+                if (x == mapData.GetLowerBound(0) || x == mapData.GetUpperBound(0) || y == mapData.GetLowerBound(1) || y == mapData.GetUpperBound(1))
+                {
+                    GenerateWallSegment(x * 0.5f - xOffset, y * 0.5f - yOffset);
+                }
 
-		AddChild(wallSegment);
-	}
+                switch (mapData[x, y])
+                {
+                    case MazeGeneratorWorker.CellType.Empty:
+                        //     line += "O ";
+                        break;
+                    case MazeGeneratorWorker.CellType.Wall:
+                        GenerateWallSegment(x * 0.5f - xOffset, y * 0.5f - yOffset);
+                        //  line += "X ";
+                        break;
+                }
+            }
 
-	public override void _UnhandledKeyInput(InputEventKey @event)
-	{
-		if ((KeyList)@event.Scancode == KeyList.G)
-		{
-			GenerateMaze();
-		}
-	}
+            // GD.Print(line);
+        }
+
+        signals.EmitSignal(nameof(Signals.MapGenerated));
+    }
+
+    private void GenerateWallSegment(float x, float y)
+    {
+        Spatial wallSegment = (Spatial)wallScene.Instance();
+        wallSegment.Translation = new Vector3(x, 0.28f, y);
+
+        AddChild(wallSegment);
+    }
+
+    public override void _UnhandledKeyInput(InputEventKey @event)
+    {
+        if ((KeyList)@event.Scancode == KeyList.G && !@event.Pressed)
+        {
+            GenerateMaze();
+        }
+    }
 }
