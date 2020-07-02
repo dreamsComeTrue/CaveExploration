@@ -15,6 +15,7 @@ public class MazeGenerator : Spatial
     public MazeGeneratorWorker.CellType[,] mapData;
     public List<MazeGeneratorWorker.Room> rooms;
     public List<MazeGeneratorWorker.Triangle> triangles;
+    public HashSet<Prim.Edge> mst;
 
     public override void _Ready()
     {
@@ -39,6 +40,7 @@ public class MazeGenerator : Spatial
         mapData = worker.Generate();
         rooms = worker.rooms;
         triangles = worker.triangles;
+        mst = worker.mst;
 
         for (int y = mapData.GetLowerBound(1); y <= mapData.GetUpperBound(1); y++)
         {

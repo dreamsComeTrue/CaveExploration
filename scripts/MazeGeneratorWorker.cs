@@ -20,6 +20,7 @@ public class MazeGeneratorWorker
     public CellType[,] data;
     public List<Room> rooms;
     public List<Triangle> triangles;
+    public HashSet<Prim.Edge> mst;
 
     public MazeGeneratorWorker(int width, int height, int maxRoomsCount)
     {
@@ -35,6 +36,7 @@ public class MazeGeneratorWorker
         data = new CellType[GridWidth, GridHeight];
         rooms = GenerateRooms();
         triangles = Triangulate(rooms);
+        mst = CalculateMST(triangles);
 
         for (int y = 0; y < GridHeight; ++y)
         {
@@ -136,6 +138,39 @@ public class MazeGeneratorWorker
         }
 
         return triangles;
+    }
+
+    private HashSet<Prim.Edge> CalculateMST(List<Triangle> triangles)
+    {
+        List<Prim.Edge> edges = new List<Prim.Edge>();
+
+        foreach (Triangle triangle in triangles)
+        {
+            Graphs.Vertex a = new Graphs.Vertex(triangle.pointA);
+            Graphs.Vertex b = new Graphs.Vertex(triangle.pointB);
+            Graphs.Vertex c = new Graphs.Vertex(triangle.pointC);
+
+            edges.Add(new Prim.Edge(a, b));
+            edges.Add(new Prim.Edge(b, c));
+            edges.Add(new Prim.Edge(c, a));
+        }
+
+        List<Prim.Edge> mstCalculated = Prim.MinimumSpanningTree(edges, edges[0].U);
+
+        mst = new HashSet<Prim.Edge>(mstCalculated);
+        var remainingEdges = new HashSet<Prim.Edge>(edges);
+        remainingEdges.ExceptWith(mst);
+
+        Random random = new Random(0);
+        foreach (var edge in remainingEdges)
+        {
+            if (random.NextDouble() < 0.125)
+            {
+                mst.Add(edge);
+            }
+        }
+
+        return mst;
     }
 
     public class Triangle

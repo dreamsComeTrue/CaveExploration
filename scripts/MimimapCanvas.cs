@@ -8,6 +8,7 @@ public class MimimapCanvas : Control
 
     private MazeGeneratorWorker.CellType[,] mapData;
     private List<MazeGeneratorWorker.Triangle> triangles;
+    public HashSet<Prim.Edge> mst;
 
     public override void _Ready()
     {
@@ -21,6 +22,7 @@ public class MimimapCanvas : Control
 
         mapData = generator.mapData;
         triangles = generator.triangles;
+        mst = generator.mst;
         Update();
     }
 
@@ -49,9 +51,14 @@ public class MimimapCanvas : Control
 
         foreach (MazeGeneratorWorker.Triangle triangle in triangles)
         {
-            DrawLine(triangle.pointA * size, triangle.pointB * size, Colors.Green, 2);
-            DrawLine(triangle.pointB * size, triangle.pointC * size, Colors.Green, 2);
-            DrawLine(triangle.pointC * size, triangle.pointA * size, Colors.Green, 2);
+            DrawLine(triangle.pointA * size, triangle.pointB * size, Colors.LightGreen, 2);
+            DrawLine(triangle.pointB * size, triangle.pointC * size, Colors.LightGreen, 2);
+            DrawLine(triangle.pointC * size, triangle.pointA * size, Colors.LightGreen, 2);
+        }
+
+        foreach (Prim.Edge edge in mst)
+        {
+            DrawLine(edge.U.Position * size, edge.V.Position * size, Colors.Red, 2);            
         }
     }
 }
