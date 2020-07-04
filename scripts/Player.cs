@@ -28,6 +28,15 @@ public class Player : KinematicBody
 		objectFloater.Initialize(mesh.Translation.y);
 
 		signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
+		signals.Connect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
+	}
+		 
+	private void OnMapGenerated()
+	{
+		Vector3 newTranslation = new Vector3(16, Translation.y, 16);
+		Translation = newTranslation;
+		
+		signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
 	}
 
 	public override void _Process(float delta)
@@ -35,8 +44,13 @@ public class Player : KinematicBody
 		movementDirection = Vector3.Zero;
 
 		_HandleKeyInputs();
-
+		
 		this.MoveAndCollide(movementDirection.Normalized() * delta * MOVE_SPEED);
+
+		if (!movementDirection.IsEqualApprox(Vector3.Zero))
+		{
+			signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
+		}
 
 		UpdateMeshFloat(delta);
 		FaceMeshToDirection(delta);

@@ -33,9 +33,6 @@ public class MazeGenerator : Spatial
 			child.QueueFree();
 		}
 
-		int xOffset = (int)(MapSize / 2 * 0.5);
-		int yOffset = (int)(MapSize / 2 * 0.5);
-
 		mapData = worker.Generate();
 		rooms = worker.rooms;
 		triangles = worker.triangles;
@@ -47,7 +44,7 @@ public class MazeGenerator : Spatial
 			{
 				if (x == mapData.GetLowerBound(0) || x == mapData.GetUpperBound(0) || y == mapData.GetLowerBound(1) || y == mapData.GetUpperBound(1))
 				{
-					GenerateWallSegment(x * 0.5f - xOffset, y * 0.5f - yOffset);
+					GenerateWallSegment(x * 0.5f, y * 0.5f);
 				}
 
 				switch (mapData[x, y])
@@ -56,7 +53,7 @@ public class MazeGenerator : Spatial
 						break;
 
 					case MazeGeneratorWorker.CellType.None:
-						GenerateWallSegment(x * 0.5f - xOffset, y * 0.5f - yOffset);
+						GenerateWallSegment(x * 0.5f, y * 0.5f);
 						break;
 				}
 			}

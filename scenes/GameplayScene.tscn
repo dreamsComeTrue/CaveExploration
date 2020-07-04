@@ -31,16 +31,16 @@ ssao_quality = 0
 script = ExtResource( 5 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.218407, 1.14538 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.218, 0 )
 MOVE_SPEED = 1.3
 
 [node name="Camera" parent="Player" index="1"]
 transform = Transform( 1, 0, 0, 0, 0.766045, 0.642788, 0, -0.642788, 0.766045, 0, 1.553, 1.309 )
 
 [node name="GroundBox" type="CSGBox" parent="."]
-width = 50.0
+width = 64.0
 height = 0.001
-depth = 50.0
+depth = 64.0
 material = SubResource( 1 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
