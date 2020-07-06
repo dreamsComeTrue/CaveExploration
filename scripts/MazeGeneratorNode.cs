@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-public class MazeGenerator : Spatial
+public class MazeGeneratorNode : Spatial
 {
 	private MazeGeneratorWorker worker;
 

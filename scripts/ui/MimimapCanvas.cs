@@ -20,7 +20,7 @@ public class MimimapCanvas : Control
 
     private void OnMapGenerated()
     {
-        MazeGenerator generator = GetTree().Root.GetNode<MazeGenerator>("Gameplay/MazeGenerator");
+        MazeGeneratorNode generator = GetTree().Root.GetNode<MazeGeneratorNode>("Gameplay/MazeGenerator");
 
         mapData = generator.mapData;
         triangles = generator.triangles;
