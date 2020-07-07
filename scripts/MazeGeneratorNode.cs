@@ -19,7 +19,7 @@ public class MazeGeneratorNode : Spatial
 	public override void _Ready()
 	{
 		wallScene = (PackedScene)ResourceLoader.Load("res://scenes/Wall.tscn");
-		worker = new MazeGeneratorWorker(MapSize, MapSize, 12);
+		worker = new MazeGeneratorWorker(MapSize, MapSize, 16);
 
 		signals = (Signals)GetNode("/root/Signals");
 
