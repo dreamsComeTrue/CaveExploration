@@ -42,11 +42,6 @@ public class MazeGeneratorNode : Spatial
 		{
 			for (int x = mapData.GetLowerBound(0); x <= mapData.GetUpperBound(0); x++)
 			{
-				if (x == mapData.GetLowerBound(0) || x == mapData.GetUpperBound(0) || y == mapData.GetLowerBound(1) || y == mapData.GetUpperBound(1))
-				{
-					GenerateWallSegment(x * 0.5f, y * 0.5f);
-				}
-
 				switch (mapData[x, y])
 				{
 					case MazeGeneratorWorker.CellType.Room:

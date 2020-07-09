@@ -7,6 +7,7 @@ public class MazeGeneratorWorker
     public enum CellType
     {
         None,
+        Empty,
         Room,
         Hallway,
         Start,
@@ -73,6 +74,54 @@ public class MazeGeneratorWorker
 
         FindPaths(rooms, mst);
 
+        CellType[,] dataCopy = new CellType[GridWidth, GridHeight];
+        for (int y = 0; y < GridHeight; ++y)
+        {
+            for (int x = 0; x < GridWidth; ++x)
+            {
+                dataCopy[x, y] = data[x, y];
+            }
+        }
+
+        for (int y = 0; y < GridHeight; ++y)
+        {
+            for (int x = 0; x < GridWidth; ++x)
+            {
+                bool north = false;
+
+                if (y > 0)
+                {
+                    north = dataCopy[x, y - 1] == CellType.None;
+                }
+
+                bool south = false;
+
+                if (y < GridHeight - 1)
+                {
+                    south = dataCopy[x, y + 1] == CellType.None;
+                }
+
+                bool east = false;
+
+                if (x < GridWidth - 1)
+                {
+                    east = dataCopy[x + 1, y] == CellType.None;
+                }
+
+                bool west = false;
+
+                if (x > 0)
+                {
+                    west = dataCopy[x - 1, y] == CellType.None;
+                }
+
+                if (north && south && east && west)
+                {
+                    data[x, y] = CellType.Empty;
+                }
+            }
+        }
+
         return data;
     }
 
@@ -95,7 +144,7 @@ public class MazeGeneratorWorker
 
             Room room = new Room(xStart, yStart, width, height);
 
-            if (room.rect.End.x > GridWidth || room.rect.End.y > GridHeight)
+            if (room.rect.End.x >= GridWidth || room.rect.End.y >= GridHeight)
             {
                 continue;
             }
