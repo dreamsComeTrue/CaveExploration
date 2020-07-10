@@ -5,6 +5,7 @@ public class Player : KinematicBody
 {
     [Export]
     public float MOVE_SPEED = 1.3f;
+    public float RUN_SPEED = 3.0f;
 
     private SpotLight flashLight;
     private MeshInstance mesh;
@@ -35,10 +36,10 @@ public class Player : KinematicBody
     private void OnMapGenerated()
     {
         MazeGeneratorNode mazeGenerator = GetParent().GetNode<MazeGeneratorNode>("MazeGenerator");
-        List<MazeGeneratorWorker.Room> rooms = mazeGenerator.rooms;		
-		MazeGeneratorWorker.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
-		Vector2 middlePoint = (room.rect.Position + room.rect.Size / 2) * 0.5f;
-		
+        List<MazeGeneratorWorker.Room> rooms = mazeGenerator.rooms;
+        MazeGeneratorWorker.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
+        Vector2 middlePoint = (room.rect.Position + room.rect.Size / 2) * 0.5f;
+
         Vector3 newTranslation = new Vector3(middlePoint.x, Translation.y, middlePoint.y);
         Translation = newTranslation;
 
@@ -51,7 +52,13 @@ public class Player : KinematicBody
 
         _HandleKeyInputs();
 
-        this.MoveAndCollide(movementDirection.Normalized() * delta * MOVE_SPEED);
+        float moveSpeed = MOVE_SPEED;
+        if (Input.IsKeyPressed((int)KeyList.Shift))
+        {
+            moveSpeed *= RUN_SPEED;
+        }
+
+        this.MoveAndCollide(movementDirection.Normalized() * delta * moveSpeed);
 
         if (!movementDirection.IsEqualApprox(Vector3.Zero))
         {
