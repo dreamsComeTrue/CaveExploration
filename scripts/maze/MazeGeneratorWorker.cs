@@ -73,54 +73,7 @@ public class MazeGeneratorWorker
         }
 
         FindPaths(rooms, mst);
-
-        CellType[,] dataCopy = new CellType[GridWidth, GridHeight];
-        for (int y = 0; y < GridHeight; ++y)
-        {
-            for (int x = 0; x < GridWidth; ++x)
-            {
-                dataCopy[x, y] = data[x, y];
-            }
-        }
-
-        for (int y = 0; y < GridHeight; ++y)
-        {
-            for (int x = 0; x < GridWidth; ++x)
-            {
-                bool north = false;
-
-                if (y > 0)
-                {
-                    north = dataCopy[x, y - 1] == CellType.None;
-                }
-
-                bool south = false;
-
-                if (y < GridHeight - 1)
-                {
-                    south = dataCopy[x, y + 1] == CellType.None;
-                }
-
-                bool east = false;
-
-                if (x < GridWidth - 1)
-                {
-                    east = dataCopy[x + 1, y] == CellType.None;
-                }
-
-                bool west = false;
-
-                if (x > 0)
-                {
-                    west = dataCopy[x - 1, y] == CellType.None;
-                }
-
-                if (north && south && east && west)
-                {
-                    data[x, y] = CellType.Empty;
-                }
-            }
-        }
+        CleanUpBlocks();
 
         return data;
     }
@@ -137,14 +90,14 @@ public class MazeGeneratorWorker
         int numberOfOverlappingAttempts = 0;
         while (rooms.Count < MaxRoomsCount || numberOfOverlappingAttempts < 10)
         {
-            int xStart = (int)(GD.Randi() % GridWidth);
-            int yStart = (int)(GD.Randi() % GridHeight);
+            int xStart = (int)(GD.RandRange(2, GridWidth));
+            int yStart = (int)(GD.RandRange(2, GridHeight));
             int width = (int)(GD.RandRange(minRoomWidth, maxRoomWidth));
             int height = (int)(GD.RandRange(minRoomHeight, maxRoomHeight));
 
             Room room = new Room(xStart, yStart, width, height);
 
-            if (room.rect.End.x >= GridWidth || room.rect.End.y >= GridHeight)
+            if (room.rect.End.x >= GridWidth - 2 || room.rect.End.y >= GridHeight - 2)
             {
                 continue;
             }
@@ -366,6 +319,57 @@ public class MazeGeneratorWorker
         //         }
         //     }
         // }
+    }
+
+    private void CleanUpBlocks()
+    {
+        CellType[,] dataCopy = new CellType[GridWidth, GridHeight];
+        for (int y = 0; y < GridHeight; ++y)
+        {
+            for (int x = 0; x < GridWidth; ++x)
+            {
+                dataCopy[x, y] = data[x, y];
+            }
+        }
+
+        for (int y = 0; y < GridHeight; ++y)
+        {
+            for (int x = 0; x < GridWidth; ++x)
+            {
+                bool north = false;
+
+                if (y > 0)
+                {
+                    north = dataCopy[x, y - 1] == CellType.None;
+                }
+
+                bool south = false;
+
+                if (y < GridHeight - 1)
+                {
+                    south = dataCopy[x, y + 1] == CellType.None;
+                }
+
+                bool east = false;
+
+                if (x < GridWidth - 1)
+                {
+                    east = dataCopy[x + 1, y] == CellType.None;
+                }
+
+                bool west = false;
+
+                if (x > 0)
+                {
+                    west = dataCopy[x - 1, y] == CellType.None;
+                }
+
+                if ((north && south && east && west) || x == 0 || x == GridWidth - 1 || y == 0 || y == GridHeight - 1)
+                {
+                    data[x, y] = CellType.Empty;
+                }
+            }
+        }
     }
 
     public class Triangle
