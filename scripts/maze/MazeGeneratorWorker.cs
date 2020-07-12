@@ -37,41 +37,13 @@ public class MazeGeneratorWorker
 
     public CellType[,] Generate()
     {
-        GD.Randomize();
+        ulong newSeed;
+        GD.RandSeed(123, out newSeed);
 
-        data = new CellType[GridWidth, GridHeight];
         rooms = GenerateRooms();
         triangles = Triangulate(rooms);
         mst = CalculateMST(triangles);
-
-        for (int y = 0; y < GridHeight; ++y)
-        {
-            for (int x = 0; x < GridWidth; ++x)
-            {
-                bool foundRoom = false;
-
-                foreach (Room room in rooms)
-                {
-                    if (x >= room.rect.Position.x && x <= room.rect.End.x &&
-                    y >= room.rect.Position.y && y <= room.rect.End.y)
-                    {
-                        foundRoom = true;
-                        break;
-                    }
-                }
-
-                if (!foundRoom)
-                {
-                    data[x, y] = CellType.None;
-                }
-                else
-                {
-                    data[x, y] = CellType.Room;
-                    grid[x, y] = CellType.Room;
-                }
-            }
-        }
-
+        GenerateRoomData();
         FindPaths(rooms, mst);
         CleanUpBlocks();
 
@@ -186,16 +158,48 @@ public class MazeGeneratorWorker
         var remainingEdges = new HashSet<Prim.Edge>(edges);
         remainingEdges.ExceptWith(mst);
 
-        Random random = new Random(0);
         foreach (var edge in remainingEdges)
         {
-            if (random.NextDouble() < 0.125)
+            if (GD.Randf() < 0.125f)
             {
                 mst.Add(edge);
             }
         }
 
         return mst;
+    }
+
+    private void GenerateRoomData()
+    {
+        data = new CellType[GridWidth, GridHeight];
+        
+        for (int y = 0; y < GridHeight; ++y)
+        {
+            for (int x = 0; x < GridWidth; ++x)
+            {
+                bool foundRoom = false;
+
+                foreach (Room room in rooms)
+                {
+                    if (x >= room.rect.Position.x && x <= room.rect.End.x &&
+                    y >= room.rect.Position.y && y <= room.rect.End.y)
+                    {
+                        foundRoom = true;
+                        break;
+                    }
+                }
+
+                if (!foundRoom)
+                {
+                    data[x, y] = CellType.None;
+                }
+                else
+                {
+                    data[x, y] = CellType.Room;
+                    grid[x, y] = CellType.Room;
+                }
+            }
+        }
     }
 
     private void FindPaths(List<Room> rooms, HashSet<Prim.Edge> edges)

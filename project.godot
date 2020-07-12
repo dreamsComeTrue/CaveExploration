@@ -17,6 +17,9 @@ _global_script_class_icons={
 
 config/name="Cave Escape"
 run/main_scene="res://scenes/GameplayScene.tscn"
+boot_splash/image="res://gfx/ui/flash_light.png"
+boot_splash/fullsize=false
+boot_splash/bg_color=Color( 0.164856, 0.198273, 0.285156, 1 )
 config/icon="res://gfx/ui/flash_light.png"
 
 [autoload]
