@@ -1,9 +1,9 @@
 using Godot;
 using System.Collections.Generic;
 
-public class MazeGeneratorNode : Spatial
+public class CaveGeneratorNode : Spatial
 {
-	private MazeGeneratorWorker worker;
+	private CaveGenerator caveGenerator;
 
 	PackedScene wallScene;
 
@@ -11,21 +11,21 @@ public class MazeGeneratorNode : Spatial
 
 	private int MapSize = 64;
 
-	public MazeGeneratorWorker.CellType[,] mapData;
-	public List<MazeGeneratorWorker.Room> rooms;
-	public List<MazeGeneratorWorker.Triangle> triangles;
+	public CaveGenerator.CellType[,] mapData;
+	public List<CaveGenerator.Room> rooms;
+	public List<CaveGenerator.Triangle> triangles;
 	public HashSet<Prim.Edge> mst;
 
 	public override void _Ready()
 	{
 		wallScene = (PackedScene)ResourceLoader.Load("res://scenes/Wall.tscn");
-		worker = new MazeGeneratorWorker(MapSize, MapSize, 16);
+		caveGenerator = new CaveGenerator(MapSize, MapSize, 16);
 
 		signals = (Signals)GetNode("/root/Signals");
 
-		GenerateMaze();
+		GenerateCaves();
 	}
-	private void GenerateMaze()
+	private void GenerateCaves()
 	{
 		foreach (Node child in GetChildren())
 		{
@@ -33,10 +33,10 @@ public class MazeGeneratorNode : Spatial
 			child.QueueFree();
 		}
 
-		mapData = worker.Generate();
-		rooms = worker.rooms;
-		triangles = worker.triangles;
-		mst = worker.mst;
+		mapData = caveGenerator.Generate();
+		rooms = caveGenerator.rooms;
+		triangles = caveGenerator.triangles;
+		mst = caveGenerator.mst;
 
 		for (int y = mapData.GetLowerBound(1); y <= mapData.GetUpperBound(1); y++)
 		{
@@ -44,10 +44,10 @@ public class MazeGeneratorNode : Spatial
 			{
 				switch (mapData[x, y])
 				{
-					case MazeGeneratorWorker.CellType.Room:
+					case CaveGenerator.CellType.Room:
 						break;
 
-					case MazeGeneratorWorker.CellType.None:
+					case CaveGenerator.CellType.None:
 						GenerateWallSegment(x * 0.5f, y * 0.5f);
 						break;
 				}
@@ -69,7 +69,7 @@ public class MazeGeneratorNode : Spatial
 	{
 		if ((KeyList)@event.Scancode == KeyList.G && !@event.Pressed)
 		{
-			GenerateMaze();
+			GenerateCaves();
 		}
 	}
 }

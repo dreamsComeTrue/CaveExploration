@@ -1,14 +1,9 @@
 using Godot;
-using System.Collections.Generic;
 
 public class MimimapCanvas : Control
 {
     private Signals signals;
-
-    private MazeGeneratorWorker.CellType[,] mapData;
-    private List<MazeGeneratorWorker.Triangle> triangles;
-    public HashSet<Prim.Edge> mst;
-
+    private CaveGenerator.CellType[,] mapData;
     private Vector3 playerPosition;
 
     public override void _Ready()
@@ -20,11 +15,9 @@ public class MimimapCanvas : Control
 
     private void OnMapGenerated()
     {
-        MazeGeneratorNode generator = GetTree().Root.GetNode<MazeGeneratorNode>("Gameplay/MazeGenerator");
+        CaveGeneratorNode generator = GetTree().Root.GetNode<CaveGeneratorNode>("Gameplay/CaveGenerator");
 
         mapData = generator.mapData;
-        triangles = generator.triangles;
-        mst = generator.mst;
         Update();
     }
 
@@ -47,7 +40,7 @@ public class MimimapCanvas : Control
         {
             for (int x = mapData.GetLowerBound(0); x < mapData.GetUpperBound(0); x++)
             {
-                if (mapData[x, y] == MazeGeneratorWorker.CellType.Room)
+                if (mapData[x, y] == CaveGenerator.CellType.Room)
                 {
                     Vector2 position = new Vector2(x * scaler.x, y * scaler.y);
                     Rect2 rect = new Rect2(position, scaler);
@@ -59,17 +52,5 @@ public class MimimapCanvas : Control
 
         Rect2 playerRect = new Rect2(new Vector2(playerPosition.x, playerPosition.z) * scaler * 2, scaler);
         DrawRect(playerRect, Colors.Red);
-
-        foreach (MazeGeneratorWorker.Triangle triangle in triangles)
-        {
-            // DrawLine(triangle.pointA * size, triangle.pointB * size, Colors.LightGreen, 2);
-            // DrawLine(triangle.pointB * size, triangle.pointC * size, Colors.LightGreen, 2);
-            // DrawLine(triangle.pointC * size, triangle.pointA * size, Colors.LightGreen, 2);
-        }
-
-        foreach (Prim.Edge edge in mst)
-        {
-            // DrawLine(edge.U.Position * size, edge.V.Position * size, Colors.Red, 2);            
-        }
     }
 }

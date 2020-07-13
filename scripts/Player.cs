@@ -35,9 +35,9 @@ public class Player : KinematicBody
 
     private void OnMapGenerated()
     {
-        MazeGeneratorNode mazeGenerator = GetParent().GetNode<MazeGeneratorNode>("MazeGenerator");
-        List<MazeGeneratorWorker.Room> rooms = mazeGenerator.rooms;
-        MazeGeneratorWorker.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
+        CaveGeneratorNode caveGenerator = GetParent().GetNode<CaveGeneratorNode>("CaveGenerator");
+        List<CaveGenerator.Room> rooms = caveGenerator.rooms;
+        CaveGenerator.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
         Vector2 middlePoint = (room.rect.Position + room.rect.Size / 2) * 0.5f;
 
         Vector3 newTranslation = new Vector3(middlePoint.x, Translation.y, middlePoint.y);

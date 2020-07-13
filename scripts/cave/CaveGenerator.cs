@@ -1,8 +1,7 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 
-public class MazeGeneratorWorker
+public class CaveGenerator
 {
     public enum CellType
     {
@@ -26,7 +25,7 @@ public class MazeGeneratorWorker
 
     Grid2D<CellType> grid;
 
-    public MazeGeneratorWorker(int width, int height, int maxRoomsCount)
+    public CaveGenerator(int width, int height, int maxRoomsCount)
     {
         GridWidth = width;
         GridHeight = height;
