@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://gfx/ground.png" type="Texture" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_disable_ambient_light = true
+albedo_texture = ExtResource( 1 )
+metallic_specular = 0.0
+
+[node name="GroundTile" type="Spatial"]
+
+[node name="CSGBox" type="CSGBox" parent="."]
+width = 0.5
+height = 0.001
+depth = 0.5
+material = SubResource( 1 )

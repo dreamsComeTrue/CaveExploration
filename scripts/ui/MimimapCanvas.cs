@@ -45,12 +45,12 @@ public class MimimapCanvas : Control
                     Vector2 position = new Vector2(x * scaler.x, y * scaler.y);
                     Rect2 rect = new Rect2(position, scaler);
 
-                    DrawRect(rect, Colors.Green);
+                    DrawRect(rect, Colors.SeaGreen);
                 }
             }
         }
 
         Rect2 playerRect = new Rect2(new Vector2(playerPosition.x, playerPosition.z) * scaler * 2, scaler);
-        DrawRect(playerRect, Colors.Red);
+        DrawRect(playerRect, Colors.White);
     }
 }
