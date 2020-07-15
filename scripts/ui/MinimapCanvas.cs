@@ -1,6 +1,6 @@
 using Godot;
 
-public class MimimapCanvas : Control
+public class MinimapCanvas : Control
 {
     private Signals signals;
     private CaveGenerator.CellType[,] mapData;
@@ -46,6 +46,13 @@ public class MimimapCanvas : Control
                     Rect2 rect = new Rect2(position, scaler);
 
                     DrawRect(rect, Colors.SeaGreen);
+                }
+                if (mapData[x, y] == CaveGenerator.CellType.Treasure)
+                {
+                    Vector2 position = new Vector2(x * scaler.x, y * scaler.y);
+                    Rect2 rect = new Rect2(position, scaler);
+
+                    DrawRect(rect, Colors.Yellow);
                 }
             }
         }

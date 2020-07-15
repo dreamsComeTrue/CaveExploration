@@ -8,9 +8,10 @@ public class ObjectFloater
     public float FloatAmplitude = 0.02f;
     public float FloatFrequency = 120.0f;
 
-    public void Initialize(float inputHeight)
+    public void Initialize(float inputHeight, float initialTimeOffset = 0.0f)
     {
         floatInitialHeight = inputHeight;
+        deltaAccumulator = initialTimeOffset;
     }
 
     public Vector3 CalculateMeshFloat(float delta, Vector3 inputPos, float frequencyOverride = -1.0f)

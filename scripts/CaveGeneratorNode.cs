@@ -7,6 +7,7 @@ public class CaveGeneratorNode : Spatial
 
     PackedScene wallScene;
     PackedScene groundTileScene;
+    PackedScene treasureScene;
 
     private Signals signals;
 
@@ -21,7 +22,8 @@ public class CaveGeneratorNode : Spatial
     {
         wallScene = (PackedScene)ResourceLoader.Load("res://scenes/Wall.tscn");
         groundTileScene = (PackedScene)ResourceLoader.Load("res://scenes/GroundTile.tscn");
-        caveGenerator = new CaveGenerator(MapSize, MapSize, 16);
+        treasureScene = (PackedScene)ResourceLoader.Load("res://scenes/Treasure.tscn");
+        caveGenerator = new CaveGenerator(MapSize, MapSize, 16, 2);
 
         signals = (Signals)GetNode("/root/Signals");
 
@@ -51,8 +53,13 @@ public class CaveGeneratorNode : Spatial
                         break;
 
                     case CaveGenerator.CellType.None:
-						GenerateGroundTile(x * 0.5f, y * 0.5f);
+                        GenerateGroundTile(x * 0.5f, y * 0.5f);
                         GenerateWallSegment(x * 0.5f, y * 0.5f);
+                        break;
+
+                    case CaveGenerator.CellType.Treasure:
+                        GenerateGroundTile(x * 0.5f, y * 0.5f);
+                        GenerateTreasure(x * 0.5f, y * 0.5f);
                         break;
                 }
             }
@@ -67,6 +74,14 @@ public class CaveGeneratorNode : Spatial
         groundTile.Translation = new Vector3(x, 0.0f, y);
 
         AddChild(groundTile);
+    }
+
+    private void GenerateTreasure(float x, float y)
+    {
+        Spatial treasure = (Spatial)treasureScene.Instance();
+        treasure.Translation = new Vector3(x, 0.0f, y);
+
+        AddChild(treasure);
     }
 
     private void GenerateWallSegment(float x, float y)

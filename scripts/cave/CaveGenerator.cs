@@ -9,12 +9,15 @@ public class CaveGenerator
         Empty,
         Room,
         Hallway,
+        Treasure,
         Start,
         End
     }
 
     public int GridWidth;
     public int GridHeight;
+
+    public int MaxTreasuresPerRoom;
 
     public int MaxRoomsCount;
 
@@ -25,11 +28,12 @@ public class CaveGenerator
 
     Grid2D<CellType> grid;
 
-    public CaveGenerator(int width, int height, int maxRoomsCount)
+    public CaveGenerator(int width, int height, int maxRoomsCount, int maxTreasuresPerRoomCount)
     {
         GridWidth = width;
         GridHeight = height;
         MaxRoomsCount = maxRoomsCount;
+        MaxTreasuresPerRoom = maxTreasuresPerRoomCount;
 
         grid = new Grid2D<CellType>(new Vector2(GridWidth, GridHeight), Vector2.Zero);
     }
@@ -42,6 +46,7 @@ public class CaveGenerator
         rooms = GenerateRooms();
         triangles = Triangulate(rooms);
         mst = CalculateMST(triangles);
+        GenerateTreasures();
         GenerateRoomData();
         FindPaths(rooms, mst);
         CleanUpBlocks();
@@ -171,30 +176,49 @@ public class CaveGenerator
     private void GenerateRoomData()
     {
         data = new CellType[GridWidth, GridHeight];
-        
+
         for (int y = 0; y < GridHeight; ++y)
         {
             for (int x = 0; x < GridWidth; ++x)
             {
-                bool foundRoom = false;
+                Room foundRoom = null;
 
                 foreach (Room room in rooms)
                 {
                     if (x >= room.rect.Position.x && x <= room.rect.End.x &&
                     y >= room.rect.Position.y && y <= room.rect.End.y)
                     {
-                        foundRoom = true;
+                        foundRoom = room;
                         break;
                     }
                 }
 
-                if (!foundRoom)
+                if (foundRoom == null)
                 {
                     data[x, y] = CellType.None;
                 }
                 else
                 {
-                    data[x, y] = CellType.Room;
+                    bool foundTreasure = false;
+                    foreach (Vector2 treasurePos in foundRoom.Treasures)
+                    {
+                        if (Mathf.IsEqualApprox(foundRoom.rect.Position.x + treasurePos.x, x) &&
+                        Mathf.IsEqualApprox(foundRoom.rect.Position.y + treasurePos.y, y))
+                        {
+                            foundTreasure = true;
+                            break;
+                        }
+                    }
+
+                    if (foundTreasure)
+                    {
+                        data[x, y] = CellType.Treasure;
+                    }
+                    else
+                    {
+                        data[x, y] = CellType.Room;
+                    }
+
                     grid[x, y] = CellType.Room;
                 }
             }
@@ -260,68 +284,6 @@ public class CaveGenerator
                 }
             }
         }
-
-
-        // AStar2D aStar2D = new AStar2D();
-        // aStar2D.ReserveSpace(GridWidth * GridHeight);
-
-        // for (int y = 0; y < GridHeight; ++y)
-        // {
-        //     for (int x = 0; x < GridWidth; ++x)
-        //     {
-        //         bool foundRoom = false;
-
-        //         foreach (Room room in rooms)
-        //         {
-        //             if (x >= room.rect.Position.x && x <= room.rect.End.x &&
-        //             y >= room.rect.Position.y && y <= room.rect.End.y)
-        //             {
-        //                 foundRoom = true;
-        //                 break;
-        //             }
-        //         }
-
-        //         if (!foundRoom)
-        //         {
-        //             int tileId = aStar2D.GetAvailablePointId();
-        //             Vector2 tilePosition = new Vector2(x, y);
-        //             aStar2D.AddPoint(tileId, tilePosition);
-
-        //             Vector2[] checks = {
-        //               new Vector2(-1, 0),
-        //               new Vector2(1, 0),
-        //               new Vector2(0, -1),
-        //               new Vector2(0, 1)
-        //             };
-
-        //             for (int i = 0; i < checks.Length; ++i)
-        //             {
-        //                 Vector2 probePosition = tilePosition + checks[i];
-        //                 int probePoint = aStar2D.GetClosestPoint(probePosition);
-
-        //                 if (probePoint != -1 && !aStar2D.ArePointsConnected(tileId, probePoint))
-        //                 {
-        //                     aStar2D.ConnectPoints(tileId, probePoint);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
-        // foreach (Prim.Edge edge in edges)
-        // {
-        //     int pointA = aStar2D.GetClosestPoint(edge.U.Position);
-        //     int pointB = aStar2D.GetClosestPoint(edge.V.Position);
-
-        //     Vector2[] path = aStar2D.GetPointPath(pointA, pointB);
-        //     if (path != null && path.Length > 0)
-        //     {
-        //         foreach (Vector2 point in path)
-        //         {
-        //             data[(int)point.x, (int)point.y] = CellType.Empty;
-        //         }
-        //     }
-        // }
     }
 
     private void CleanUpBlocks()
@@ -375,6 +337,34 @@ public class CaveGenerator
         }
     }
 
+    private void GenerateTreasures()
+    {
+        foreach (Room room in rooms)
+        {
+            int currentTreasures = 0;
+            int maxTreasuresInRoom = (int)GD.RandRange(0, MaxTreasuresPerRoom + 1);
+
+            while (currentTreasures < maxTreasuresInRoom)
+            {
+                int x = (int)GD.RandRange(0, room.rect.Size.x);
+                int y = (int)GD.RandRange(0, room.rect.Size.y);
+
+                Vector2 treasurePos = new Vector2(x, y);
+
+                if (room.Treasures.Contains(treasurePos))
+                {
+                    continue;
+                }
+
+                room.Treasures.Add(treasurePos);
+
+                currentTreasures++;
+            }
+            
+            GD.Print(currentTreasures);
+        }
+    }
+
     public class Triangle
     {
         public Vector2 pointA;
@@ -386,9 +376,12 @@ public class CaveGenerator
     {
         public Rect2 rect;
 
+        public List<Vector2> Treasures;
+
         public Room(int x, int y, int width, int height)
         {
             rect = new Rect2(x, y, width, height);
+            Treasures = new List<Vector2>();
         }
     }
 }
