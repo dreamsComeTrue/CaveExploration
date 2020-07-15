@@ -38,7 +38,7 @@ public class Player : KinematicBody
 		CaveGeneratorNode caveGenerator = GetParent().GetNode<CaveGeneratorNode>("CaveGenerator");
 		List<CaveGenerator.Room> rooms = caveGenerator.rooms;
 		CaveGenerator.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
-		Vector2 middlePoint = (room.rect.Position + room.rect.Size / 2) * 0.5f;
+		Vector2 middlePoint = (room.Area.Position + room.Area.Size / 2) * 0.5f;
 
 		Vector3 newTranslation = new Vector3(middlePoint.x, Translation.y, middlePoint.y);
 		Translation = newTranslation;

@@ -73,7 +73,7 @@ public class CaveGenerator
 
             Room room = new Room(xStart, yStart, width, height);
 
-            if (room.rect.End.x >= GridWidth - 2 || room.rect.End.y >= GridHeight - 2)
+            if (room.Area.End.x >= GridWidth - 2 || room.Area.End.y >= GridHeight - 2)
             {
                 continue;
             }
@@ -81,7 +81,7 @@ public class CaveGenerator
             bool overlapingRooms = false;
             foreach (Room existingRoom in rooms)
             {
-                if (room.rect.Grow(2.0f).Intersects(existingRoom.rect, true))
+                if (room.Area.Grow(2.0f).Intersects(existingRoom.Area, true))
                 {
                     overlapingRooms = true;
                     break;
@@ -107,7 +107,7 @@ public class CaveGenerator
 
         for (int i = 0; i < rooms.Count; ++i)
         {
-            middlePoints[i] = rooms[i].rect.Position + rooms[i].rect.Size / 2;
+            middlePoints[i] = rooms[i].Area.Position + rooms[i].Area.Size / 2;
         }
 
         int[] indicies = Geometry.TriangulateDelaunay2d(middlePoints);
@@ -130,7 +130,7 @@ public class CaveGenerator
     {
         for (int i = 0; i < rooms.Count; ++i)
         {
-            Vector2 middlePoint = rooms[i].rect.Position + rooms[i].rect.Size / 2;
+            Vector2 middlePoint = rooms[i].Area.Position + rooms[i].Area.Size / 2;
 
             if (middlePoint.IsEqualApprox(point))
             {
@@ -185,8 +185,8 @@ public class CaveGenerator
 
                 foreach (Room room in rooms)
                 {
-                    if (x >= room.rect.Position.x && x <= room.rect.End.x &&
-                    y >= room.rect.Position.y && y <= room.rect.End.y)
+                    if (x >= room.Area.Position.x && x <= room.Area.End.x &&
+                    y >= room.Area.Position.y && y <= room.Area.End.y)
                     {
                         foundRoom = room;
                         break;
@@ -202,8 +202,8 @@ public class CaveGenerator
                     bool foundTreasure = false;
                     foreach (Vector2 treasurePos in foundRoom.Treasures)
                     {
-                        if (Mathf.IsEqualApprox(foundRoom.rect.Position.x + treasurePos.x, x) &&
-                        Mathf.IsEqualApprox(foundRoom.rect.Position.y + treasurePos.y, y))
+                        if (Mathf.IsEqualApprox(foundRoom.Area.Position.x + treasurePos.x, x) &&
+                        Mathf.IsEqualApprox(foundRoom.Area.Position.y + treasurePos.y, y))
                         {
                             foundTreasure = true;
                             break;
@@ -234,8 +234,8 @@ public class CaveGenerator
             var startRoom = (edge.U as Graphs.Vertex<Room>).Item;
             var endRoom = (edge.V as Graphs.Vertex<Room>).Item;
 
-            var startPosf = startRoom.rect.Position + startRoom.rect.Size / 2;
-            var endPosf = endRoom.rect.Position + endRoom.rect.Size / 2;
+            var startPosf = startRoom.Area.Position + startRoom.Area.Size / 2;
+            var endPosf = endRoom.Area.Position + endRoom.Area.Size / 2;
             var startPos = new Vector2((int)startPosf.x, (int)startPosf.y);
             var endPos = new Vector2((int)endPosf.x, (int)endPosf.y);
 
@@ -346,8 +346,8 @@ public class CaveGenerator
 
             while (currentTreasures < maxTreasuresInRoom)
             {
-                int x = (int)GD.RandRange(0, room.rect.Size.x);
-                int y = (int)GD.RandRange(0, room.rect.Size.y);
+                int x = (int)GD.RandRange(0, room.Area.Size.x);
+                int y = (int)GD.RandRange(0, room.Area.Size.y);
 
                 Vector2 treasurePos = new Vector2(x, y);
 
@@ -360,8 +360,6 @@ public class CaveGenerator
 
                 currentTreasures++;
             }
-            
-            GD.Print(currentTreasures);
         }
     }
 
@@ -374,13 +372,13 @@ public class CaveGenerator
 
     public class Room
     {
-        public Rect2 rect;
+        public Rect2 Area;
 
         public List<Vector2> Treasures;
 
         public Room(int x, int y, int width, int height)
         {
-            rect = new Rect2(x, y, width, height);
+            Area = new Rect2(x, y, width, height);
             Treasures = new List<Vector2>();
         }
     }
