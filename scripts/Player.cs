@@ -10,6 +10,8 @@ public class Player : KinematicBody
 	private SpotLight flashLight;
 	private MeshInstance mesh;
 
+	private Particles footStepsParticles;
+
 	private Vector3 movementDirection = Vector3.Zero;
 	private Vector3 lastDirection = Vector3.Zero;
 
@@ -26,6 +28,7 @@ public class Player : KinematicBody
 		signals = (Signals)GetNode("/root/Signals");
 		flashLight = GetNode<SpotLight>("FlashLight");
 		mesh = GetNode<MeshInstance>("Mesh");
+		footStepsParticles = GetNode<Particles>("FootStepsParticles");
 		objectFloater = new ObjectFloater();
 		objectFloater.Initialize(mesh.Translation.y);
 
@@ -63,6 +66,11 @@ public class Player : KinematicBody
 		if (!movementDirection.IsEqualApprox(Vector3.Zero))
 		{
 			signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
+			footStepsParticles.Emitting = true;
+		}
+		else
+		{
+			footStepsParticles.Emitting = false;
 		}
 
 		UpdateMeshFloat(delta);
