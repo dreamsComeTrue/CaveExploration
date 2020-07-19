@@ -19,7 +19,7 @@ config/name="Cave Escape"
 run/main_scene="res://scenes/GameplayScene.tscn"
 boot_splash/image="res://gfx/ui/flash_light.png"
 boot_splash/fullsize=false
-boot_splash/bg_color=Color( 0.164856, 0.198273, 0.285156, 1 )
+boot_splash/bg_color=Color( 0.164706, 0.2, 0.286275, 1 )
 config/icon="res://gfx/ui/flash_light.png"
 
 [autoload]
@@ -68,5 +68,5 @@ action_tool={
 
 [rendering]
 
-environment/default_clear_color=Color( 0.12549, 0.12549, 0.12549, 1 )
+environment/default_clear_color=Color( 0.0941176, 0.121569, 0.184314, 1 )
 environment/default_environment="res://default_env.tres"

@@ -21,6 +21,7 @@ surfaces/0 = {
 }
 
 [sub_resource type="SpatialMaterial" id=2]
+flags_disable_ambient_light = true
 albedo_texture = ExtResource( 2 )
 
 [node name="Treasure" type="Spatial"]
