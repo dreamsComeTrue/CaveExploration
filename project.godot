@@ -68,5 +68,7 @@ action_tool={
 
 [rendering]
 
+quality/2d/use_pixel_snap=true
 environment/default_clear_color=Color( 0.0941176, 0.121569, 0.184314, 1 )
 environment/default_environment="res://default_env.tres"
+batching/2d/use_pixel_snap=false

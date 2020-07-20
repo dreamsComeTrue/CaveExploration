@@ -5,12 +5,14 @@ public class GameUI : Control
 {
 	private InGameMenu inGameMenu;
 	private NinePatchRect miniMapTexture;
+	private Label countdownLabel;
 	private Signals signals;
 
 	public override void _Ready()
 	{
 		inGameMenu = GetNode<InGameMenu>("CanvasLayer/InGameMenu");
 		miniMapTexture = GetNode<NinePatchRect>("CanvasLayer/MinimapTexture");
+		countdownLabel = GetNode<Label>("CanvasLayer/Countdown/CountdownTimer");
 		signals = (Signals)GetNode("/root/Signals");
 		signals.Connect(nameof(Signals.PulseGameplayTimer), this, nameof(OnPulseGameplayTimer));
 	}
@@ -30,7 +32,6 @@ public class GameUI : Control
 
 	public void OnPulseGameplayTimer(float timeLeft)
 	{
-		Label countdownLabel = GetNode<Label>("CanvasLayer/CountdownTimer");
 		string timeString;
 
 		if (timeLeft < GameManager.timeThresholdWarning)
@@ -50,6 +51,6 @@ public class GameUI : Control
 			timeString = String.Format("{0:00}:{1:00}", Math.Floor(timeLeft / 60.0f), timeLeft % 60.0f);
 		}
 
-		GetNode<Label>("CanvasLayer/CountdownTimer").Text = timeString;
+		countdownLabel.Text = timeString;
 	}
 }
