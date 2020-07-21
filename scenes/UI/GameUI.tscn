@@ -12,14 +12,14 @@
 size = 24
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=2]
 size = 60
 outline_size = 1
 outline_color = Color( 0.0980392, 0.305882, 0.862745, 1 )
 use_mipmaps = true
 font_data = ExtResource( 4 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 length = 1.5
 loop = true
 tracks/0/type = "value"
@@ -140,7 +140,7 @@ margin_top = -17.5
 margin_right = 70.5
 margin_bottom = 17.5
 rect_pivot_offset = Vector2( 70, 17 )
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 1, 1, 1 )
 text = "03:00"
 align = 1
@@ -151,4 +151,4 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Countdown/CountdownTimer"]
 autoplay = "pulsate"
-anims/pulsate = SubResource( 5 )
+anims/pulsate = SubResource( 3 )

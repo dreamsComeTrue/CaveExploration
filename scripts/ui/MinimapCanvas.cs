@@ -15,7 +15,7 @@ public class MinimapCanvas : Control
 
     private void OnMapGenerated()
     {
-        CaveGeneratorNode generator = GetTree().Root.GetNode<CaveGeneratorNode>("Gameplay/CaveGenerator");
+        CaveGeneratorNode generator = GetTree().Root.GetNode<CaveGeneratorNode>("Gameplay/ViewportContainer/Viewport/CaveGenerator");
 
         mapData = generator.mapData;
         Update();
