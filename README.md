@@ -1,4 +1,4 @@
-# CaveEscape
+# Unhidden
 
 Multiplayer cave exploring/escape adventure
 
@@ -9,3 +9,5 @@ Multiplayer cave exploring/escape adventure
 Propsal names:
 
 ex-silentio
+Got Your Back
+unhidden

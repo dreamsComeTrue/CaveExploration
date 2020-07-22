@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Cave Escape"
+config/name="Unhidden"
 run/main_scene="res://scenes/GameplayScene.tscn"
 boot_splash/image="res://gfx/ui/flash_light.png"
 boot_splash/fullsize=false
