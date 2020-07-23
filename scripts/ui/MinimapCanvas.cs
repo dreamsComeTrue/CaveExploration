@@ -45,7 +45,7 @@ public class MinimapCanvas : Control
                     Vector2 position = new Vector2(x * scaler.x, y * scaler.y);
                     Rect2 rect = new Rect2(position, scaler);
 
-                    DrawRect(rect, Colors.SeaGreen);
+                    DrawRect(rect, Colors.RoyalBlue);
                 }
                 if (mapData[x, y] == CaveGenerator.CellType.Treasure)
                 {
@@ -58,6 +58,6 @@ public class MinimapCanvas : Control
         }
 
         Rect2 playerRect = new Rect2(new Vector2(playerPosition.x, playerPosition.z) * scaler * 2, scaler);
-        DrawRect(playerRect, Colors.White);
+        DrawRect(playerRect, Colors.Fuchsia);
     }
 }

@@ -69,5 +69,8 @@ environment = SubResource( 4 )
 [node name="DirectionalLight" type="DirectionalLight" parent="ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 1.5, 0 )
 layers = 2147483649
-light_energy = 0.02
+light_color = Color( 0.529412, 0.529412, 0.529412, 1 )
+light_energy = 0.01
+light_specular = 0.0
+light_bake_mode = 0
 light_cull_mask = 2146435073
