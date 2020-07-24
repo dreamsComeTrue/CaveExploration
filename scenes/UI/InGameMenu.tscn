@@ -1,7 +1,26 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://gfx/ui/frame_violet_single.png" type="Texture" id=1]
+[ext_resource path="res://scenes/UI/MenuButton.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/ui/InGameMenu.cs" type="Script" id=2]
+[ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=3]
+[ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="Animation" id=3]
+resource_name = "pulsate"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.95, 0.95 ), Vector2( 1, 1 ) ]
+}
 
 [sub_resource type="Animation" id=1]
 resource_name = "slide"
@@ -32,7 +51,7 @@ tracks/1/keys = {
 "values": [ false, true ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("NinePatchRect:rect_scale")
+tracks/2/path = NodePath("UIFrame:rect_scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -43,11 +62,30 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1, 1 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("TitleLabel:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 497, -30 ), Vector2( 497, 30 ) ]
+}
+
+[sub_resource type="DynamicFont" id=2]
+size = 66
+outline_size = 1
+outline_color = Color( 0.264359, 0.811203, 0.902344, 1 )
+font_data = ExtResource( 4 )
 
 [node name="InGameMenu" type="Control"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 1
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -57,23 +95,31 @@ __meta__ = {
 modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.843137 )
+margin_left = -1.0
+margin_top = -1.0
+margin_right = -1.0
+margin_bottom = -1.0
+mouse_filter = 1
+color = Color( 0, 0, 0, 0.901961 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NinePatchRect" type="NinePatchRect" parent="."]
+[node name="UIFrame" type="NinePatchRect" parent="."]
+self_modulate = Color( 0.631373, 0.631373, 0.631373, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -100.0
-margin_right = 150.0
-margin_bottom = 100.0
+margin_left = -165.0
+margin_top = -125.0
+margin_right = 165.0
+margin_bottom = 125.0
 rect_scale = Vector2( 1e-05, 1e-05 )
-rect_pivot_offset = Vector2( 150, 100 )
-texture = ExtResource( 1 )
+rect_pivot_offset = Vector2( 165, 125 )
+mouse_filter = 1
+texture = ExtResource( 3 )
+draw_center = false
 patch_margin_left = 3
 patch_margin_top = 3
 patch_margin_right = 3
@@ -82,5 +128,93 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="VBoxContainer" type="VBoxContainer" parent="UIFrame"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -122.5
+margin_top = -102.5
+margin_right = 122.5
+margin_bottom = 102.5
+custom_constants/separation = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtonReturn" parent="UIFrame/VBoxContainer" instance=ExtResource( 1 )]
+margin_right = 245.0
+
+[node name="Label" parent="UIFrame/VBoxContainer/MenuButtonReturn" index="1"]
+margin_left = -93.5
+margin_right = 93.5
+text = "Resume Game"
+
+[node name="MenuButtonOptions" parent="UIFrame/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 55.0
+margin_right = 245.0
+margin_bottom = 95.0
+
+[node name="Label" parent="UIFrame/VBoxContainer/MenuButtonOptions" index="1"]
+margin_left = -59.5
+margin_right = 59.5
+text = "Options"
+
+[node name="MenuButtonLeave" parent="UIFrame/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 110.0
+margin_right = 245.0
+margin_bottom = 150.0
+
+[node name="Label" parent="UIFrame/VBoxContainer/MenuButtonLeave" index="1"]
+margin_left = -42.5
+margin_top = -13.0
+margin_right = 42.5
+margin_bottom = 13.0
+text = "Leave"
+
+[node name="AnimationPlayer" parent="UIFrame/VBoxContainer/MenuButtonLeave" index="2"]
+anims/pulsate = SubResource( 3 )
+
+[node name="MenuButtonQuit" parent="UIFrame/VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 165.0
+margin_right = 245.0
+margin_bottom = 205.0
+
+[node name="Label" parent="UIFrame/VBoxContainer/MenuButtonQuit" index="1"]
+margin_left = -34.0
+margin_right = 34.0
+text = "Quit"
+
+[node name="ColorRect2" type="ColorRect" parent="UIFrame"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.420441
+margin_bottom = -0.420441
+mouse_filter = 2
+color = Color( 0.101685, 0.0942078, 0.191406, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/slide = SubResource( 1 )
+
+[node name="TitleLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -103.0
+margin_top = -30.0
+margin_right = 103.0
+margin_bottom = 8.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
+text = "UNHIDDEN"
+
+[editable path="UIFrame/VBoxContainer/MenuButtonReturn"]
+
+[editable path="UIFrame/VBoxContainer/MenuButtonOptions"]
+
+[editable path="UIFrame/VBoxContainer/MenuButtonLeave"]
+
+[editable path="UIFrame/VBoxContainer/MenuButtonQuit"]

@@ -30,7 +30,7 @@ Signals="*res://scripts/Signals.cs"
 [display]
 
 window/size/width=1200
-window/size/height=800
+window/size/height=675
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
@@ -68,7 +68,10 @@ action_tool={
 
 [rendering]
 
+quality/2d/use_nvidia_rect_flicker_workaround=true
 quality/2d/use_pixel_snap=true
+quality/filters/use_nearest_mipmap_filter=true
+quality/subsurface_scattering/quality=0
 environment/default_clear_color=Color( 0.0941176, 0.121569, 0.184314, 1 )
 environment/default_environment="res://default_env.tres"
 batching/2d/use_pixel_snap=false

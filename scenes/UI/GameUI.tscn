@@ -42,6 +42,7 @@ margin_left = 0.353546
 margin_top = -0.590294
 margin_right = 0.353516
 margin_bottom = -0.590271
+mouse_filter = 1
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -69,7 +70,7 @@ anchor_bottom = 0.271667
 margin_left = 0.625
 margin_top = -0.66664
 margin_right = -1.01599
-margin_bottom = -27.3336
+margin_bottom = 4.95813
 texture = ExtResource( 2 )
 patch_margin_left = 4
 patch_margin_top = 4
@@ -117,8 +118,6 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="InGameMenu" parent="CanvasLayer" instance=ExtResource( 5 )]
-
 [node name="Countdown" type="Control" parent="CanvasLayer"]
 anchor_left = 0.5
 anchor_right = 0.5
@@ -152,3 +151,5 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Countdown/CountdownTimer"]
 autoplay = "pulsate"
 anims/pulsate = SubResource( 3 )
+
+[node name="InGameMenu" parent="CanvasLayer" instance=ExtResource( 5 )]

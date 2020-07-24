@@ -42,12 +42,11 @@ ssao_quality = 0
 
 [node name="Gameplay" type="Spatial"]
 
-[node name="GameUI" parent="." instance=ExtResource( 4 )]
-
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -56,6 +55,7 @@ __meta__ = {
 size = Vector2( 1200, 800 )
 handle_input_locally = false
 render_target_update_mode = 3
+gui_snap_controls_to_pixels = false
 
 [node name="Player" parent="ViewportContainer/Viewport" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.218, 0 )
@@ -74,3 +74,6 @@ light_energy = 0.01
 light_specular = 0.0
 light_bake_mode = 0
 light_cull_mask = 2146435073
+
+[node name="GameUI" parent="." instance=ExtResource( 4 )]
+mouse_filter = 1
