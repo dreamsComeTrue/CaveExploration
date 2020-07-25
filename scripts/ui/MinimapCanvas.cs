@@ -33,6 +33,9 @@ public class MinimapCanvas : Control
         {
             return;
         }
+        
+        Rect2 wholeRect = new Rect2(0, 0, RectSize);
+        DrawRect(wholeRect, new Color(0.1f, 0.01f, 0.2f));
 
         Vector2 scaler = new Vector2(this.RectSize.x / mapData.GetUpperBound(0), this.RectSize.y / mapData.GetUpperBound(1));
 

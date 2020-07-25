@@ -13,4 +13,10 @@ public class Signals : Node
 
     [Signal]
     public delegate void PlayerMoved(Vector2 newPosition);
+
+    [Signal]
+    public delegate void FocusMenuButton(MenuButton menuButton);
+
+    [Signal]
+    public delegate void UnFocusMenuButton();
 }
