@@ -7,7 +7,6 @@ public class Player : KinematicBody
 	public float MOVE_SPEED = 1.3f;
 	public float RUN_SPEED = 3.0f;
 
-	private SpotLight flashLight;
 	private MeshInstance mesh;
 
 	private Particles footStepsParticles;
@@ -26,7 +25,6 @@ public class Player : KinematicBody
 	public override void _Ready()
 	{
 		signals = (Signals)GetNode("/root/Signals");
-		flashLight = GetNode<SpotLight>("FlashLight");
 		mesh = GetNode<MeshInstance>("Mesh");
 		footStepsParticles = GetNode<Particles>("FootStepsParticles");
 		objectFloater = new ObjectFloater();
@@ -107,19 +105,6 @@ public class Player : KinematicBody
 			movementDirection.x += 1.0f;
 			inMovement = true;
 		}
-
-		if (Input.IsActionJustPressed("action_tool"))
-		{
-			ToggleFlashligh();
-		}
-	}
-
-	private void ToggleFlashligh()
-	{
-		flashLight.Visible = !flashLight.Visible;
-
-		(mesh.GetSurfaceMaterial(0) as SpatialMaterial).FlagsDisableAmbientLight = !flashLight.Visible;
-		(mesh.GetSurfaceMaterial(1) as SpatialMaterial).FlagsDisableAmbientLight = !flashLight.Visible;
 	}
 
 	private void OnInGameMenuVisibilityChanged(bool visible)

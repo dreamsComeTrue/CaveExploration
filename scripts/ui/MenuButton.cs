@@ -52,7 +52,7 @@ public class MenuButton : TextureButton
 		menuButtonTexture.Texture = violetFrameTexture;
 		colorRect.Color = normalColor;
 	}
-	private void _on_MenuButton_button_down()
+	public void _on_MenuButton_button_down()
 	{
 		menuButtonTexture.Texture = blueFrameTexture;
 		colorRect.Color = pressedColor;

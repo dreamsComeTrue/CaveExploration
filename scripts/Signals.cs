@@ -15,6 +15,12 @@ public class Signals : Node
     public delegate void PlayerMoved(Vector2 newPosition);
 
     [Signal]
+    public delegate void FlashLightToggled(bool visible);
+    
+    [Signal]
+    public delegate void LightBarsChanged(int lightBarsLeft);
+
+    [Signal]
     public delegate void FocusMenuButton(MenuButton menuButton);
 
     [Signal]
