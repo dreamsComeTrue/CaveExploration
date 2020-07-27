@@ -93,7 +93,7 @@ spot_angle_attenuation = 0.203063
 script = ExtResource( 5 )
 
 [node name="FlashLightTimer" type="Timer" parent="FlashLight"]
-wait_time = 0.5
+wait_time = 4.0
 autostart = true
 
 [node name="FootStepsParticles" type="Particles" parent="."]

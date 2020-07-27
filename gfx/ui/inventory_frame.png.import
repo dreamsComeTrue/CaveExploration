@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/frame_violet_single.png-e97a4c89072028435addb0f4454f7601.stex"
+path="res://.import/inventory_frame.png-90dec41f9916a0a10f8df22fc0ce3ca5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gfx/ui/frame_violet_single.png"
-dest_files=[ "res://.import/frame_violet_single.png-e97a4c89072028435addb0f4454f7601.stex" ]
+source_file="res://gfx/ui/inventory_frame.png"
+dest_files=[ "res://.import/inventory_frame.png-90dec41f9916a0a10f8df22fc0ce3ca5.stex" ]
 
 [params]
 
@@ -24,7 +24,7 @@ flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false

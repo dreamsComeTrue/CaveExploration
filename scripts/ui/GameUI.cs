@@ -7,6 +7,11 @@ public class GameUI : Control
     private TextureRect flashLightTexture;
     private NinePatchRect miniMapTexture;
     private Label countdownLabel;
+    private InventoryItem inventoryItem1;
+    private InventoryItem inventoryItem2;
+
+    private InventoryItem focusedInventoryItem;
+
     private Signals signals;
 
     private float flashLightOffset = 0.0f;
@@ -17,6 +22,9 @@ public class GameUI : Control
         miniMapTexture = GetNode<NinePatchRect>("CanvasLayer/MinimapTexture");
         flashLightTexture = GetNode<TextureRect>("CanvasLayer/FlashLightTextureFrame/FlashLightTexture");
         countdownLabel = GetNode<Label>("CanvasLayer/Countdown/CountdownTimer");
+        inventoryItem1 = GetNode<InventoryItem>("CanvasLayer/InventoryItem1");
+        inventoryItem2 = GetNode<InventoryItem>("CanvasLayer/InventoryItem2");
+
         signals = (Signals)GetNode("/root/Signals");
         signals.Connect(nameof(Signals.PulseGameplayTimer), this, nameof(OnPulseGameplayTimer));
         signals.Connect(nameof(Signals.LightBarsChanged), this, nameof(OnUpdateFlashLightBars));
@@ -25,14 +33,42 @@ public class GameUI : Control
 
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
-        if (@event.Pressed && (KeyList)@event.Scancode == KeyList.Escape)
+        if (@event.Pressed)
         {
-            inGameMenu.ToggleVisibility();
-        }
+            KeyList key = (KeyList)@event.Scancode;
 
-        if (!@event.Pressed && (KeyList)@event.Scancode == KeyList.M)
+            switch (key)
+            {
+                case KeyList.Escape:
+                    inGameMenu.ToggleVisibility();
+                    break;
+
+                case KeyList.M:
+                    miniMapTexture.Visible = !miniMapTexture.Visible;
+                    break;
+
+                case KeyList.Key1:
+                    FocusInventoryItem(inventoryItem1);
+                    break;
+
+                case KeyList.Key2:
+                    FocusInventoryItem(inventoryItem2);
+                    break;
+            }
+        }
+    }
+
+    private void FocusInventoryItem(InventoryItem item)
+    {
+        if (focusedInventoryItem == item)
         {
-            miniMapTexture.Visible = !miniMapTexture.Visible;
+            focusedInventoryItem = null;
+            signals.EmitSignal(nameof(Signals.FocusInventoryItem), new object[] { focusedInventoryItem });
+        }
+        else
+        {
+            signals.EmitSignal(nameof(Signals.FocusInventoryItem), item);
+            focusedInventoryItem = item;
         }
     }
 
@@ -46,13 +82,13 @@ public class GameUI : Control
         ShaderMaterial shaderMaterial = flashLightTexture.Material as ShaderMaterial;
         shaderMaterial.SetShaderParam("discard_offset", flashLightOffset);
     }
-	
-	public void OnFlashLightToggled(bool visible)
-	{
-		AtlasTexture atlas = GetNode<TextureRect>("CanvasLayer/FlashLight").Texture as AtlasTexture;
-		Vector2 position = visible ? Vector2.Zero : new Vector2(0.0f, 128.0f);
-		atlas.Region = new Rect2(position, atlas.Region.Size);
-	}
+
+    public void OnFlashLightToggled(bool visible)
+    {
+        AtlasTexture atlas = GetNode<TextureRect>("CanvasLayer/FlashLight").Texture as AtlasTexture;
+        Vector2 position = visible ? Vector2.Zero : new Vector2(0.0f, 128.0f);
+        atlas.Region = new Rect2(position, atlas.Region.Size);
+    }
 
     public void OnPulseGameplayTimer(float timeLeft)
     {

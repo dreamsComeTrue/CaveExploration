@@ -74,7 +74,6 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="."]
-modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.0
@@ -97,7 +96,6 @@ margin_left = -165.0
 margin_top = -125.0
 margin_right = 165.0
 margin_bottom = 125.0
-rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
 texture = ExtResource( 3 )
@@ -132,7 +130,9 @@ focus_previous = NodePath("../MenuButtonQuit")
 
 [node name="Label" parent="UIFrame/VBoxContainer/MenuButtonResume" index="2"]
 margin_left = -93.5
+margin_top = -11.0
 margin_right = 93.5
+margin_bottom = 15.0
 text = "Resume Game"
 
 [node name="MenuButtonOptions" parent="UIFrame/VBoxContainer" groups=[
@@ -145,7 +145,9 @@ focus_previous = NodePath("../MenuButtonResume")
 
 [node name="Label" parent="UIFrame/VBoxContainer/MenuButtonOptions" index="2"]
 margin_left = -59.5
+margin_top = -13.0
 margin_right = 59.5
+margin_bottom = 13.0
 text = "Options"
 
 [node name="MenuButtonLeave" parent="UIFrame/VBoxContainer" groups=[
@@ -157,11 +159,11 @@ focus_next = NodePath("../MenuButtonQuit")
 focus_previous = NodePath("../MenuButtonOptions")
 
 [node name="Label" parent="UIFrame/VBoxContainer/MenuButtonLeave" index="2"]
-margin_left = -42.5
-margin_top = -13.0
-margin_right = 42.5
-margin_bottom = 13.0
-text = "Leave"
+margin_left = -85.0
+margin_top = -11.0
+margin_right = 85.0
+margin_bottom = 15.0
+text = "Disconnect"
 
 [node name="MenuButtonQuit" parent="UIFrame/VBoxContainer" groups=[
 "InGameMenuButton",
@@ -173,8 +175,10 @@ focus_previous = NodePath("../MenuButtonLeave")
 
 [node name="Label" parent="UIFrame/VBoxContainer/MenuButtonQuit" index="2"]
 margin_left = -34.0
+margin_top = -11.0
 margin_right = 34.0
-text = "Quit"
+margin_bottom = 15.0
+text = "Exit"
 
 [node name="ColorRect2" type="ColorRect" parent="UIFrame"]
 show_behind_parent = true
@@ -196,9 +200,9 @@ anims/slide = SubResource( 1 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -103.0
-margin_top = -30.0
+margin_top = 30.0
 margin_right = 103.0
-margin_bottom = 8.0
+margin_bottom = 68.0
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
 text = "UNHIDDEN"
