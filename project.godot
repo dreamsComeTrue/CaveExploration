@@ -17,10 +17,10 @@ _global_script_class_icons={
 
 config/name="Unhidden"
 run/main_scene="res://scenes/GameplayScene.tscn"
-boot_splash/image="res://gfx/ui/flash_light.png"
+boot_splash/image="res://icon.png"
 boot_splash/fullsize=false
 boot_splash/bg_color=Color( 0.164706, 0.2, 0.286275, 1 )
-config/icon="res://gfx/ui/flash_light.png"
+config/icon="res://icon.png"
 
 [autoload]
 
