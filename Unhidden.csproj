@@ -3,4 +3,9 @@
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>Unhidden</RootNamespace>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <DefaultItemExcludes>GameServer/**;scripts/network/**</DefaultItemExcludes>
+  </PropertyGroup>
+
 </Project>
