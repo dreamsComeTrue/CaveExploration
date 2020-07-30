@@ -3,155 +3,168 @@ using Godot;
 
 public class Player : KinematicBody
 {
-	[Export]
-	public float MOVE_SPEED = 1.3f;
-	public float RUN_SPEED = 3.0f;
+    [Export]
+    public float MOVE_SPEED = 1.3f;
+    public float RUN_SPEED = 3.0f;
 
-	private MeshInstance mesh;
+    private MeshInstance mesh;
 
-	private Particles footStepsParticles;
+    private Particles footStepsParticles;
 
-	private Vector3 movementDirection = Vector3.Zero;
-	private Vector3 lastDirection = Vector3.Zero;
+    private Vector3 movementDirection = Vector3.Zero;
+    private Vector3 lastDirection = Vector3.Zero;
 
-	private float angleAccumulator = 0.0f;
+    private float angleAccumulator = 0.0f;
 
-	private bool inputEnabled = true;
+    private bool inputEnabled = true;
 
-	private ObjectFloater objectFloater;
+    private ObjectFloater objectFloater;
 
-	private Signals signals;
+    private Signals signals;
 
-	public override void _Ready()
-	{
-		signals = (Signals)GetNode("/root/Signals");
-		mesh = GetNode<MeshInstance>("Mesh");
-		footStepsParticles = GetNode<Particles>("FootStepsParticles");
-		objectFloater = new ObjectFloater();
-		objectFloater.Initialize(mesh.Translation.y);
+    private Tween cameraMovemenetTween;
+    private Camera gameplayCamera;
+    private Vector3 cameraPlayerOffset = new Vector3(0, 1.5f, 1.5f);
 
-		signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
-		signals.Connect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
-	}
+    public override void _Ready()
+    {
+        signals = (Signals)GetNode("/root/Signals");
+        mesh = GetNode<MeshInstance>("Mesh");
+        footStepsParticles = GetNode<Particles>("FootStepsParticles");
+        objectFloater = new ObjectFloater();
+        objectFloater.Initialize(mesh.Translation.y);
 
-	private void OnMapGenerated()
-	{
-		CaveGeneratorNode caveGenerator = GetParent().GetNode<CaveGeneratorNode>("CaveGenerator");
-		List<CaveGenerator.Room> rooms = caveGenerator.rooms;
-		CaveGenerator.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
-		Vector2 middlePoint = (room.Area.Position + room.Area.Size / 2) * 0.5f;
+        signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
+        signals.Connect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
 
-		Vector3 newTranslation = new Vector3(middlePoint.x, Translation.y, middlePoint.y);
-		Translation = newTranslation;
+        gameplayCamera = GetTree().Root.GetNode<Camera>("Gameplay/ViewportContainer/Viewport/GameplayCamera");
+        cameraMovemenetTween = new Tween();
+        AddChild(cameraMovemenetTween);
+    }
 
-		signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
-	}
+    private void OnMapGenerated()
+    {
+        CaveGeneratorNode caveGenerator = GetParent().GetNode<CaveGeneratorNode>("CaveGenerator");
+        List<CaveGenerator.Room> rooms = caveGenerator.rooms;
+        CaveGenerator.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
+        Vector2 middlePoint = (room.Area.Position + room.Area.Size / 2) * 0.5f;
 
-	public override void _Process(float delta)
-	{
-		movementDirection = Vector3.Zero;
+        Vector3 newTranslation = new Vector3(middlePoint.x, Translation.y, middlePoint.y);
+        Translation = newTranslation;
 
-		_HandleKeyInputs();
+        gameplayCamera.Translation = Translation + cameraPlayerOffset;
 
-		float moveSpeed = MOVE_SPEED;
-		if (Input.IsKeyPressed((int)KeyList.Shift))
-		{
-			moveSpeed *= RUN_SPEED;
-		}
+        signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
+    }
 
-		this.MoveAndCollide(movementDirection.Normalized() * delta * moveSpeed);
+    public override void _Process(float delta)
+    {
+        movementDirection = Vector3.Zero;
 
-		if (!movementDirection.IsEqualApprox(Vector3.Zero))
-		{
-			signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
-			footStepsParticles.Emitting = true;
-		}
-		else
-		{
-			footStepsParticles.Emitting = false;
-		}
+        _HandleKeyInputs();
 
-		UpdateMeshFloat(delta);
-		FaceMeshToDirection(delta);
-	}
+        float moveSpeed = MOVE_SPEED;
+        if (Input.IsKeyPressed((int)KeyList.Shift))
+        {
+            moveSpeed *= RUN_SPEED;
+        }
 
-	private bool inMovement = false;
-	private void _HandleKeyInputs()
-	{
-		if (!inputEnabled)
-		{
-			return;
-		}
+        this.MoveAndCollide(movementDirection.Normalized() * delta * moveSpeed);
 
-		inMovement = false;
+        if (!movementDirection.IsEqualApprox(Vector3.Zero))
+        {
+            signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
+            footStepsParticles.Emitting = true;
 
-		if (Input.IsActionPressed("move_forward"))
-		{
-			movementDirection.z -= 1.0f;
-			inMovement = true;
-		}
-		if (Input.IsActionPressed("move_backward"))
-		{
-			movementDirection.z += 1.0f;
-			inMovement = true;
-		}
-		if (Input.IsActionPressed("move_left"))
-		{
-			movementDirection.x -= 1.0f;
-			inMovement = true;
-		}
-		if (Input.IsActionPressed("move_right"))
-		{
-			movementDirection.x += 1.0f;
-			inMovement = true;
-		}
-	}
+            cameraMovemenetTween.InterpolateProperty(gameplayCamera, "translation", gameplayCamera.Translation, this.Translation + cameraPlayerOffset, 0.1f, 0, 0);
+            cameraMovemenetTween.Start();
+        }
+        else
+        {
+            footStepsParticles.Emitting = false;
+        }
 
-	private void OnInGameMenuVisibilityChanged(bool visible)
-	{
-		inputEnabled = !visible;
-	}
+        UpdateMeshFloat(delta);
+        FaceMeshToDirection(delta);
+    }
 
-	private void UpdateMeshFloat(float delta)
-	{
-		float floatFrequency = objectFloater.FloatFrequency;
+    private bool inMovement = false;
+    private void _HandleKeyInputs()
+    {
+        if (!inputEnabled)
+        {
+            return;
+        }
 
-		if (inMovement)
-		{
-			floatFrequency *= 1.5f;
-		}
+        inMovement = false;
 
-		mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation, floatFrequency);
-	}
+        if (Input.IsActionPressed("move_forward"))
+        {
+            movementDirection.z -= 1.0f;
+            inMovement = true;
+        }
+        if (Input.IsActionPressed("move_backward"))
+        {
+            movementDirection.z += 1.0f;
+            inMovement = true;
+        }
+        if (Input.IsActionPressed("move_left"))
+        {
+            movementDirection.x -= 1.0f;
+            inMovement = true;
+        }
+        if (Input.IsActionPressed("move_right"))
+        {
+            movementDirection.x += 1.0f;
+            inMovement = true;
+        }
+    }
 
-	private void FaceMeshToDirection(float delta)
-	{
-		Vector3 directionNormalized = movementDirection.Normalized();
+    private void OnInGameMenuVisibilityChanged(bool visible)
+    {
+        inputEnabled = !visible;
+    }
 
-		if (directionNormalized.Length() >= 0.001f)
-		{
-			float currentRotationDegress = (mesh.RotationDegrees.y % 360.0f);
-			float targetAngle = Mathf.Atan2(directionNormalized.x, directionNormalized.z);
-			float targetAngleDegress = (Mathf.Rad2Deg(targetAngle) % 360.0f);
+    private void UpdateMeshFloat(float delta)
+    {
+        float floatFrequency = objectFloater.FloatFrequency;
 
-			if (targetAngleDegress < 0)
-			{
-				targetAngleDegress = 360.0f + targetAngleDegress;
-			}
+        if (inMovement)
+        {
+            floatFrequency *= 1.5f;
+        }
 
-			if (Mathf.IsEqualApprox(currentRotationDegress, targetAngleDegress, 0.1f) || lastDirection != directionNormalized)
-			{
-				angleAccumulator = 0.0f;
-			}
-			else
-			{
-				float angle = Mathf.LerpAngle(mesh.Rotation.y, targetAngle, angleAccumulator);
-				mesh.Rotation = new Vector3(0.0f, angle, 0.0f);
+        mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation, floatFrequency);
+    }
 
-				angleAccumulator += delta * 0.4f;
-			}
+    private void FaceMeshToDirection(float delta)
+    {
+        Vector3 directionNormalized = movementDirection.Normalized();
 
-			lastDirection = directionNormalized;
-		}
-	}
+        if (directionNormalized.Length() >= 0.001f)
+        {
+            float currentRotationDegress = (mesh.RotationDegrees.y % 360.0f);
+            float targetAngle = Mathf.Atan2(directionNormalized.x, directionNormalized.z);
+            float targetAngleDegress = (Mathf.Rad2Deg(targetAngle) % 360.0f);
+
+            if (targetAngleDegress < 0)
+            {
+                targetAngleDegress = 360.0f + targetAngleDegress;
+            }
+
+            if (Mathf.IsEqualApprox(currentRotationDegress, targetAngleDegress, 0.1f) || lastDirection != directionNormalized)
+            {
+                angleAccumulator = 0.0f;
+            }
+            else
+            {
+                float angle = Mathf.LerpAngle(mesh.Rotation.y, targetAngle, angleAccumulator);
+                mesh.Rotation = new Vector3(0.0f, angle, 0.0f);
+
+                angleAccumulator += delta * 0.4f;
+            }
+
+            lastDirection = directionNormalized;
+        }
+    }
 }
