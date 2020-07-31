@@ -197,6 +197,7 @@ anchor_bottom = 1.0
 mouse_filter = 1
 script = ExtResource( 5 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -204,6 +205,10 @@ __meta__ = {
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 0.471985
+margin_top = -0.471954
+margin_right = 0.471924
+margin_bottom = -0.471924
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -416,6 +421,7 @@ __meta__ = {
 }
 
 [node name="MessageNotifier" parent="." instance=ExtResource( 6 )]
+[connection signal="focus_entered" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_focus_entered"]
 [connection signal="gui_input" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_gui_input"]
 [connection signal="text_changed" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_text_changed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonPlay" to="." method="_on_MenuButtonPlay_pressed"]

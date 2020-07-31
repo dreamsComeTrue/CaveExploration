@@ -11,8 +11,10 @@ public class AudioManager : Node
     private AudioStreamPlayer menuFocusSoundPlayer;
     private AudioStreamPlayer menuOpenSoundPlayer;
     private AudioStreamPlayer menuSelectSoundPlayer;
+    private AudioStreamPlayer flashlightSoundPlayer;
+    private AudioStreamPlayer toggleSoundPlayer;
 
-    private const float SOUND_VOLUME = -12.0f;
+    private const float SOUND_VOLUME = -15.0f;
 
     public bool MusicMuted = false;
     public bool SoundsMuted = false;
@@ -35,6 +37,12 @@ public class AudioManager : Node
 
         menuTypeWriterPlayer = AddSound("res://sounds/ui/Menu_Select_00.wav");
         menuTypeWriterPlayer.VolumeDb = SOUND_VOLUME;
+
+        flashlightSoundPlayer = AddSound("res://sounds/player/sfx_sounds_interaction22.wav");
+        flashlightSoundPlayer.VolumeDb = SOUND_VOLUME;
+
+        toggleSoundPlayer = AddSound("res://sounds/ui/Menu_Select_00.wav");
+        toggleSoundPlayer.VolumeDb = SOUND_VOLUME;
 
         signals = (Signals)GetNode("/root/Signals");
     }
@@ -93,6 +101,22 @@ public class AudioManager : Node
         if (!SoundsMuted)
         {
             menuTypeWriterPlayer.Play();
+        }
+    }
+
+    public void PlayFlashlightSound()
+    {
+        if (!SoundsMuted)
+        {
+            flashlightSoundPlayer.Play();
+        }
+    }
+
+    public void PlayToggleSound()
+    {
+        if (!SoundsMuted)
+        {
+            toggleSoundPlayer.Play();
         }
     }
 

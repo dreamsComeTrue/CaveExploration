@@ -4,12 +4,14 @@ using System;
 public class FlashLight : SpotLight
 {
     public static int DEFAULT_MAX_LIGHTBARS = 24;
-    
+
     private MeshInstance mesh;
 
     private Timer timer;
 
     private Signals signals;
+
+    private AudioManager audioManager;
 
     private int currentLightBars = DEFAULT_MAX_LIGHTBARS;
 
@@ -17,16 +19,18 @@ public class FlashLight : SpotLight
     {
         signals = (Signals)GetNode("/root/Signals");
         signals.Connect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
-        
+
         mesh = GetParent().GetNode<MeshInstance>("Mesh");
         timer = GetNode<Timer>("FlashLightTimer");
+
+        audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
-    
+
     private void OnMapGenerated()
     {
         currentLightBars = DEFAULT_MAX_LIGHTBARS;
         timer.Start(4.0f);
-        
+
         signals.EmitSignal(nameof(Signals.LightBarsChanged), currentLightBars);
     }
 
@@ -38,7 +42,8 @@ public class FlashLight : SpotLight
         (mesh.GetSurfaceMaterial(1) as SpatialMaterial).FlagsDisableAmbientLight = !this.Visible;
 
         timer.Paused = !this.Visible;
-        
+
+        audioManager.PlayFlashlightSound();
         signals.EmitSignal(nameof(Signals.FlashLightToggled), this.Visible);
     }
 

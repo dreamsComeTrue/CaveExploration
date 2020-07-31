@@ -19,6 +19,8 @@ public class GameUI : Control
     private Control overlays;
     private Control uiElements;
 
+    private NinePatchRect keysInfoFrame;
+
     private AudioManager audioManager;
 
     public bool enabled = false;
@@ -33,6 +35,7 @@ public class GameUI : Control
         countdownLabel = GetNode<Label>("CanvasLayer/UIElements/Countdown/CountdownTimer");
         inventoryItem1 = GetNode<InventoryItem>("CanvasLayer/UIElements/InventoryItem1");
         inventoryItem2 = GetNode<InventoryItem>("CanvasLayer/UIElements/InventoryItem2");
+        keysInfoFrame = GetNode<NinePatchRect>("CanvasLayer/UIElements/KeysInfoRect");
         uiElements = GetNode<Control>("CanvasLayer/UIElements");
 
         overlays = GetTree().Root.GetNode<Control>("Gameplay/GameUI/CanvasLayer/Overlays");
@@ -67,14 +70,22 @@ public class GameUI : Control
 
                 case KeyList.M:
                     miniMapTexture.Visible = !miniMapTexture.Visible;
+                    audioManager.PlayToggleSound();
+                    break;
+
+                case KeyList.I:
+                    keysInfoFrame.Visible = !keysInfoFrame.Visible;
+                    audioManager.PlayToggleSound();
                     break;
 
                 case KeyList.Key1:
                     FocusInventoryItem(inventoryItem1);
+                    audioManager.PlayToggleSound();
                     break;
 
                 case KeyList.Key2:
                     FocusInventoryItem(inventoryItem2);
+                    audioManager.PlayToggleSound();
                     break;
             }
         }

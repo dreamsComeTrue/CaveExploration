@@ -298,6 +298,11 @@ public class MainMenuUI : Control
         }
     }
 
+    public void _on_PlayerNameLineEdit_focus_entered()
+    {
+        OnUnFocusButton();
+    }
+
     private void PlayMenuFocusOptionSound()
     {
         if (selectedButton != null)
