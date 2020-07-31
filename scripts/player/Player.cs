@@ -24,6 +24,7 @@ public class Player : KinematicBody
 
     private Tween cameraMovemenetTween;
     private Camera gameplayCamera;
+    private Label nameOverlay;
     private Vector3 cameraPlayerOffset = new Vector3(0, 1.5f, 1.5f);
 
     public override void _Ready()
@@ -38,6 +39,7 @@ public class Player : KinematicBody
         signals.Connect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
 
         gameplayCamera = GetTree().Root.GetNode<Camera>("Gameplay/ViewportContainer/Viewport/GameplayCamera");
+        nameOverlay = GetTree().Root.GetNode<Label>("Gameplay/GameUI/CanvasLayer/Overlays/PlayerNameLabel");
         cameraMovemenetTween = new Tween();
         AddChild(cameraMovemenetTween);
     }
@@ -53,6 +55,7 @@ public class Player : KinematicBody
         Translation = newTranslation;
 
         gameplayCamera.Translation = Translation + cameraPlayerOffset;
+        UpdateNameOverlay();
 
         signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
     }
@@ -84,8 +87,17 @@ public class Player : KinematicBody
             footStepsParticles.Emitting = false;
         }
 
+        UpdateNameOverlay();
+
         UpdateMeshFloat(delta);
         FaceMeshToDirection(delta);
+    }
+    private void UpdateNameOverlay()
+    {
+        Vector2 pos = gameplayCamera.UnprojectPosition(this.Translation);
+        pos.y -= 80;
+
+        nameOverlay.SetPosition(pos - nameOverlay.RectSize / 2);
     }
 
     private bool inMovement = false;

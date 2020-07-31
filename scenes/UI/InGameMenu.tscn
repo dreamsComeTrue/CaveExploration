@@ -57,14 +57,32 @@ tracks/3/keys = {
 "update": 0,
 "values": [ Vector2( 497, -30 ), Vector2( 497, 30 ) ]
 }
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.03 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "SlideFunction"
+}, {
+"args": [  ],
+"method": "SlideFunction"
+} ]
+}
 
 [sub_resource type="DynamicFont" id=2]
 size = 66
 outline_size = 1
-outline_color = Color( 0.264359, 0.811203, 0.902344, 1 )
+outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
 font_data = ExtResource( 4 )
 
 [node name="InGameMenu" type="Control"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -74,6 +92,7 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -1.0
@@ -96,6 +115,7 @@ margin_left = -165.0
 margin_top = -125.0
 margin_right = 165.0
 margin_bottom = 125.0
+rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
 texture = ExtResource( 3 )
@@ -200,12 +220,15 @@ anims/slide = SubResource( 1 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -103.0
-margin_top = 30.0
+margin_top = -30.0
 margin_right = 103.0
-margin_bottom = 68.0
+margin_bottom = 8.0
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
 text = "UNHIDDEN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonResume" to="." method="_on_MenuButtonResume_pressed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonQuit" to="." method="_on_MenuButtonQuit_pressed"]
 
