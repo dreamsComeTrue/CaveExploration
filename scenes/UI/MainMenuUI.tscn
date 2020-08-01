@@ -1,0 +1,267 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scenes/UI/MenuButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/ui/MainMenuUI.cs" type="Script" id=2]
+[ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=3]
+[ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://gfx/ui/frame_blue_single.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.101961, 0.0941176, 0.192157, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.101961, 0.0941176, 0.192157, 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 30
+font_data = ExtResource( 4 )
+
+[sub_resource type="Animation" id=1]
+resource_name = "slide"
+length = 0.2
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.01, 0.02 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("UIFrame:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("TitleLabel:rect_position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 497, -30 ), Vector2( 497, 30 ) ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.03 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "SlideFunction"
+}, {
+"args": [  ],
+"method": "SlideFunction"
+} ]
+}
+
+[sub_resource type="DynamicFont" id=2]
+size = 66
+outline_size = 1
+outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=6]
+font_data = ExtResource( 4 )
+
+[node name="MainMenuUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -0.206299
+margin_right = -1.0
+margin_bottom = -0.206299
+mouse_filter = 1
+color = Color( 0, 0, 0, 0.901961 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UIFrame" type="NinePatchRect" parent="."]
+self_modulate = Color( 0.631373, 0.631373, 0.631373, 1 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -164.591
+margin_top = -125.198
+margin_right = 165.409
+margin_bottom = 124.802
+rect_pivot_offset = Vector2( 165, 125 )
+mouse_filter = 1
+texture = ExtResource( 3 )
+draw_center = false
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="UIFrame"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.420441
+margin_bottom = -0.420441
+mouse_filter = 2
+color = Color( 0.101961, 0.0941176, 0.192157, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIFrame"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -69.882
+margin_right = 120.0
+margin_bottom = 118.118
+custom_constants/separation = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerNameRect" type="NinePatchRect" parent="UIFrame/VBoxContainer"]
+margin_right = 240.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 0, 38 )
+texture = ExtResource( 5 )
+patch_margin_left = 8
+patch_margin_top = 7
+patch_margin_right = 7
+patch_margin_bottom = 8
+
+[node name="PlayerNameLineEdit" type="LineEdit" parent="UIFrame/VBoxContainer/PlayerNameRect"]
+show_behind_parent = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -114.0
+margin_top = -17.0
+margin_right = 117.0
+margin_bottom = 19.0
+focus_next = NodePath("../../MenuButtonOptions")
+focus_previous = NodePath("../../MenuButtonPlay")
+custom_styles/focus = SubResource( 5 )
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
+clear_button_enabled = true
+placeholder_text = "Enter name here..."
+placeholder_alpha = 0.4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtonOptions" parent="UIFrame/VBoxContainer" groups=[
+"InGameMenuButton",
+] instance=ExtResource( 1 )]
+margin_top = 53.0
+margin_bottom = 93.0
+focus_next = NodePath("../MenuButtonPlay")
+focus_previous = NodePath("../PlayerNameRect/PlayerNameLineEdit")
+
+[node name="Label" parent="UIFrame/VBoxContainer/MenuButtonOptions" index="2"]
+margin_left = -59.5
+margin_top = -13.0
+margin_right = 59.5
+margin_bottom = 13.0
+text = "Options"
+
+[node name="MenuButtonPlay" parent="UIFrame/VBoxContainer" groups=[
+"InGameMenuButton",
+] instance=ExtResource( 1 )]
+modulate = Color( 1.6, 1.6, 1.6, 1 )
+margin_top = 108.0
+margin_bottom = 148.0
+focus_next = NodePath("../PlayerNameRect/PlayerNameLineEdit")
+focus_previous = NodePath("../MenuButtonOptions")
+
+[node name="Label" parent="UIFrame/VBoxContainer/MenuButtonPlay" index="2"]
+margin_left = -85.0
+margin_top = -13.0
+margin_right = 85.0
+margin_bottom = 13.0
+align = 1
+valign = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/slide = SubResource( 1 )
+
+[node name="TitleLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -103.0
+margin_top = 30.0
+margin_right = 103.0
+margin_bottom = 68.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
+text = "UNHIDDEN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CompanyLabel" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = -14.0
+margin_right = 128.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0.490196, 0.490196, 0.490196, 1 )
+text = "AGADO Studio | v.0.1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="text_entered" from="UIFrame/VBoxContainer/PlayerNameRect/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_text_entered"]
+[connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonPlay" to="." method="_on_MenuButtonPlay_pressed"]
+
+[editable path="UIFrame/VBoxContainer/MenuButtonOptions"]
+
+[editable path="UIFrame/VBoxContainer/MenuButtonPlay"]
