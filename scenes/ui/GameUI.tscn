@@ -4,14 +4,14 @@
 [ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=2]
 [ext_resource path="res://gfx/ui/flash_light.png" type="Texture" id=3]
 [ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://scenes/UI/InGameMenu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/ui/InGameMenu.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/ui/GameUI.cs" type="Script" id=6]
 [ext_resource path="res://scripts/ui/MinimapCanvas.cs" type="Script" id=7]
 [ext_resource path="res://gfx/ui/light_bar_frame.png" type="Texture" id=8]
-[ext_resource path="res://scenes/UI/InventoryItem.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scenes/ui/InventoryItem.tscn" type="PackedScene" id=9]
 [ext_resource path="res://gfx/ui/numbers_line.png" type="Texture" id=10]
 
-[sub_resource type="Shader" id=9]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform float size_x = 0.003;
@@ -24,12 +24,12 @@ void fragment() {
 	COLOR.rgba = textureLod(SCREEN_TEXTURE, uv, 0.0).rgba;
 }"
 
-[sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 9 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/size_x = 0.003
 shader_param/size_y = 0.003
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
 
 uniform float discard_offset = 0.0;
@@ -41,26 +41,26 @@ void fragment() {
 	}
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 shader_param/discard_offset = 0.0
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 256, 128 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=6]
 size = 24
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=7]
 size = 60
 outline_size = 1
 outline_color = Color( 0.0980392, 0.305882, 0.862745, 1 )
 use_mipmaps = true
 font_data = ExtResource( 4 )
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=8]
 length = 1.5
 loop = true
 tracks/0/type = "value"
@@ -76,11 +76,11 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.92, 0.92 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 10 )
 region = Rect2( 8, 0, 7, 10 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 10 )
 region = Rect2( 16, 0, 7, 10 )
 
@@ -101,7 +101,7 @@ __meta__ = {
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-material = SubResource( 10 )
+material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -2.0
@@ -126,7 +126,7 @@ __meta__ = {
 
 [node name="FlashLightTexture" type="TextureRect" parent="CanvasLayer/FlashLightTextureFrame"]
 show_behind_parent = true
-material = SubResource( 2 )
+material = SubResource( 4 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 1 )
@@ -172,7 +172,7 @@ anchor_left = 0.653333
 anchor_top = 0.0422222
 anchor_right = 0.697278
 anchor_bottom = 0.117223
-texture = SubResource( 3 )
+texture = SubResource( 5 )
 expand = true
 stretch_mode = 6
 __meta__ = {
@@ -185,7 +185,7 @@ anchor_left = 0.87207
 anchor_top = 0.9717
 anchor_right = 0.996094
 anchor_bottom = 0.995034
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0.65098, 0.65098, 0.65098, 1 )
 text = "PING: 0ms"
 align = 2
@@ -215,7 +215,7 @@ margin_top = -17.5
 margin_right = 70.5
 margin_bottom = 17.5
 rect_pivot_offset = Vector2( 70, 17 )
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 1, 1, 1 )
 text = "03:00"
 align = 1
@@ -226,7 +226,7 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Countdown/CountdownTimer"]
 autoplay = "pulsate"
-anims/pulsate = SubResource( 6 )
+anims/pulsate = SubResource( 8 )
 
 [node name="InventoryItem1" parent="CanvasLayer" instance=ExtResource( 9 )]
 margin_left = 51.9137
@@ -239,7 +239,7 @@ margin_left = 35.8806
 margin_top = 294.234
 margin_right = 49.8806
 margin_bottom = 315.234
-texture = SubResource( 7 )
+texture = SubResource( 9 )
 expand = true
 stretch_mode = 6
 __meta__ = {
@@ -257,7 +257,7 @@ margin_left = 35.8806
 margin_top = 380.006
 margin_right = 49.8806
 margin_bottom = 401.006
-texture = SubResource( 8 )
+texture = SubResource( 10 )
 expand = true
 stretch_mode = 6
 __meta__ = {
@@ -287,7 +287,8 @@ margin_top = 289.5
 margin_right = 704.0
 margin_bottom = 345.5
 custom_fonts/font = SubResource( 11 )
-text = "Player"
+text = "
+"
 align = 1
 valign = 1
 autowrap = true

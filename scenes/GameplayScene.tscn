@@ -1,14 +1,14 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/UI/GameUI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ui/GameUI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/CaveGeneratorNode.cs" type="Script" id=5]
 
-[sub_resource type="ProceduralSky" id=5]
+[sub_resource type="ProceduralSky" id=1]
 
-[sub_resource type="Environment" id=6]
+[sub_resource type="Environment" id=2]
 background_mode = 4
-background_sky = SubResource( 5 )
+background_sky = SubResource( 1 )
 background_sky_custom_fov = 79.7
 background_color = Color( 0.0431373, 0.164706, 0.337255, 1 )
 background_energy = 0.0
@@ -50,7 +50,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.218, 0 )
 script = ExtResource( 5 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="ViewportContainer/Viewport"]
-environment = SubResource( 6 )
+environment = SubResource( 2 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 1.5, 0 )

@@ -13,6 +13,8 @@ public class InGameMenu : Control
 	private MenuButton selectedButton;
 	
 	private Control overlays;
+	
+	private ScenesFadeTransition scenesFadeTransition;
 
 	public override void _Ready()
 	{
@@ -26,6 +28,8 @@ public class InGameMenu : Control
 		overlays = GetTree().Root.GetNode<Control>("Gameplay/GameUI/CanvasLayer/Overlays");
 
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+		
+		scenesFadeTransition = (ScenesFadeTransition)GetNode("/root/ScenesFadeTransition");
 
 		signals = (Signals)GetNode("/root/Signals");
 		signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
@@ -141,7 +145,7 @@ public class InGameMenu : Control
 				}
 				else if (selectedButton == buttonLeave)
 				{
-					_on_MenuButtonResume_pressed();
+					_on_MenuButtonLeave_pressed();
 				}
 				else if (selectedButton == buttonQuit)
 				{
@@ -167,6 +171,11 @@ public class InGameMenu : Control
 	private void _on_MenuButtonResume_pressed()
 	{
 		HideInGameMenu();
+	}
+	
+	private void _on_MenuButtonLeave_pressed()
+	{
+		scenesFadeTransition.Run("res://scenes/ui/MainMenuUI.tscn");
 	}
 
 	private void _on_MenuButtonQuit_pressed()

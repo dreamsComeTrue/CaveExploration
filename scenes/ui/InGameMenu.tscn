@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scenes/UI/MenuButton.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/ui/InGameMenu.cs" type="Script" id=2]
+[ext_resource path="res://scripts/ui/InGameMenu.cs" type="Script" id=1]
+[ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=3]
-[ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://scenes/ui/MenuButton.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Animation" id=1]
 resource_name = "slide"
@@ -79,26 +79,24 @@ tracks/4/keys = {
 size = 66
 outline_size = 1
 outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
-font_data = ExtResource( 4 )
+font_data = ExtResource( 2 )
 
 [node name="InGameMenu" type="Control"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect" type="ColorRect" parent="."]
-modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1.0
-margin_top = -1.0
-margin_right = -1.0
-margin_bottom = -1.0
+margin_left = -0.369995
+margin_top = -1.62994
+margin_right = -0.369995
+margin_bottom = -1.62994
 mouse_filter = 1
 color = Color( 0, 0, 0, 0.901961 )
 __meta__ = {
@@ -115,7 +113,6 @@ margin_left = -165.0
 margin_top = -125.0
 margin_right = 165.0
 margin_bottom = 125.0
-rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
 texture = ExtResource( 3 )
@@ -144,7 +141,7 @@ __meta__ = {
 
 [node name="MenuButtonResume" parent="UIFrame/VBoxContainer" groups=[
 "InGameMenuButton",
-] instance=ExtResource( 1 )]
+] instance=ExtResource( 4 )]
 focus_next = NodePath("../MenuButtonOptions")
 focus_previous = NodePath("../MenuButtonQuit")
 
@@ -157,7 +154,7 @@ text = "Resume Game"
 
 [node name="MenuButtonOptions" parent="UIFrame/VBoxContainer" groups=[
 "InGameMenuButton",
-] instance=ExtResource( 1 )]
+] instance=ExtResource( 4 )]
 margin_top = 55.0
 margin_bottom = 95.0
 focus_next = NodePath("../MenuButtonLeave")
@@ -172,7 +169,7 @@ text = "Options"
 
 [node name="MenuButtonLeave" parent="UIFrame/VBoxContainer" groups=[
 "InGameMenuButton",
-] instance=ExtResource( 1 )]
+] instance=ExtResource( 4 )]
 margin_top = 110.0
 margin_bottom = 150.0
 focus_next = NodePath("../MenuButtonQuit")
@@ -183,11 +180,12 @@ margin_left = -85.0
 margin_top = -11.0
 margin_right = 85.0
 margin_bottom = 15.0
-text = "Disconnect"
+text = "Leave"
+align = 1
 
 [node name="MenuButtonQuit" parent="UIFrame/VBoxContainer" groups=[
 "InGameMenuButton",
-] instance=ExtResource( 1 )]
+] instance=ExtResource( 4 )]
 margin_top = 165.0
 margin_bottom = 205.0
 focus_next = NodePath("../MenuButtonResume")
@@ -220,9 +218,9 @@ anims/slide = SubResource( 1 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -103.0
-margin_top = -30.0
+margin_top = 30.0
 margin_right = 103.0
-margin_bottom = 8.0
+margin_bottom = 68.0
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
 text = "UNHIDDEN"
@@ -230,6 +228,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonResume" to="." method="_on_MenuButtonResume_pressed"]
+[connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonLeave" to="." method="_on_MenuButtonLeave_pressed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonQuit" to="." method="_on_MenuButtonQuit_pressed"]
 
 [editable path="UIFrame/VBoxContainer/MenuButtonResume"]
