@@ -10,7 +10,6 @@ public class ScenesFadeTransition : CanvasLayer
     public void Init()
     {
         currentScene = GetTree().Root.GetChild(GetTree().Root.GetChildCount() - 1);
-        GD.Print(currentScene.Name);
     }
 
     public void ChangeScenes()
