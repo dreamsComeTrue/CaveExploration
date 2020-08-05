@@ -31,7 +31,7 @@ public class GameUI : Control
 
 		signals = (Signals)GetNode("/root/Signals");
 		signals.Connect(nameof(Signals.PulseGameplayTimer), this, nameof(OnPulseGameplayTimer));
-		signals.Connect(nameof(Signals.LightBarsChanged), this, nameof(OnUpdateFlashLightBars));
+		signals.Connect(nameof(Signals.LightBarsChanged), this, nameof(OnLightBarsChanged));
 		signals.Connect(nameof(Signals.FlashLightToggled), this, nameof(OnFlashLightToggled));
 	}
 
@@ -76,8 +76,9 @@ public class GameUI : Control
 		}
 	}
 
-	public void OnUpdateFlashLightBars(int barsLeft)
+	public void OnLightBarsChanged(int barsLeft)
 	{
+		GD.Print(barsLeft);
 		float sizeX = flashLightTexture.RectSize.x - 7;
 		float barSize = (sizeX / 24) / sizeX;
 

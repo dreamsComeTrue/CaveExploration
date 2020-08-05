@@ -3,19 +3,31 @@ using System;
 
 public class FlashLight : SpotLight
 {
+    public static int DEFAULT_MAX_LIGHTBARS = 24;
+    
     private MeshInstance mesh;
 
     private Timer timer;
 
     private Signals signals;
 
-    private int currentLightBars = 24;
+    private int currentLightBars = DEFAULT_MAX_LIGHTBARS;
 
     public override void _Ready()
     {
         signals = (Signals)GetNode("/root/Signals");
+        signals.Connect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
+        
         mesh = GetParent().GetNode<MeshInstance>("Mesh");
         timer = GetNode<Timer>("FlashLightTimer");
+    }
+    
+    private void OnMapGenerated()
+    {
+        currentLightBars = DEFAULT_MAX_LIGHTBARS;
+        timer.Start(4.0f);
+        
+        signals.EmitSignal(nameof(Signals.LightBarsChanged), currentLightBars);
     }
 
     private void ToggleFlashlight()

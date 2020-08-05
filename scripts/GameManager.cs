@@ -2,16 +2,23 @@ using Godot;
 
 public class GameManager : Node
 {
+    public static float DEFAULT_LEVEL_TIME = 3 * 60.0f;
     private Signals signals;
 
     public const float timeThresholdWarning = 10.0f;
 
-    public float timeLeft = 3 * 60.0f;
+    public float timeLeft = DEFAULT_LEVEL_TIME;
     private float timeAccumulator = 0.0f;
 
     public override void _Ready()
     {
         signals = (Signals)GetNode("/root/Signals");
+        signals.Connect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
+    }
+
+    private void OnMapGenerated()
+    {
+        ResetGameTime();
     }
 
     public override void _Process(float delta)
@@ -41,5 +48,11 @@ public class GameManager : Node
         {
             OS.WindowFullscreen = !OS.WindowFullscreen;
         }
+    }
+
+    public void ResetGameTime()
+    {
+        timeAccumulator = 0.0f;
+        timeLeft = DEFAULT_LEVEL_TIME;
     }
 }
