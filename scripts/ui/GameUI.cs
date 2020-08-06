@@ -78,7 +78,6 @@ public class GameUI : Control
 
 	public void OnLightBarsChanged(int barsLeft)
 	{
-		GD.Print(barsLeft);
 		float sizeX = flashLightTexture.RectSize.x - 7;
 		float barSize = (sizeX / 24) / sizeX;
 

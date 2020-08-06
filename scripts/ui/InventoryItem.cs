@@ -35,7 +35,7 @@ public class InventoryItem : NinePatchRect
     public void UnFocusInventoryItem()
     {
         animationPlayer.Stop(true);
-        animationPlayer.Seek(0.0f, true);
+
         SelfModulate = new Color(1.0f, 1.0f, 1.0f, 100.0f / 255.0f);
     }
 }

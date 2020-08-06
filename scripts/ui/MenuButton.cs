@@ -47,7 +47,6 @@ public class MenuButton : TextureButton
     public void UnfocusButton(bool overrideModulate = false)
     {
         pulsateAnimationPlayer.Stop(true);
-        pulsateAnimationPlayer.Seek(0, true);
 
         if (!overrideModulate)
         {
