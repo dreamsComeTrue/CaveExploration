@@ -154,6 +154,9 @@ public class MainMenuUI : Control
     {
         if (!buttonPlay.Disabled)
         {
+            GameManager gameManager = (GameManager)GetNode("/root/GameManager");            
+            gameManager.PlayerName = nameLineEdit.Text;
+            
             scenesFadeTransition.Run("res://scenes/GameplayScene.tscn");
         }
     }

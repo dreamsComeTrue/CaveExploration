@@ -9,6 +9,8 @@ public class GameManager : Node
 
     public float timeLeft = DEFAULT_LEVEL_TIME;
     private float timeAccumulator = 0.0f;
+    
+    public string PlayerName;
 
     public override void _Ready()
     {

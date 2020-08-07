@@ -55,11 +55,15 @@ public class Player : KinematicBody
         Translation = newTranslation;
 
         gameplayCamera.Translation = Translation + cameraPlayerOffset;
+        
+        GameManager gameManager = (GameManager)GetNode("/root/GameManager");    
+        nameOverlay.Text = gameManager.PlayerName;
+        
         UpdateNameOverlay();
 
         signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
     }
-
+    
     public override void _Process(float delta)
     {
         movementDirection = Vector3.Zero;
