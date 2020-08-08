@@ -9,6 +9,7 @@ public class MainMenuUI : Control
     private Signals signals;
 
     private LineEdit nameLineEdit;
+    AnimationPlayer nameLineAnimationPlayer;
     private MenuButton buttonPlay;
     private MenuButton buttonOptions;
     private MenuButton buttonExit;
@@ -19,7 +20,8 @@ public class MainMenuUI : Control
     {
         Visible = false;
 
-        nameLineEdit = GetNode<LineEdit>("UIFrame/VBoxContainer/PlayerNameRect/PlayerNameLineEdit");
+        nameLineEdit = GetNode<LineEdit>("UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit");
+        nameLineAnimationPlayer = GetNode<AnimationPlayer>("UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameRect/AnimationPlayer");
         buttonPlay = GetNode<MenuButton>("UIFrame/VBoxContainer/MenuButtonPlay");
         buttonOptions = GetNode<MenuButton>("UIFrame/VBoxContainerBottom/MenuButtonOptions");
         buttonExit = GetNode<MenuButton>("UIFrame/VBoxContainerBottom/MenuButtonExit");
@@ -34,9 +36,10 @@ public class MainMenuUI : Control
 
         ToggleVisibility();
 
-        nameLineEdit.GrabFocus();
         FocusButton(null);
+        GrabNameEditFocus();
         _on_PlayerNameLineEdit_text_changed(nameLineEdit.Text);
+        nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
     }
 
     public void ToggleVisibility()
@@ -56,13 +59,13 @@ public class MainMenuUI : Control
             {
                 if (selectedButton == null)
                 {
-                    nameLineEdit.GrabFocus();
                     FocusButton(null);
+                    GrabNameEditFocus();
                 }
                 else if (selectedButton == buttonPlay)
                 {
-                    nameLineEdit.GrabFocus();
                     FocusButton(null);
+                    GrabNameEditFocus();
                 }
                 else if (selectedButton == buttonOptions)
                 {
@@ -72,8 +75,8 @@ public class MainMenuUI : Control
                     }
                     else
                     {
-                        nameLineEdit.GrabFocus();
                         FocusButton(null);
+                        GrabNameEditFocus();
                     }
                 }
                 else if (selectedButton == buttonExit)
@@ -86,6 +89,7 @@ public class MainMenuUI : Control
                 if (selectedButton == null)
                 {
                     FocusButton(null);
+                    GrabNameEditFocus();
                 }
                 else if (selectedButton == buttonPlay)
                 {
@@ -97,8 +101,8 @@ public class MainMenuUI : Control
                 }
                 else if (selectedButton == buttonExit)
                 {
-                    nameLineEdit.GrabFocus();
                     FocusButton(null);
+                    GrabNameEditFocus();
                 }
             }
         }
@@ -137,8 +141,22 @@ public class MainMenuUI : Control
         }
     }
 
+    private void GrabNameEditFocus()
+    {
+        nameLineEdit.GrabFocus();
+        nameLineAnimationPlayer.Play("pulsate");
+        nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
+    }
+
+    private void UnfocusNameEdit()
+    {
+        nameLineEdit.ReleaseFocus();
+        nameLineAnimationPlayer.Stop(true);
+    }
+
     public void FocusButton(MenuButton button)
     {
+        UnfocusNameEdit();
         selectedButton?.UnfocusButton();
         selectedButton = button;
         selectedButton?.FocusButton();
@@ -154,9 +172,9 @@ public class MainMenuUI : Control
     {
         if (!buttonPlay.Disabled)
         {
-            GameManager gameManager = (GameManager)GetNode("/root/GameManager");            
+            GameManager gameManager = (GameManager)GetNode("/root/GameManager");
             gameManager.PlayerName = nameLineEdit.Text;
-            
+
             scenesFadeTransition.Run("res://scenes/GameplayScene.tscn");
         }
     }
@@ -182,6 +200,7 @@ public class MainMenuUI : Control
                 if ((KeyList)keyEvent.Scancode == KeyList.Down)
                 {
                     nameLineEdit.ReleaseFocus();
+                    nameLineAnimationPlayer.Stop(true);
 
                     if (nameLineEdit.Text != "")
                     {
@@ -197,6 +216,8 @@ public class MainMenuUI : Control
                 else if ((KeyList)keyEvent.Scancode == KeyList.Up)
                 {
                     nameLineEdit.ReleaseFocus();
+                    nameLineAnimationPlayer.Stop(true);
+
                     FocusButton(buttonExit);
                     GetTree().SetInputAsHandled();
                 }
