@@ -55,15 +55,15 @@ public class Player : KinematicBody
         Translation = newTranslation;
 
         gameplayCamera.Translation = Translation + cameraPlayerOffset;
-        
-        GameManager gameManager = (GameManager)GetNode("/root/GameManager");    
+
+        GameManager gameManager = (GameManager)GetNode("/root/GameManager");
         nameOverlay.Text = gameManager.PlayerName;
-        
+
         UpdateNameOverlay();
 
         signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
     }
-    
+
     public override void _Process(float delta)
     {
         movementDirection = Vector3.Zero;
@@ -134,6 +134,16 @@ public class Player : KinematicBody
             movementDirection.x += 1.0f;
             inMovement = true;
         }
+
+        // bool[] _inputs = new bool[]
+        // {
+        // 	Input.GetKey(KeyCode.W),
+        // 	Input.GetKey(KeyCode.S),
+        // 	Input.GetKey(KeyCode.A),
+        // 	Input.GetKey(KeyCode.D),
+        // };
+
+        // ClientSend.PlayerMovement(_inputs);
     }
 
     private void OnInGameMenuVisibilityChanged(bool visible)

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>Unhidden</RootNamespace>
-    <DefaultItemExcludes>GameServer/**;scripts/network/**</DefaultItemExcludes>
+    <DefaultItemExcludes>GameServer/**;</DefaultItemExcludes>
   </PropertyGroup>
 
 </Project>

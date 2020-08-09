@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public class GameManager : Node
@@ -9,7 +10,7 @@ public class GameManager : Node
 
     public float timeLeft = DEFAULT_LEVEL_TIME;
     private float timeAccumulator = 0.0f;
-    
+
     public string PlayerName;
 
     public override void _Ready()
@@ -57,4 +58,31 @@ public class GameManager : Node
         timeAccumulator = 0.0f;
         timeLeft = DEFAULT_LEVEL_TIME;
     }
+
+    public static Dictionary<int, Player> players = new Dictionary<int, Player>();
+
+    // public void SpawnPlayer(int id, string userName, Vector3 position, Quaternion rotation)
+    // {
+    //     GameObject player;
+
+    //     if (id == NetworkClient.Instance.id)
+    //     {
+    //         player = Instantiate(localPlayerPrefab, position, rotation);
+    //     }
+    //     else
+    //     {
+    //         Debug.Log($"Spawn at: {position}");
+    //         player = Instantiate(playerPrefab, position, rotation);
+    //     }
+
+    //     PlayerManager playerManager = player.GetComponent<PlayerManager>();
+
+    //     playerManager.id = id;
+    //     playerManager.userName = userName;
+    //     playerManager.characterController = player.GetComponent<CharacterController>();
+    //     playerManager.playerMesh = player.transform.GetChild(0).gameObject;
+    //     playerManager.playerObject = player;
+
+    //     players.Add(id, playerManager);
+    // }
 }
