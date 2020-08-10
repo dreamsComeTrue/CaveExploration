@@ -55,7 +55,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 497, -30 ), Vector2( 497, 30 ) ]
+"values": [ Vector2( 448, -50 ), Vector2( 448, 40 ) ]
 }
 tracks/4/type = "method"
 tracks/4/path = NodePath(".")
@@ -76,12 +76,13 @@ tracks/4/keys = {
 }
 
 [sub_resource type="DynamicFont" id=2]
-size = 66
+size = 100
 outline_size = 1
 outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
 font_data = ExtResource( 2 )
 
 [node name="InGameMenu" type="Control"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -91,6 +92,7 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -0.369995
@@ -113,6 +115,7 @@ margin_left = -165.0
 margin_top = -125.0
 margin_right = 165.0
 margin_bottom = 125.0
+rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
 texture = ExtResource( 3 )
@@ -217,10 +220,10 @@ anims/slide = SubResource( 1 )
 [node name="TitleLabel" type="Label" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -103.0
-margin_top = 30.0
-margin_right = 103.0
-margin_bottom = 68.0
+margin_left = -152.0
+margin_top = -50.0
+margin_right = 152.0
+margin_bottom = 7.0
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
 text = "UNHIDDEN"

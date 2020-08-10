@@ -4,7 +4,7 @@ using System;
 public class ScenesFadeTransition : CanvasLayer
 {
     public String newScene;
-    
+
     private Node currentScene;
 
     public void Init()
@@ -18,14 +18,14 @@ public class ScenesFadeTransition : CanvasLayer
         {
             currentScene.QueueFree();
         }
-        
+
         GetTree().ChangeScene(newScene);
     }
-    
+
     public void Run(string newScenePath)
     {
         newScene = newScenePath;
-        
+
         GetNode<AnimationPlayer>("AnimationPlayer").Play("fade");
     }
 
