@@ -27,6 +27,8 @@ public class Player : KinematicBody
     private Label nameOverlay;
     private Vector3 cameraPlayerOffset = new Vector3(0, 1.5f, 1.5f);
 
+    private AudioStreamPlayer3D footStepsAudio;
+
     public override void _Ready()
     {
         signals = (Signals)GetNode("/root/Signals");
@@ -40,6 +42,7 @@ public class Player : KinematicBody
 
         gameplayCamera = GetTree().Root.GetNode<Camera>("Gameplay/ViewportContainer/Viewport/GameplayCamera");
         nameOverlay = GetTree().Root.GetNode<Label>("Gameplay/GameUI/CanvasLayer/Overlays/PlayerNameLabel");
+        footStepsAudio = GetNode<AudioStreamPlayer3D>("FootStepsAudioStreamPlayer3D");
         cameraMovemenetTween = new Tween();
         AddChild(cameraMovemenetTween);
     }
@@ -78,17 +81,26 @@ public class Player : KinematicBody
 
         this.MoveAndCollide(movementDirection.Normalized() * delta * moveSpeed);
 
-        if (!movementDirection.IsEqualApprox(Vector3.Zero))
+        bool movedThisFrame = !movementDirection.IsEqualApprox(Vector3.Zero);
+
+        if (movedThisFrame)
         {
             signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
-            footStepsParticles.Emitting = true;
 
             cameraMovemenetTween.InterpolateProperty(gameplayCamera, "translation", gameplayCamera.Translation, this.Translation + cameraPlayerOffset, 0.1f, 0, 0);
             cameraMovemenetTween.Start();
         }
-        else
+
+        footStepsParticles.Emitting = movedThisFrame;
+
+        if (!footStepsAudio.Playing)
         {
-            footStepsParticles.Emitting = false;
+            footStepsAudio.Playing = movedThisFrame;
+        }
+        
+        if (!movedThisFrame)
+        {
+            footStepsAudio.Playing = false;
         }
 
         UpdateNameOverlay();
@@ -157,7 +169,7 @@ public class Player : KinematicBody
 
         if (inMovement)
         {
-            floatFrequency *= 1.5f;
+            floatFrequency *= 2.0f;
         }
 
         mesh.Translation = objectFloater.CalculateMeshFloat(delta, mesh.Translation, floatFrequency);

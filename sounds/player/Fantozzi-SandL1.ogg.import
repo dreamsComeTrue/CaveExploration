@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Fantozzi-SandL1.ogg-986d83a79e0339d1b83f167aa43b001c.oggstr"
+
+[deps]
+
+source_file="res://sounds/player/Fantozzi-SandL1.ogg"
+dest_files=[ "res://.import/Fantozzi-SandL1.ogg-986d83a79e0339d1b83f167aa43b001c.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

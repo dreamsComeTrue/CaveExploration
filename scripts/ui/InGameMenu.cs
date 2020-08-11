@@ -123,8 +123,9 @@ public class InGameMenu : Control
             }
         }
 
+        KeyList key = (KeyList)@event.Scancode;
 
-        if ((KeyList)@event.Scancode == KeyList.Enter)
+        if (key == KeyList.Enter || key == KeyList.KpEnter)
         {
             if (@event.Pressed)
             {

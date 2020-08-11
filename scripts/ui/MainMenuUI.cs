@@ -107,7 +107,9 @@ public class MainMenuUI : Control
             }
         }
 
-        if ((KeyList)@event.Scancode == KeyList.Enter)
+        KeyList key = (KeyList)@event.Scancode;
+
+        if (key == KeyList.Enter || key == KeyList.KpEnter)
         {
             if (@event.Pressed)
             {
@@ -194,10 +196,11 @@ public class MainMenuUI : Control
         if (@event is InputEventKey)
         {
             InputEventKey keyEvent = (@event as InputEventKey);
+            KeyList key = (KeyList)keyEvent.Scancode;
 
             if (keyEvent.Pressed)
             {
-                if ((KeyList)keyEvent.Scancode == KeyList.Down)
+                if (key == KeyList.Down)
                 {
                     nameLineEdit.ReleaseFocus();
                     nameLineAnimationPlayer.Stop(true);
@@ -213,7 +216,7 @@ public class MainMenuUI : Control
 
                     GetTree().SetInputAsHandled();
                 }
-                else if ((KeyList)keyEvent.Scancode == KeyList.Up)
+                else if (key == KeyList.Up)
                 {
                     nameLineEdit.ReleaseFocus();
                     nameLineAnimationPlayer.Stop(true);
@@ -222,14 +225,14 @@ public class MainMenuUI : Control
                     GetTree().SetInputAsHandled();
                 }
 
-                if ((KeyList)keyEvent.Scancode == KeyList.Enter)
+                if (key == KeyList.Enter || key == KeyList.KpEnter)
                 {
                     buttonPlay._on_MenuButton_button_down();
                 }
             }
             else
             {
-                if ((KeyList)keyEvent.Scancode == KeyList.Enter && !buttonPlay.Disabled)
+                if ((key == KeyList.Enter || key == KeyList.KpEnter) && !buttonPlay.Disabled)
                 {
                     _on_MenuButtonPlay_pressed();
                 }
