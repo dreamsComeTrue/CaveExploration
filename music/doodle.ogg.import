@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/doodle.ogg-6bb5bde20cb2ea8c9d5d69a4c783a600.oggstr"
+
+[deps]
+
+source_file="res://music/doodle.ogg"
+dest_files=[ "res://.import/doodle.ogg-6bb5bde20cb2ea8c9d5d69a4c783a600.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

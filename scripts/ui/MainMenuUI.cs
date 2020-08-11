@@ -7,6 +7,7 @@ public class MainMenuUI : Control
     AnimationPlayer animationPlayer;
     private ScenesFadeTransition scenesFadeTransition;
     private Signals signals;
+    private AudioManager audioManager;
 
     private LineEdit nameLineEdit;
     AnimationPlayer nameLineAnimationPlayer;
@@ -31,15 +32,22 @@ public class MainMenuUI : Control
         scenesFadeTransition = (ScenesFadeTransition)GetNode("/root/ScenesFadeTransition");
 
         signals = (Signals)GetNode("/root/Signals");
+        audioManager = (AudioManager)GetNode("/root/AudioManager");
         signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
         signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
 
         ToggleVisibility();
 
         FocusButton(null);
-        GrabNameEditFocus();
+
+        nameLineEdit.GrabFocus();
+        nameLineAnimationPlayer.Play("pulsate");
+        nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
+
         _on_PlayerNameLineEdit_text_changed(nameLineEdit.Text);
         nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
+
+        audioManager.PlayMainMenuMusic();
     }
 
     public void ToggleVisibility()
@@ -47,7 +55,6 @@ public class MainMenuUI : Control
         if (!Visible)
         {
             animationPlayer.Play("slide");
-            signals.EmitSignal(nameof(Signals.InGameMenuVisibilityChanged), true);
         }
     }
 
@@ -121,6 +128,7 @@ public class MainMenuUI : Control
                     }
                     else
                     {
+                        audioManager.PlayMenuSelectSound();
                         selectedButton._on_MenuButton_button_down();
                     }
                 }
@@ -148,6 +156,7 @@ public class MainMenuUI : Control
         nameLineEdit.GrabFocus();
         nameLineAnimationPlayer.Play("pulsate");
         nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
+        audioManager.PlayMenuFocusOptionSound();
     }
 
     private void UnfocusNameEdit()
@@ -162,6 +171,11 @@ public class MainMenuUI : Control
         selectedButton?.UnfocusButton();
         selectedButton = button;
         selectedButton?.FocusButton();
+
+        if (button != null)
+        {
+            audioManager.PlayMenuFocusOptionSound();
+        }
     }
 
     private void OnUnFocusButton()
@@ -222,12 +236,17 @@ public class MainMenuUI : Control
                     nameLineAnimationPlayer.Stop(true);
 
                     FocusButton(buttonExit);
+
                     GetTree().SetInputAsHandled();
                 }
-
-                if (key == KeyList.Enter || key == KeyList.KpEnter)
+                else if (key == KeyList.Enter || key == KeyList.KpEnter)
                 {
+                    audioManager.PlayMenuSelectSound();
                     buttonPlay._on_MenuButton_button_down();
+                }
+                else if (IsKeyAlphanumeric(key))
+                {
+                    audioManager.PlayTypeWriterSound();
                 }
             }
             else
@@ -238,6 +257,14 @@ public class MainMenuUI : Control
                 }
             }
         }
+    }
+
+    private bool IsKeyAlphanumeric(KeyList key)
+    {
+        KeyList[] codes = { KeyList.Space, KeyList.Backspace, KeyList.Left, KeyList.Right, KeyList.Minus,
+                            KeyList.Plus, KeyList.Ampersand, KeyList.Bracketleft, KeyList.Bracketright, KeyList.Semicolon,
+                            KeyList.Apostrophe, KeyList.Backslash, KeyList.Comma, KeyList.Period, KeyList.Slash };
+        return (key >= KeyList.A && key <= KeyList.Z) || (key >= KeyList.Key0 && key <= KeyList.Key9) || Array.IndexOf(codes, key) != -1;
     }
 
     public void _on_PlayerNameLineEdit_text_changed(string newText)

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/The_Endless_Journey.ogg-74be28df7427b16f85c120a0955e1479.oggstr"
+
+[deps]
+
+source_file="res://music/The_Endless_Journey.ogg"
+dest_files=[ "res://.import/The_Endless_Journey.ogg-74be28df7427b16f85c120a0955e1479.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

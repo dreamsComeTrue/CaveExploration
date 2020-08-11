@@ -30,6 +30,7 @@ ScenesFadeTransition="*res://scenes/ScenesFadeTransition.tscn"
 NetworkClient="*res://scripts/network/NetworkClient.cs"
 ClientSend="*res://scripts/network/ClientSend.cs"
 ClientHandle="*res://scripts/network/ClientHandle.cs"
+AudioManager="*res://scripts/AudioManager.cs"
 
 [display]
 

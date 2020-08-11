@@ -4,6 +4,7 @@ public class InGameMenu : Control
 {
     AnimationPlayer animationPlayer;
     private Signals signals;
+    private AudioManager audioManager;
 
     private MenuButton buttonResume;
     private MenuButton buttonOptions;
@@ -34,6 +35,8 @@ public class InGameMenu : Control
         signals = (Signals)GetNode("/root/Signals");
         signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
         signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+
+        audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
     public void ToggleVisibility()
@@ -45,11 +48,13 @@ public class InGameMenu : Control
 
             if (selectedButton == null)
             {
-                FocusButton(buttonResume);
+                selectedButton = buttonResume;
+                selectedButton?.FocusButton();
             }
             else
             {
                 FocusButton(selectedButton);
+                selectedButton?.FocusButton();
             }
         }
         else
@@ -73,6 +78,11 @@ public class InGameMenu : Control
 
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
+        if (!Visible)
+        {
+            return;
+        }
+
         if (@event.Pressed)
         {
             if ((KeyList)@event.Scancode == KeyList.Up)
@@ -131,6 +141,7 @@ public class InGameMenu : Control
             {
                 if (selectedButton != null)
                 {
+                    audioManager.PlayMenuSelectSound();
                     selectedButton._on_MenuButton_button_down();
                 }
             }
@@ -161,6 +172,11 @@ public class InGameMenu : Control
         selectedButton?.UnfocusButton();
         selectedButton = button;
         selectedButton?.FocusButton();
+
+        if (button != null)
+        {
+            audioManager.PlayMenuFocusOptionSound();
+        }
     }
 
     private void OnUnFocusButton()
