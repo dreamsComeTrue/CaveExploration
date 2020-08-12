@@ -29,6 +29,18 @@ public class CaveGeneratorNode : Spatial
 
         GenerateCaves();
     }
+
+    private enum WallSegmentType
+    {
+        None,
+        Horizontal,
+        Veritcal,
+        TopRight,
+        TopLeft,
+        BottomRight,
+        BottomLeft
+    }
+
     private void GenerateCaves()
     {
         foreach (Node child in GetChildren())
@@ -54,7 +66,50 @@ public class CaveGeneratorNode : Spatial
 
                     case CaveGenerator.CellType.None:
                         GenerateGroundTile(x * 0.5f, y * 0.5f);
-                        GenerateWallSegment(x * 0.5f, y * 0.5f);
+
+                        WallSegmentType wallSegmentType = WallSegmentType.None;
+
+                        if (x - 1 >= 0 && x + 1 < mapData.GetUpperBound(0) &&
+                            y - 1 >= 0 && y + 1 < mapData.GetUpperBound(1))
+                        {
+                            if ((mapData[x - 1, y] == CaveGenerator.CellType.None || mapData[x + 1, y] == CaveGenerator.CellType.None) &&
+                                (mapData[x, y - 1] != CaveGenerator.CellType.None) && (mapData[x, y + 1] != CaveGenerator.CellType.None))
+                            {
+                                wallSegmentType = WallSegmentType.Horizontal;
+                            }
+
+                            if ((mapData[x, y - 1] == CaveGenerator.CellType.None || mapData[x, y + 1] == CaveGenerator.CellType.None) &&
+                                (mapData[x - 1, y] != CaveGenerator.CellType.None) && (mapData[x + 1, y] != CaveGenerator.CellType.None))
+                            {
+                                wallSegmentType = WallSegmentType.Veritcal;
+                            }
+
+                            if ((mapData[x, y - 1] == CaveGenerator.CellType.None && mapData[x + 1, y] == CaveGenerator.CellType.None) &&
+                                (mapData[x - 1, y] != CaveGenerator.CellType.None) && (mapData[x, y + 1] != CaveGenerator.CellType.None))
+                            {
+                                wallSegmentType = WallSegmentType.TopRight;
+                            }
+
+                            if ((mapData[x, y - 1] == CaveGenerator.CellType.None && mapData[x - 1, y] == CaveGenerator.CellType.None) &&
+                               (mapData[x + 1, y] != CaveGenerator.CellType.None) && (mapData[x, y + 1] != CaveGenerator.CellType.None))
+                            {
+                                wallSegmentType = WallSegmentType.TopLeft;
+                            }
+
+                            if ((mapData[x, y + 1] == CaveGenerator.CellType.None && mapData[x + 1, y] == CaveGenerator.CellType.None) &&
+                                (mapData[x - 1, y] != CaveGenerator.CellType.None) && (mapData[x, y - 1] != CaveGenerator.CellType.None))
+                            {
+                                wallSegmentType = WallSegmentType.BottomRight;
+                            }
+
+                            if ((mapData[x, y + 1] == CaveGenerator.CellType.None && mapData[x - 1, y] == CaveGenerator.CellType.None) &&
+                                (mapData[x + 1, y] != CaveGenerator.CellType.None) && (mapData[x, y - 1] != CaveGenerator.CellType.None))
+                            {
+                                wallSegmentType = WallSegmentType.BottomLeft;
+                            }
+                        }
+
+                        GenerateWallSegment(x * 0.5f, y * 0.5f, wallSegmentType);
                         break;
 
                     case CaveGenerator.CellType.Treasure:
@@ -84,10 +139,53 @@ public class CaveGeneratorNode : Spatial
         AddChild(treasure);
     }
 
-    private void GenerateWallSegment(float x, float y)
+    private void GenerateWallSegment(float x, float y, WallSegmentType wallSegmentType)
     {
+        if (wallSegmentType == WallSegmentType.None)
+        {
+            return;
+        }
+
         Spatial wallSegment = (Spatial)wallScene.Instance();
-        wallSegment.Translation = new Vector3(x, 0.28f, y);
+
+        switch (wallSegmentType)
+        {
+            case WallSegmentType.Horizontal:
+                wallSegment.Translation = new Vector3(x, 0.28f, y);
+                break;
+
+            case WallSegmentType.Veritcal:
+                wallSegment.Translation = new Vector3(x, 0.28f, y);
+                wallSegment.RotationDegrees = new Vector3(0.0f, 90.0f, 0.0f);
+                break;
+
+            case WallSegmentType.TopRight:
+                wallSegment.GetNode<StaticBody>("WallStraight").Visible = false;
+                wallSegment.GetNode<StaticBody>("WallCorner").Visible = true;
+                wallSegment.Translation = new Vector3(x, 0.28f, y);
+                wallSegment.RotationDegrees = new Vector3(0.0f, 180.0f, 0.0f);
+                break;
+
+            case WallSegmentType.TopLeft:
+                wallSegment.GetNode<StaticBody>("WallStraight").Visible = false;
+                wallSegment.GetNode<StaticBody>("WallCorner").Visible = true;
+                wallSegment.Translation = new Vector3(x, 0.28f, y);
+                wallSegment.RotationDegrees = new Vector3(0.0f, 270.0f, 0.0f);
+                break;
+
+            case WallSegmentType.BottomRight:
+                wallSegment.GetNode<StaticBody>("WallStraight").Visible = false;
+                wallSegment.GetNode<StaticBody>("WallCorner").Visible = true;
+                wallSegment.Translation = new Vector3(x, 0.28f, y);
+                wallSegment.RotationDegrees = new Vector3(0.0f, 90.0f, 0.0f);
+                break;
+
+            case WallSegmentType.BottomLeft:
+                wallSegment.GetNode<StaticBody>("WallStraight").Visible = false;
+                wallSegment.GetNode<StaticBody>("WallCorner").Visible = true;
+                wallSegment.Translation = new Vector3(x, 0.28f, y);
+                break;
+        }
 
         AddChild(wallSegment);
     }
