@@ -14,6 +14,7 @@ public class MenuButton : TextureButton
     private Color pressedColor = new Color(0.16f, 0.16f, 0.35f);
 
     private Signals signals;
+    private AudioManager audioManager;
 
     public override void _Ready()
     {
@@ -26,6 +27,7 @@ public class MenuButton : TextureButton
         violetFrameTexture = ResourceLoader.Load("res://gfx/ui/frame_violet_single.png") as Texture;
 
         signals = (Signals)GetNode("/root/Signals");
+        audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
     private void _on_MenuButton_mouse_entered()
@@ -56,6 +58,7 @@ public class MenuButton : TextureButton
         menuButtonTexture.Texture = violetFrameTexture;
         colorRect.Color = normalColor;
     }
+    
     public void _on_MenuButton_button_down()
     {
         menuButtonTexture.Texture = blueFrameTexture;
@@ -66,5 +69,7 @@ public class MenuButton : TextureButton
     {
         menuButtonTexture.Texture = violetFrameTexture;
         colorRect.Color = normalColor;
+
+        audioManager.PlayMenuSelectSound();
     }
 }

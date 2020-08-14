@@ -16,12 +16,12 @@ public class AudioManager : Node
         AddChild(menuMusicPlayer);
 
         menuFocusSoundPlayer = new AudioStreamPlayer();
-        menuFocusSoundPlayer.Stream = ResourceLoader.Load<AudioStream>("res://sounds/ui/GUI_Sound_Effects_by_Lokif_misc_menu_4.wav");
+        menuFocusSoundPlayer.Stream = ResourceLoader.Load<AudioStream>("res://sounds/ui/Mobeyee_Sounds_Metal_Click.wav");
         menuFocusSoundPlayer.VolumeDb = -8.0f;
         AddChild(menuFocusSoundPlayer);
 
         menuSelectSoundPlayer = new AudioStreamPlayer();
-        menuSelectSoundPlayer.Stream = ResourceLoader.Load<AudioStream>("res://sounds/ui/Mobeyee_Sounds_Metal_Click.wav");
+        menuSelectSoundPlayer.Stream = ResourceLoader.Load<AudioStream>("res://sounds/ui/GUI_Sound_Effects_by_Lokif_misc_menu_4.wav");
         menuSelectSoundPlayer.VolumeDb = -8.0f;
         AddChild(menuSelectSoundPlayer);
 
