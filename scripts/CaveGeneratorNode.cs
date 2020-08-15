@@ -64,46 +64,51 @@ public class CaveGeneratorNode : Spatial
                         GenerateGroundTile(x * 0.5f, y * 0.5f);
                         break;
 
-                    case CaveGenerator.CellType.None:
+                    case CaveGenerator.CellType.Wall:
                         GenerateGroundTile(x * 0.5f, y * 0.5f);
 
-                        WallSegmentType wallSegmentType = WallSegmentType.None;
+                        WallSegmentType wallSegmentType = WallSegmentType.Horizontal;
 
                         if (x - 1 >= 0 && x + 1 < mapData.GetUpperBound(0) &&
                             y - 1 >= 0 && y + 1 < mapData.GetUpperBound(1))
                         {
-                            if ((mapData[x - 1, y] == CaveGenerator.CellType.None || mapData[x + 1, y] == CaveGenerator.CellType.None) &&
-                                (mapData[x, y - 1] != CaveGenerator.CellType.None) && (mapData[x, y + 1] != CaveGenerator.CellType.None))
+                            if ((mapData[x, y - 1] != CaveGenerator.CellType.Wall && mapData[x - 1, y - 1] == CaveGenerator.CellType.Wall))
+                            {
+                                wallSegmentType = WallSegmentType.BottomLeft;
+                            }
+
+                            if ((mapData[x - 1, y] == CaveGenerator.CellType.Wall || mapData[x + 1, y] == CaveGenerator.CellType.Wall) &&
+                                ((mapData[x, y - 1] != CaveGenerator.CellType.Wall) && (mapData[x, y + 1] != CaveGenerator.CellType.Wall)))
                             {
                                 wallSegmentType = WallSegmentType.Horizontal;
                             }
 
-                            if ((mapData[x, y - 1] == CaveGenerator.CellType.None || mapData[x, y + 1] == CaveGenerator.CellType.None) &&
-                                (mapData[x - 1, y] != CaveGenerator.CellType.None) && (mapData[x + 1, y] != CaveGenerator.CellType.None))
+                            if ((mapData[x, y - 1] == CaveGenerator.CellType.Wall || mapData[x, y + 1] == CaveGenerator.CellType.Wall) &&
+                                ((mapData[x - 1, y] != CaveGenerator.CellType.Wall) && (mapData[x + 1, y] != CaveGenerator.CellType.Wall)))
                             {
                                 wallSegmentType = WallSegmentType.Veritcal;
                             }
 
-                            if ((mapData[x, y - 1] == CaveGenerator.CellType.None && mapData[x + 1, y] == CaveGenerator.CellType.None) &&
-                                (mapData[x - 1, y] != CaveGenerator.CellType.None) && (mapData[x, y + 1] != CaveGenerator.CellType.None))
+                            if ((mapData[x, y - 1] == CaveGenerator.CellType.Wall && mapData[x + 1, y] == CaveGenerator.CellType.Wall) &&
+                                (mapData[x - 1, y] != CaveGenerator.CellType.Wall) && (mapData[x, y + 1] != CaveGenerator.CellType.Wall))
                             {
                                 wallSegmentType = WallSegmentType.TopRight;
                             }
 
-                            if ((mapData[x, y - 1] == CaveGenerator.CellType.None && mapData[x - 1, y] == CaveGenerator.CellType.None) &&
-                               (mapData[x + 1, y] != CaveGenerator.CellType.None) && (mapData[x, y + 1] != CaveGenerator.CellType.None))
+                            if ((mapData[x, y - 1] == CaveGenerator.CellType.Wall && mapData[x - 1, y] == CaveGenerator.CellType.Wall) &&
+                               (mapData[x + 1, y] != CaveGenerator.CellType.Wall) && (mapData[x, y + 1] != CaveGenerator.CellType.Wall))
                             {
                                 wallSegmentType = WallSegmentType.TopLeft;
                             }
 
-                            if ((mapData[x, y + 1] == CaveGenerator.CellType.None && mapData[x + 1, y] == CaveGenerator.CellType.None) &&
-                                (mapData[x - 1, y] != CaveGenerator.CellType.None) && (mapData[x, y - 1] != CaveGenerator.CellType.None))
+                            if ((mapData[x, y + 1] == CaveGenerator.CellType.Wall && mapData[x + 1, y] == CaveGenerator.CellType.Wall) &&
+                                (mapData[x - 1, y] != CaveGenerator.CellType.Wall) && (mapData[x, y - 1] != CaveGenerator.CellType.Wall))
                             {
                                 wallSegmentType = WallSegmentType.BottomRight;
                             }
 
-                            if ((mapData[x, y + 1] == CaveGenerator.CellType.None && mapData[x - 1, y] == CaveGenerator.CellType.None) &&
-                                (mapData[x + 1, y] != CaveGenerator.CellType.None) && (mapData[x, y - 1] != CaveGenerator.CellType.None))
+                            if ((mapData[x, y + 1] == CaveGenerator.CellType.Wall && mapData[x - 1, y] == CaveGenerator.CellType.Wall) &&
+                                (mapData[x + 1, y] != CaveGenerator.CellType.Wall) && (mapData[x, y - 1] != CaveGenerator.CellType.Wall))
                             {
                                 wallSegmentType = WallSegmentType.BottomLeft;
                             }

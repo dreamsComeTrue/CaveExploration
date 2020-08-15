@@ -5,10 +5,9 @@ public class CaveGenerator
 {
     public enum CellType
     {
-        None,
         Empty,
         Room,
-        Hallway,
+        Wall,
         Treasure,
         Start,
         End
@@ -195,7 +194,7 @@ public class CaveGenerator
 
                 if (foundRoom == null)
                 {
-                    data[x, y] = CellType.None;
+                    data[x, y] = CellType.Empty;
                 }
                 else
                 {
@@ -249,11 +248,11 @@ public class CaveGenerator
                 {
                     pathCost.cost += 10;
                 }
-                else if (grid[b.Position] == CellType.None)
+                else if (grid[b.Position] == CellType.Empty)
                 {
                     pathCost.cost += 5;
                 }
-                else if (grid[b.Position] == CellType.Hallway)
+                else if (grid[b.Position] == CellType.Wall)
                 {
                     pathCost.cost += 1;
                 }
@@ -269,7 +268,7 @@ public class CaveGenerator
                 {
                     var current = path[i];
 
-                    if (grid[current] == CellType.None)
+                    if (grid[current] == CellType.Empty)
                     {
                         grid[current] = CellType.Room;
                     }
@@ -301,37 +300,30 @@ public class CaveGenerator
         {
             for (int x = 0; x < GridWidth; ++x)
             {
-                bool north = false;
+                int foundAdjacentEmptyBlocks = 0;
 
-                if (y > 0)
+                for (int j = -1; j < 2; ++j)
                 {
-                    north = dataCopy[x, y - 1] == CellType.None;
+                    for (int i = -1; i < 2; ++i)
+                    {
+                        if ((x + i >= 0 && x + i < GridWidth - 1) && (y + j >= 0 && y + j < GridHeight - 1))
+                        {
+                            if (i == 0 && j == 0)
+                            {
+                                continue;
+                            }
+
+                            if (dataCopy[x + i, y + j] != CellType.Empty)
+                            {
+                                foundAdjacentEmptyBlocks++;
+                            }
+                        }
+                    }
                 }
 
-                bool south = false;
-
-                if (y < GridHeight - 1)
+                if ((foundAdjacentEmptyBlocks > 0 && dataCopy[x, y] == CellType.Empty) || x == 0 || x == GridWidth - 1 || y == 0 || y == GridHeight - 1)
                 {
-                    south = dataCopy[x, y + 1] == CellType.None;
-                }
-
-                bool east = false;
-
-                if (x < GridWidth - 1)
-                {
-                    east = dataCopy[x + 1, y] == CellType.None;
-                }
-
-                bool west = false;
-
-                if (x > 0)
-                {
-                    west = dataCopy[x - 1, y] == CellType.None;
-                }
-
-                if ((north && south && east && west) || x == 0 || x == GridWidth - 1 || y == 0 || y == GridHeight - 1)
-                {
-                    data[x, y] = CellType.Empty;
+                    data[x, y] = CellType.Wall;
                 }
             }
         }
