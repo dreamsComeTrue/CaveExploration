@@ -300,13 +300,13 @@ public class CaveGenerator
         {
             for (int x = 0; x < GridWidth; ++x)
             {
-                int foundAdjacentEmptyBlocks = 0;
+                int foundAdjacentFilledBlocks = 0;
 
                 for (int j = -1; j < 2; ++j)
                 {
                     for (int i = -1; i < 2; ++i)
                     {
-                        if ((x + i >= 0 && x + i < GridWidth - 1) && (y + j >= 0 && y + j < GridHeight - 1))
+                        if ((x + i >= 0 && x + i < GridWidth) && (y + j >= 0 && y + j < GridHeight))
                         {
                             if (i == 0 && j == 0)
                             {
@@ -315,13 +315,14 @@ public class CaveGenerator
 
                             if (dataCopy[x + i, y + j] != CellType.Empty)
                             {
-                                foundAdjacentEmptyBlocks++;
+                                foundAdjacentFilledBlocks++;
                             }
                         }
                     }
                 }
 
-                if ((foundAdjacentEmptyBlocks > 0 && dataCopy[x, y] == CellType.Empty) || x == 0 || x == GridWidth - 1 || y == 0 || y == GridHeight - 1)
+                // Also with world bounds -> || x == 0 || x == GridWidth - 1 || y == 0 || y == GridHeight - 1
+                if ((foundAdjacentFilledBlocks > 0 && dataCopy[x, y] == CellType.Empty))
                 {
                     data[x, y] = CellType.Wall;
                 }
