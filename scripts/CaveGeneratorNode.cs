@@ -8,6 +8,7 @@ public class CaveGeneratorNode : Spatial
     PackedScene wallScene;
     PackedScene groundTileScene;
     PackedScene treasureScene;
+    PackedScene decorationScene;
 
     private Signals signals;
 
@@ -23,7 +24,8 @@ public class CaveGeneratorNode : Spatial
         wallScene = (PackedScene)ResourceLoader.Load("res://scenes/Wall.tscn");
         groundTileScene = (PackedScene)ResourceLoader.Load("res://scenes/GroundTile.tscn");
         treasureScene = (PackedScene)ResourceLoader.Load("res://scenes/Treasure.tscn");
-        caveGenerator = new CaveGenerator(MapSize, MapSize, 16, 2);
+        decorationScene = (PackedScene)ResourceLoader.Load("res://scenes/LevelDecoration.tscn");
+        caveGenerator = new CaveGenerator(MapSize, MapSize, 16, 2, 5);
 
         signals = (Signals)GetNode("/root/Signals");
 
@@ -164,6 +166,11 @@ public class CaveGeneratorNode : Spatial
                         GenerateGroundTile(x * 0.5f, y * 0.5f);
                         GenerateTreasure(x * 0.5f, y * 0.5f);
                         break;
+
+                    case CaveGenerator.CellType.Decoration:
+                        GenerateGroundTile(x * 0.5f, y * 0.5f);
+                        GenerateDecoration(x * 0.5f, y * 0.5f);
+                        break;
                 }
             }
         }
@@ -187,11 +194,38 @@ public class CaveGeneratorNode : Spatial
         AddChild(treasure);
     }
 
+    private void GenerateDecoration(float x, float y)
+    {
+        Spatial decoration = (Spatial)decorationScene.Instance();
+        decoration.Translation = new Vector3(x, 0.0f, y);
+        
+        int randAngle = (int)(GD.Randi() % 24) * 15;
+        decoration.RotationDegrees = new Vector3(0.0f, randAngle, 0.0f);
+
+        int decorationIdx = (int)GD.Randi() % decoration.GetChildCount();
+
+        for (int i = 0; i < decoration.GetChildCount(); ++i)
+        {
+            if (i == decorationIdx)
+            {
+                continue;
+            }
+
+            Node child = decoration.GetChild(i);
+            decoration.RemoveChild(child);
+            child.QueueFree();
+        }
+
+        AddChild(decoration);
+    }
+
     private void RemoveWallParts(Spatial wallSegment, params string[] children)
     {
         foreach (string child in children)
         {
-            wallSegment.RemoveChild(wallSegment.GetNode<StaticBody>(child));
+            Node childNode = wallSegment.GetNode<StaticBody>(child);
+            wallSegment.RemoveChild(childNode);
+            childNode.QueueFree();
         }
     }
 

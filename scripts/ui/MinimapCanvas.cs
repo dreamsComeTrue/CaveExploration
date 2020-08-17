@@ -33,7 +33,7 @@ public class MinimapCanvas : Control
         {
             return;
         }
-        
+
         Rect2 wholeRect = new Rect2(0, 0, RectSize);
         DrawRect(wholeRect, new Color(0.1f, 0.01f, 0.2f));
 
@@ -43,19 +43,20 @@ public class MinimapCanvas : Control
         {
             for (int x = mapData.GetLowerBound(0); x < mapData.GetUpperBound(0); x++)
             {
+                Vector2 position = new Vector2(x * scaler.x, y * scaler.y);
+                Rect2 rect = new Rect2(position, scaler);
+
                 if (mapData[x, y] == CaveGenerator.CellType.Room)
                 {
-                    Vector2 position = new Vector2(x * scaler.x, y * scaler.y);
-                    Rect2 rect = new Rect2(position, scaler);
-
                     DrawRect(rect, Colors.RoyalBlue);
                 }
-                if (mapData[x, y] == CaveGenerator.CellType.Treasure)
+                else if (mapData[x, y] == CaveGenerator.CellType.Treasure)
                 {
-                    Vector2 position = new Vector2(x * scaler.x, y * scaler.y);
-                    Rect2 rect = new Rect2(position, scaler);
-
                     DrawRect(rect, Colors.Yellow);
+                }
+                else if (mapData[x, y] == CaveGenerator.CellType.Decoration)
+                {
+                    DrawRect(rect, Colors.LightSkyBlue);
                 }
             }
         }

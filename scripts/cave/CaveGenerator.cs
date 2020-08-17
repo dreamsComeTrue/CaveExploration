@@ -9,6 +9,7 @@ public class CaveGenerator
         Room,
         Wall,
         Treasure,
+        Decoration,
         Start,
         End
     }
@@ -17,6 +18,7 @@ public class CaveGenerator
     public int GridHeight;
 
     public int MaxTreasuresPerRoom;
+    public int MaxDecorationsPerRoom;
 
     public int MaxRoomsCount;
 
@@ -27,12 +29,13 @@ public class CaveGenerator
 
     Grid2D<CellType> grid;
 
-    public CaveGenerator(int width, int height, int maxRoomsCount, int maxTreasuresPerRoomCount)
+    public CaveGenerator(int width, int height, int maxRoomsCount, int maxTreasuresPerRoomCount, int maxDecorationsPerRoom)
     {
         GridWidth = width;
         GridHeight = height;
         MaxRoomsCount = maxRoomsCount;
         MaxTreasuresPerRoom = maxTreasuresPerRoomCount;
+        MaxDecorationsPerRoom = maxDecorationsPerRoom;
 
         grid = new Grid2D<CellType>(new Vector2(GridWidth, GridHeight), Vector2.Zero);
     }
@@ -46,6 +49,7 @@ public class CaveGenerator
         triangles = Triangulate(rooms);
         mst = CalculateMST(triangles);
         GenerateTreasures();
+        GenerateDecorations();
         GenerateRoomData();
         FindPaths(rooms, mst);
         CleanUpBlocks();
@@ -198,20 +202,16 @@ public class CaveGenerator
                 }
                 else
                 {
-                    bool foundTreasure = false;
-                    foreach (Vector2 treasurePos in foundRoom.Treasures)
-                    {
-                        if (Mathf.IsEqualApprox(foundRoom.Area.Position.x + treasurePos.x, x) &&
-                        Mathf.IsEqualApprox(foundRoom.Area.Position.y + treasurePos.y, y))
-                        {
-                            foundTreasure = true;
-                            break;
-                        }
-                    }
+                    bool foundTreasure = IsTreasure(foundRoom, x, y);
+                    bool foundDecoration = IsDecoration(foundRoom, x, y);
 
                     if (foundTreasure)
                     {
                         data[x, y] = CellType.Treasure;
+                    }
+                    else if (foundDecoration)
+                    {
+                        data[x, y] = CellType.Decoration;
                     }
                     else
                     {
@@ -222,6 +222,38 @@ public class CaveGenerator
                 }
             }
         }
+    }
+
+    private bool IsTreasure(Room foundRoom, int x, int y)
+    {
+        bool found = false;
+        foreach (Vector2 treasurePos in foundRoom.Treasures)
+        {
+            if (Mathf.IsEqualApprox(foundRoom.Area.Position.x + treasurePos.x, x) &&
+            Mathf.IsEqualApprox(foundRoom.Area.Position.y + treasurePos.y, y))
+            {
+                found = true;
+                break;
+            }
+        }
+
+        return found;
+    }
+
+    private bool IsDecoration(Room foundRoom, int x, int y)
+    {
+        bool found = false;
+        foreach (Vector2 decorationPos in foundRoom.Decorations)
+        {
+            if (Mathf.IsEqualApprox(foundRoom.Area.Position.x + decorationPos.x, x) &&
+            Mathf.IsEqualApprox(foundRoom.Area.Position.y + decorationPos.y, y))
+            {
+                found = true;
+                break;
+            }
+        }
+
+        return found;
     }
 
     private void FindPaths(List<Room> rooms, HashSet<Prim.Edge> edges)
@@ -356,6 +388,32 @@ public class CaveGenerator
         }
     }
 
+    private void GenerateDecorations()
+    {
+        foreach (Room room in rooms)
+        {
+            int currentDecorations = 0;
+            int maxDecorationsInRoom = (int)GD.RandRange(1, MaxDecorationsPerRoom + 1);
+
+            while (currentDecorations < maxDecorationsInRoom)
+            {
+                int x = (int)GD.RandRange(0, room.Area.Size.x);
+                int y = (int)GD.RandRange(0, room.Area.Size.y);
+
+                Vector2 decorationPos = new Vector2(x, y);
+
+                if (room.Treasures.Contains(decorationPos) || room.Decorations.Contains(decorationPos))
+                {
+                    continue;
+                }
+
+                room.Decorations.Add(decorationPos);
+
+                currentDecorations++;
+            }
+        }
+    }
+
     public class Triangle
     {
         public Vector2 pointA;
@@ -368,11 +426,13 @@ public class CaveGenerator
         public Rect2 Area;
 
         public List<Vector2> Treasures;
+        public List<Vector2> Decorations;
 
         public Room(int x, int y, int width, int height)
         {
             Area = new Rect2(x, y, width, height);
             Treasures = new List<Vector2>();
+            Decorations = new List<Vector2>();
         }
     }
 }
