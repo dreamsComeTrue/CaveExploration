@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://gfx/ui/light_bar.png" type="Texture" id=1]
 [ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://gfx/ui/light_bar_frame.png" type="Texture" id=8]
 [ext_resource path="res://scenes/ui/InventoryItem.tscn" type="PackedScene" id=9]
 [ext_resource path="res://gfx/ui/numbers_line.png" type="Texture" id=10]
+[ext_resource path="res://gfx/ui/hunger.png" type="Texture" id=11]
+[ext_resource path="res://gfx/ui/air.png" type="Texture" id=12]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -46,6 +48,7 @@ shader = SubResource( 3 )
 shader_param/discard_offset = 0.0
 
 [sub_resource type="AtlasTexture" id=5]
+flags = 4
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 256, 128 )
 
@@ -104,9 +107,8 @@ __meta__ = {
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -2.0
-margin_bottom = -2.0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -138,10 +140,15 @@ __meta__ = {
 }
 
 [node name="MinimapTexture" type="NinePatchRect" parent="CanvasLayer"]
-margin_left = 10.0
-margin_top = 8.33334
-margin_right = 190.0
-margin_bottom = 188.333
+anchor_left = 0.0133333
+anchor_top = 0.0237037
+anchor_right = 0.18
+anchor_bottom = 0.32
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 200, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 texture = ExtResource( 2 )
 patch_margin_left = 4
 patch_margin_top = 4
@@ -172,7 +179,6 @@ texture = SubResource( 5 )
 expand = true
 stretch_mode = 6
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": true
 }
 
@@ -202,14 +208,10 @@ __meta__ = {
 }
 
 [node name="CountdownTimer" type="Label" parent="CanvasLayer/Countdown"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -70.5
-margin_top = -17.5
-margin_right = 70.5
-margin_bottom = 17.5
+anchor_left = -1.2625
+anchor_top = 0.6625
+anchor_right = 2.2625
+anchor_bottom = 1.5375
 rect_pivot_offset = Vector2( 70, 17 )
 custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 1, 1, 1 )
@@ -217,7 +219,7 @@ text = "03:00"
 align = 1
 valign = 1
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Countdown/CountdownTimer"]
@@ -225,35 +227,72 @@ autoplay = "pulsate"
 anims/pulsate = SubResource( 8 )
 
 [node name="InventoryItem1" parent="CanvasLayer" instance=ExtResource( 9 )]
-margin_left = 51.9137
-margin_top = 236.26
-margin_right = 115.913
-margin_bottom = 300.26
+anchor_left = 0.0432614
+anchor_top = 0.350015
+anchor_right = 0.0965942
+anchor_bottom = 0.44483
+margin_right = 0.0
+margin_bottom = 0.0
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
-margin_left = 35.8806
-margin_top = 294.234
-margin_right = 49.8806
-margin_bottom = 315.234
+[node name="Item1TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.0299005
+anchor_top = 0.435902
+anchor_right = 0.0415672
+anchor_bottom = 0.467013
 texture = SubResource( 9 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="InventoryItem2" parent="CanvasLayer" instance=ExtResource( 9 )]
+anchor_left = 0.0432614
+anchor_top = 0.477904
+anchor_right = 0.0965942
+anchor_bottom = 0.572719
+margin_right = 0.0
+margin_bottom = 0.0
+
+[node name="Item2TextureRect2" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.0299005
+anchor_top = 0.562972
+anchor_right = 0.0415672
+anchor_bottom = 0.594083
+margin_bottom = 3.05176e-05
+texture = SubResource( 10 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HungerTexture" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.929
+anchor_top = 0.31
+anchor_right = 0.972
+anchor_bottom = 0.387
+margin_left = 0.199951
+margin_top = -0.25
+margin_right = -3.40002
+margin_bottom = -4.22501
+texture = ExtResource( 11 )
 expand = true
 stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InventoryItem2" parent="CanvasLayer" instance=ExtResource( 9 )]
-margin_left = 51.9137
-margin_top = 322.585
-margin_right = 115.913
-margin_bottom = 386.585
-
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer"]
-margin_left = 35.8806
-margin_top = 380.006
-margin_right = 49.8806
-margin_bottom = 401.006
-texture = SubResource( 10 )
+[node name="OxygenTexture" type="TextureRect" parent="CanvasLayer"]
+anchor_left = 0.929
+anchor_top = 0.409
+anchor_right = 0.972
+anchor_bottom = 0.486
+margin_left = 0.199951
+margin_top = 0.100128
+margin_right = -3.40002
+margin_bottom = -3.87488
+texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
 __meta__ = {
