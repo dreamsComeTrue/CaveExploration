@@ -202,9 +202,9 @@ public class CaveGeneratorNode : Spatial
         int randAngle = (int)(GD.Randi() % 24) * 15;
         decoration.RotationDegrees = new Vector3(0.0f, randAngle, 0.0f);
 
-        int decorationIdx = (int)GD.Randi() % decoration.GetChildCount();
+        uint decorationIdx = (uint)GD.Randi() % (uint)decoration.GetChildCount();
 
-        for (int i = 0; i < decoration.GetChildCount(); ++i)
+        for (int i = decoration.GetChildCount() - 1; i >= 0; --i)
         {
             if (i == decorationIdx)
             {

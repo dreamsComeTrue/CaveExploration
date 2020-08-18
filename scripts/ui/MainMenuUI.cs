@@ -90,6 +90,8 @@ public class MainMenuUI : Control
                 {
                     FocusButton(buttonOptions);
                 }
+
+                PlayMenuFocusOptionSound();
             }
             else if ((KeyList)@event.Scancode == KeyList.Down)
             {
@@ -111,6 +113,8 @@ public class MainMenuUI : Control
                     FocusButton(null);
                     GrabNameEditFocus();
                 }
+
+                PlayMenuFocusOptionSound();
             }
         }
 
@@ -171,11 +175,6 @@ public class MainMenuUI : Control
         selectedButton?.UnfocusButton();
         selectedButton = button;
         selectedButton?.FocusButton();
-
-        if (button != null)
-        {
-            audioManager.PlayMenuFocusOptionSound();
-        }
     }
 
     private void OnUnFocusButton()
@@ -228,6 +227,7 @@ public class MainMenuUI : Control
                         FocusButton(buttonOptions);
                     }
 
+                    PlayMenuFocusOptionSound();
                     GetTree().SetInputAsHandled();
                 }
                 else if (key == KeyList.Up)
@@ -236,7 +236,7 @@ public class MainMenuUI : Control
                     nameLineAnimationPlayer.Stop(true);
 
                     FocusButton(buttonExit);
-
+                    PlayMenuFocusOptionSound();
                     GetTree().SetInputAsHandled();
                 }
                 else if (key == KeyList.Enter || key == KeyList.KpEnter)
@@ -256,6 +256,14 @@ public class MainMenuUI : Control
                     _on_MenuButtonPlay_pressed();
                 }
             }
+        }
+    }
+
+    private void PlayMenuFocusOptionSound()
+    {
+        if (selectedButton != null)
+        {
+            audioManager.PlayMenuFocusOptionSound();
         }
     }
 

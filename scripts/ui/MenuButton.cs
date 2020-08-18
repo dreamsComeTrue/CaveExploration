@@ -32,6 +32,7 @@ public class MenuButton : TextureButton
 
     private void _on_MenuButton_mouse_entered()
     {
+        audioManager.PlayMenuFocusOptionSound();
         signals.EmitSignal(nameof(Signals.FocusMenuButton), this);
     }
 
@@ -58,7 +59,7 @@ public class MenuButton : TextureButton
         menuButtonTexture.Texture = violetFrameTexture;
         colorRect.Color = normalColor;
     }
-    
+
     public void _on_MenuButton_button_down()
     {
         menuButtonTexture.Texture = blueFrameTexture;

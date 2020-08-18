@@ -107,6 +107,8 @@ public class InGameMenu : Control
                 {
                     FocusButton(buttonLeave);
                 }
+
+                audioManager.PlayMenuFocusOptionSound();
             }
             else if ((KeyList)@event.Scancode == KeyList.Down)
             {
@@ -130,6 +132,8 @@ public class InGameMenu : Control
                 {
                     FocusButton(buttonResume);
                 }
+
+                audioManager.PlayMenuFocusOptionSound();
             }
         }
 
@@ -172,11 +176,6 @@ public class InGameMenu : Control
         selectedButton?.UnfocusButton();
         selectedButton = button;
         selectedButton?.FocusButton();
-
-        if (button != null)
-        {
-            audioManager.PlayMenuFocusOptionSound();
-        }
     }
 
     private void OnUnFocusButton()
