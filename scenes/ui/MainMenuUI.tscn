@@ -375,7 +375,7 @@ margin_right = 152.0
 margin_bottom = 97.0
 custom_fonts/font = SubResource( 12 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
-text = "UNHIDDEN"
+text = "unHIDDEN"
 __meta__ = {
 "_edit_use_anchors_": false
 }
