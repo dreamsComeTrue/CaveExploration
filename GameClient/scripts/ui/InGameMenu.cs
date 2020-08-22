@@ -61,6 +61,8 @@ public class InGameMenu : Control
         {
             HideInGameMenu();
         }
+        
+        audioManager.PlayMenuRolloutSound();
     }
 
     public void SlideFunction()

@@ -47,7 +47,7 @@ public class MainMenuUI : Control
         _on_PlayerNameLineEdit_text_changed(nameLineEdit.Text);
         nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
 
-        //audioManager.PlayMainMenuMusic();
+        audioManager.PlayMainMenuMusic();
     }
 
     public void ToggleVisibility()
@@ -132,7 +132,11 @@ public class MainMenuUI : Control
                     }
                     else
                     {
-                        audioManager.PlayMenuSelectSound();
+                        if (selectedButton != buttonPlay)
+                        {
+                            audioManager.PlayMenuSelectSound();
+                        }
+
                         selectedButton._on_MenuButton_button_down();
                     }
                 }
@@ -187,6 +191,7 @@ public class MainMenuUI : Control
     {
         if (!buttonPlay.Disabled)
         {
+             audioManager.PlayMenuOpenSound();
             GameManager gameManager = (GameManager)GetNode("/root/GameManager");
             gameManager.PlayerName = nameLineEdit.Text;
 

@@ -5,30 +5,40 @@ public class AudioManager : Node
 {
     private AudioStreamPlayer menuMusicPlayer;
     private AudioStreamPlayer menuTypeWriterPlayer;
+    private AudioStreamPlayer menuRolloutSoundPlayer;
     private AudioStreamPlayer menuFocusSoundPlayer;
+    private AudioStreamPlayer menuOpenSoundPlayer;
     private AudioStreamPlayer menuSelectSoundPlayer;
+    
+    private const float SOUND_VOLUME = -12.0f;
 
     public override void _Ready()
     {
-        menuMusicPlayer = new AudioStreamPlayer();
-        menuMusicPlayer.Stream = ResourceLoader.Load<AudioStream>("res://music/doodle.ogg");
-        menuMusicPlayer.VolumeDb = -5.0f;
-        AddChild(menuMusicPlayer);
+        menuMusicPlayer = AddSound("res://music/doodle.ogg");
 
-        menuFocusSoundPlayer = new AudioStreamPlayer();
-        menuFocusSoundPlayer.Stream = ResourceLoader.Load<AudioStream>("res://sounds/ui/Mobeyee_Sounds_Metal_Click.wav");
-        menuFocusSoundPlayer.VolumeDb = -10.0f;
-        AddChild(menuFocusSoundPlayer);
+        menuFocusSoundPlayer = AddSound("res://sounds/ui/sfx_movement_footsteps5.wav");
+        menuFocusSoundPlayer.VolumeDb = SOUND_VOLUME;
 
-        menuSelectSoundPlayer = new AudioStreamPlayer();
-        menuSelectSoundPlayer.Stream = ResourceLoader.Load<AudioStream>("res://sounds/ui/GUI_Sound_Effects_by_Lokif_misc_menu_4.wav");
-        menuSelectSoundPlayer.VolumeDb = -10.0f;
-        AddChild(menuSelectSoundPlayer);
+        menuSelectSoundPlayer = AddSound("res://sounds/ui/sfx_menu_move3.wav");
+        menuSelectSoundPlayer.VolumeDb = SOUND_VOLUME;
 
-        menuTypeWriterPlayer = new AudioStreamPlayer();
-        menuTypeWriterPlayer.Stream = ResourceLoader.Load<AudioStream>("res://sounds/ui/Menu_Select_00.wav");
-        menuTypeWriterPlayer.VolumeDb = -15.0f;
-        AddChild(menuTypeWriterPlayer);
+        menuRolloutSoundPlayer = AddSound("res://sounds/ui/sfx_menu_select2.wav");
+        menuRolloutSoundPlayer.VolumeDb = SOUND_VOLUME;
+
+        menuOpenSoundPlayer = AddSound("res://sounds/ui/sfx_sounds_interaction15.wav");
+        menuOpenSoundPlayer.VolumeDb = SOUND_VOLUME;
+
+        menuTypeWriterPlayer = AddSound("res://sounds/ui/Menu_Select_00.wav");
+        menuTypeWriterPlayer.VolumeDb = SOUND_VOLUME;
+    }
+
+    private AudioStreamPlayer AddSound(string resPath)
+    {
+        AudioStreamPlayer player = new AudioStreamPlayer();
+        player.Stream = ResourceLoader.Load<AudioStream>(resPath);        
+        AddChild(player);
+
+        return player;
     }
 
     public void PlayMainMenuMusic()
@@ -44,6 +54,16 @@ public class AudioManager : Node
     public void PlayMenuSelectSound()
     {
         menuSelectSoundPlayer.Play();
+    }
+
+    public void PlayMenuRolloutSound()
+    {
+        menuRolloutSoundPlayer.Play();
+    }
+
+    public void PlayMenuOpenSound()
+    {
+        menuOpenSoundPlayer.Play();
     }
 
     public void PlayTypeWriterSound()

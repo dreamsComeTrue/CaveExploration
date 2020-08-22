@@ -1,5 +1,5 @@
-.import/
-.mono/
-binaries/
+Binaries/
+GameClient/.import/
+GameClient/.mono/
 GameServer/bin/
 GameServer/obj/

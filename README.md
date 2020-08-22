@@ -1,4 +1,4 @@
-# Unhidden
+# unHIDDEN
 
 Multiplayer cave exploring/escape adventure
 
@@ -10,7 +10,7 @@ Propsal names:
 
 ex-silentio
 Got Your Back
-unhidden
+unHIDDEN
 
 
 ====== GAMEPLAY:

@@ -94,6 +94,9 @@ margin_top = -10.0
 margin_right = 42.25
 margin_bottom = 16.0
 custom_fonts/font = SubResource( 1 )
+custom_colors/font_color_shadow = Color( 0.505882, 0.215686, 0.560784, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
 text = "Play!"
 __meta__ = {
 "_edit_use_anchors_": false
