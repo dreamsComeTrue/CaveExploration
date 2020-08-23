@@ -61,7 +61,7 @@ public class InGameMenu : Control
         {
             HideInGameMenu();
         }
-        
+
         audioManager.PlayMenuRolloutSound();
     }
 
@@ -175,6 +175,13 @@ public class InGameMenu : Control
 
     public void FocusButton(MenuButton button)
     {
+        if (button == selectedButton)
+        {
+            return;
+        }
+
+        audioManager.PlayMenuFocusOptionSound();
+        
         selectedButton?.UnfocusButton();
         selectedButton = button;
         selectedButton?.FocusButton();

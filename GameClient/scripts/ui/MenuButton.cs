@@ -16,6 +16,7 @@ public class MenuButton : TextureButton
     private Signals signals;
     private AudioManager audioManager;
 
+
     public override void _Ready()
     {
         pulsateAnimationPlayer = GetNode<AnimationPlayer>("PulsateAnimationPlayer");
@@ -32,13 +33,12 @@ public class MenuButton : TextureButton
 
     private void _on_MenuButton_mouse_entered()
     {
-        audioManager.PlayMenuFocusOptionSound();
         signals.EmitSignal(nameof(Signals.FocusMenuButton), this);
     }
 
     private void _on_MenuButton_mouse_exited()
     {
-        signals.EmitSignal(nameof(Signals.UnFocusMenuButton));
+        //  Do not force to UnFocus button (better UI responsivness)
     }
 
     public void FocusButton()

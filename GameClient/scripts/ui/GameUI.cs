@@ -15,17 +15,19 @@ public class GameUI : Control
     private Signals signals;
 
     private Control overlays;
+    private Control uiElements;
 
     private float flashLightOffset = 0.0f;
 
     public override void _Ready()
     {
         inGameMenu = GetNode<InGameMenu>("CanvasLayer/InGameMenu");
-        miniMapTexture = GetNode<NinePatchRect>("CanvasLayer/MinimapTexture");
-        flashLightTexture = GetNode<TextureRect>("CanvasLayer/FlashLightTextureFrame/FlashLightTexture");
-        countdownLabel = GetNode<Label>("CanvasLayer/Countdown/CountdownTimer");
-        inventoryItem1 = GetNode<InventoryItem>("CanvasLayer/InventoryItem1");
-        inventoryItem2 = GetNode<InventoryItem>("CanvasLayer/InventoryItem2");
+        miniMapTexture = GetNode<NinePatchRect>("CanvasLayer/UIElements/MinimapTexture");
+        flashLightTexture = GetNode<TextureRect>("CanvasLayer/UIElements/FlashLightTextureFrame/FlashLightTexture");
+        countdownLabel = GetNode<Label>("CanvasLayer/UIElements/Countdown/CountdownTimer");
+        inventoryItem1 = GetNode<InventoryItem>("CanvasLayer/UIElements/InventoryItem1");
+        inventoryItem2 = GetNode<InventoryItem>("CanvasLayer/UIElements/InventoryItem2");
+        uiElements = GetNode<Control>("CanvasLayer/UIElements");
 
         overlays = GetTree().Root.GetNode<Control>("Gameplay/GameUI/CanvasLayer/Overlays");
 
@@ -33,6 +35,7 @@ public class GameUI : Control
         signals.Connect(nameof(Signals.PulseGameplayTimer), this, nameof(OnPulseGameplayTimer));
         signals.Connect(nameof(Signals.LightBarsChanged), this, nameof(OnLightBarsChanged));
         signals.Connect(nameof(Signals.FlashLightToggled), this, nameof(OnFlashLightToggled));
+        signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
     }
 
     public override void _UnhandledKeyInput(InputEventKey @event)
@@ -45,6 +48,7 @@ public class GameUI : Control
             {
                 case KeyList.Escape:
                     inGameMenu.ToggleVisibility();
+                    ToggleVisibility();
                     break;
 
                 case KeyList.M:
@@ -59,6 +63,28 @@ public class GameUI : Control
                     FocusInventoryItem(inventoryItem2);
                     break;
             }
+        }
+    }
+
+    private void OnInGameMenuVisibilityChanged(bool visible)
+    {
+        if (!visible)
+        {
+            ToggleVisibility();
+        }
+    }
+
+    private void ToggleVisibility()
+    {
+        AnimationPlayer animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+
+        if (uiElements.Visible)
+        {
+            animPlayer.Play("fade");
+        }
+        else
+        {
+            animPlayer.PlayBackwards("fade");
         }
     }
 

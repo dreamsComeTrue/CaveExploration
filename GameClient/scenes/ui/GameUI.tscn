@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://gfx/ui/light_bar.png" type="Texture" id=1]
 [ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=2]
@@ -91,7 +91,37 @@ region = Rect2( 16, 0, 7, 10 )
 size = 40
 font_data = ExtResource( 4 )
 
+[sub_resource type="Animation" id=12]
+resource_name = "fade"
+length = 0.2
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("CanvasLayer/UIElements:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CanvasLayer/UIElements:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.18, 0.19 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [node name="GameUI" type="Control"]
+modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -112,7 +142,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FlashLightTextureFrame" type="TextureRect" parent="CanvasLayer"]
+[node name="UIElements" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FlashLightTextureFrame" type="TextureRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.653333
 anchor_top = 0.0118519
 anchor_right = 0.993333
@@ -126,7 +163,7 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="FlashLightTexture" type="TextureRect" parent="CanvasLayer/FlashLightTextureFrame"]
+[node name="FlashLightTexture" type="TextureRect" parent="CanvasLayer/UIElements/FlashLightTextureFrame"]
 show_behind_parent = true
 material = SubResource( 4 )
 anchor_right = 1.0
@@ -139,7 +176,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MinimapTexture" type="NinePatchRect" parent="CanvasLayer"]
+[node name="MinimapTexture" type="NinePatchRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.0133333
 anchor_top = 0.0237037
 anchor_right = 0.18
@@ -155,10 +192,10 @@ patch_margin_top = 4
 patch_margin_right = 4
 patch_margin_bottom = 4
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
-[node name="MinimapCanvas" type="Control" parent="CanvasLayer/MinimapTexture"]
+[node name="MinimapCanvas" type="Control" parent="CanvasLayer/UIElements/MinimapTexture"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -170,7 +207,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FlashLight" type="TextureRect" parent="CanvasLayer"]
+[node name="FlashLight" type="TextureRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.653333
 anchor_top = 0.0422222
 anchor_right = 0.697278
@@ -179,10 +216,10 @@ texture = SubResource( 5 )
 expand = true
 stretch_mode = 6
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="CanvasLayer"]
+[node name="Label" type="Label" parent="CanvasLayer/UIElements"]
 anchor_left = 0.87207
 anchor_top = 0.9717
 anchor_right = 0.996094
@@ -193,10 +230,10 @@ text = "PING: 0ms"
 align = 2
 valign = 1
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
-[node name="Countdown" type="Control" parent="CanvasLayer"]
+[node name="Countdown" type="Control" parent="CanvasLayer/UIElements"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -19.9999
@@ -207,7 +244,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CountdownTimer" type="Label" parent="CanvasLayer/Countdown"]
+[node name="CountdownTimer" type="Label" parent="CanvasLayer/UIElements/Countdown"]
 anchor_left = -1.2625
 anchor_top = 0.6625
 anchor_right = 2.2625
@@ -222,11 +259,11 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Countdown/CountdownTimer"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/UIElements/Countdown/CountdownTimer"]
 autoplay = "pulsate"
 anims/pulsate = SubResource( 8 )
 
-[node name="InventoryItem1" parent="CanvasLayer" instance=ExtResource( 9 )]
+[node name="InventoryItem1" parent="CanvasLayer/UIElements" instance=ExtResource( 9 )]
 anchor_left = 0.0432614
 anchor_top = 0.350015
 anchor_right = 0.0965942
@@ -234,7 +271,7 @@ anchor_bottom = 0.44483
 margin_right = 0.0
 margin_bottom = 0.0
 
-[node name="Item1TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="Item1TextureRect" type="TextureRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.0299005
 anchor_top = 0.435902
 anchor_right = 0.0415672
@@ -243,10 +280,10 @@ texture = SubResource( 9 )
 expand = true
 stretch_mode = 6
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
-[node name="InventoryItem2" parent="CanvasLayer" instance=ExtResource( 9 )]
+[node name="InventoryItem2" parent="CanvasLayer/UIElements" instance=ExtResource( 9 )]
 anchor_left = 0.0432614
 anchor_top = 0.477904
 anchor_right = 0.0965942
@@ -254,7 +291,7 @@ anchor_bottom = 0.572719
 margin_right = 0.0
 margin_bottom = 0.0
 
-[node name="Item2TextureRect2" type="TextureRect" parent="CanvasLayer"]
+[node name="Item2TextureRect2" type="TextureRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.0299005
 anchor_top = 0.562972
 anchor_right = 0.0415672
@@ -264,10 +301,10 @@ texture = SubResource( 10 )
 expand = true
 stretch_mode = 6
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
-[node name="HungerTexture" type="TextureRect" parent="CanvasLayer"]
+[node name="HungerTexture" type="TextureRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.929
 anchor_top = 0.31
 anchor_right = 0.972
@@ -283,7 +320,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OxygenTexture" type="TextureRect" parent="CanvasLayer"]
+[node name="OxygenTexture" type="TextureRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.929
 anchor_top = 0.409
 anchor_right = 0.972
@@ -330,3 +367,6 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fade = SubResource( 12 )

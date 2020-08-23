@@ -175,6 +175,13 @@ public class MainMenuUI : Control
 
     public void FocusButton(MenuButton button)
     {
+        if (button == selectedButton)
+        {
+            return;
+        }
+
+        audioManager.PlayMenuFocusOptionSound();
+
         UnfocusNameEdit();
         selectedButton?.UnfocusButton();
         selectedButton = button;
@@ -191,7 +198,7 @@ public class MainMenuUI : Control
     {
         if (!buttonPlay.Disabled)
         {
-             audioManager.PlayMenuOpenSound();
+            audioManager.PlayMenuOpenSound();
             GameManager gameManager = (GameManager)GetNode("/root/GameManager");
             gameManager.PlayerName = nameLineEdit.Text;
 
