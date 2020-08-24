@@ -16,6 +16,10 @@ public class GameUI : Control
 
     private Control overlays;
     private Control uiElements;
+    
+    private AudioManager audioManager;
+
+    public bool enabled = false;
 
     private float flashLightOffset = 0.0f;
 
@@ -36,6 +40,8 @@ public class GameUI : Control
         signals.Connect(nameof(Signals.LightBarsChanged), this, nameof(OnLightBarsChanged));
         signals.Connect(nameof(Signals.FlashLightToggled), this, nameof(OnFlashLightToggled));
         signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
+        
+        audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
     public override void _UnhandledKeyInput(InputEventKey @event)
@@ -47,8 +53,10 @@ public class GameUI : Control
             switch (key)
             {
                 case KeyList.Escape:
-                    inGameMenu.ToggleVisibility();
-                    ToggleVisibility();
+                    audioManager.PlayMenuRolloutSound();
+
+                    bool shown = inGameMenu.ToggleVisibility();
+                    OnInGameMenuVisibilityChanged(shown);
                     break;
 
                 case KeyList.M:
@@ -68,17 +76,9 @@ public class GameUI : Control
 
     private void OnInGameMenuVisibilityChanged(bool visible)
     {
-        if (!visible)
-        {
-            ToggleVisibility();
-        }
-    }
-
-    private void ToggleVisibility()
-    {
         AnimationPlayer animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
-        if (uiElements.Visible)
+        if (visible)
         {
             animPlayer.Play("fade");
         }
@@ -115,7 +115,7 @@ public class GameUI : Control
 
     public void OnFlashLightToggled(bool visible)
     {
-        AtlasTexture atlas = GetNode<TextureRect>("CanvasLayer/FlashLight").Texture as AtlasTexture;
+        AtlasTexture atlas = GetNode<TextureRect>("CanvasLayer/UIElements/FlashLight").Texture as AtlasTexture;
         Vector2 position = visible ? Vector2.Zero : new Vector2(0.0f, 128.0f);
         atlas.Region = new Rect2(position, atlas.Region.Size);
 

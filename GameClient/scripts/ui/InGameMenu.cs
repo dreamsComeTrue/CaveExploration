@@ -39,8 +39,10 @@ public class InGameMenu : Control
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
-    public void ToggleVisibility()
+    public bool ToggleVisibility()
     {
+        bool shown = false;
+        
         if (!Visible)
         {
             animationPlayer.Play("slide");
@@ -56,26 +58,24 @@ public class InGameMenu : Control
                 FocusButton(selectedButton);
                 selectedButton?.FocusButton();
             }
+            
+            shown = true;
         }
         else
         {
-            HideInGameMenu();
+            animationPlayer.PlayBackwards("slide");
+            signals.EmitSignal(nameof(Signals.InGameMenuVisibilityChanged), false);
+            selectedButton?.UnfocusButton();
+            
+            shown = false;
         }
 
-        audioManager.PlayMenuRolloutSound();
+        return shown;
     }
 
     public void SlideFunction()
     {
         overlays.Visible = !this.Visible;
-    }
-
-    private void HideInGameMenu()
-    {
-        animationPlayer.PlayBackwards("slide");
-        signals.EmitSignal(nameof(Signals.InGameMenuVisibilityChanged), false);
-
-        selectedButton?.UnfocusButton();
     }
 
     public override void _UnhandledKeyInput(InputEventKey @event)
@@ -181,7 +181,7 @@ public class InGameMenu : Control
         }
 
         audioManager.PlayMenuFocusOptionSound();
-        
+
         selectedButton?.UnfocusButton();
         selectedButton = button;
         selectedButton?.FocusButton();
@@ -195,7 +195,7 @@ public class InGameMenu : Control
 
     private void _on_MenuButtonResume_pressed()
     {
-        HideInGameMenu();
+        ToggleVisibility();
     }
 
     private void _on_MenuButtonLeave_pressed()
