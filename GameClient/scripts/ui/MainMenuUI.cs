@@ -253,7 +253,6 @@ public class MainMenuUI : Control
                 }
                 else if (key == KeyList.Enter || key == KeyList.KpEnter)
                 {
-                    audioManager.PlayMenuSelectSound();
                     buttonPlay._on_MenuButton_button_down();
                 }
                 else if (IsKeyAlphanumeric(key))

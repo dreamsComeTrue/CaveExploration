@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/ui/InGameMenu.cs" type="Script" id=1]
 [ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=2]
@@ -80,6 +80,22 @@ size = 100
 outline_size = 1
 outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
 font_data = ExtResource( 2 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "pulsate"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.98, 0.98 ), Vector2( 1, 1 ) ]
+}
 
 [node name="InGameMenu" type="Control"]
 visible = false
@@ -234,12 +250,17 @@ margin_left = 428.0
 margin_top = -50.0
 margin_right = 732.0
 margin_bottom = 7.0
+rect_pivot_offset = Vector2( 152, 29 )
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
 text = "unHIDDEN"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TitleContainer/TitleLabel"]
+autoplay = "pulsate"
+anims/pulsate = SubResource( 3 )
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonResume" to="." method="_on_MenuButtonResume_pressed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonLeave" to="." method="_on_MenuButtonLeave_pressed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonQuit" to="." method="_on_MenuButtonQuit_pressed"]

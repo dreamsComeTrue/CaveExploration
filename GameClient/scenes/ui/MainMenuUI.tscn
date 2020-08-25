@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=2]
@@ -170,6 +170,22 @@ outline_size = 1
 outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
 font_data = ExtResource( 1 )
 
+[sub_resource type="Animation" id=14]
+resource_name = "pulsate"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.98, 0.98 ), Vector2( 1, 1 ) ]
+}
+
 [sub_resource type="DynamicFont" id=13]
 size = 20
 font_data = ExtResource( 1 )
@@ -203,7 +219,6 @@ margin_left = -165.0
 margin_top = -168.0
 margin_right = 165.0
 margin_bottom = 168.0
-rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
 texture = ExtResource( 2 )
@@ -371,15 +386,20 @@ anims/slide = SubResource( 11 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -152.0
-margin_top = -60.0
+margin_top = 40.0
 margin_right = 152.0
-margin_bottom = -3.0
+margin_bottom = 97.0
+rect_pivot_offset = Vector2( 152, 29 )
 custom_fonts/font = SubResource( 12 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
 text = "unHIDDEN"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TitleLabel"]
+autoplay = "pulsate"
+anims/pulsate = SubResource( 14 )
 
 [node name="CompanyLabel" type="Label" parent="."]
 anchor_top = 1.0
@@ -390,6 +410,14 @@ margin_right = 128.0
 custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 0.4, 0.392157, 0.392157, 1 )
 text = "AGADO Studio | v.0.1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.995, 0.995 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
