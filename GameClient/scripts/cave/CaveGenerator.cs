@@ -20,6 +20,7 @@ public class CaveGenerator
     public int MaxTreasuresPerRoom;
     public int MaxDecorationsPerRoom;
 
+    public int MaxPlayersCount;
     public int MaxRoomsCount;
 
     public CellType[,] data;
@@ -29,10 +30,11 @@ public class CaveGenerator
 
     Grid2D<CellType> grid;
 
-    public CaveGenerator(int width, int height, int maxRoomsCount, int maxTreasuresPerRoomCount, int maxDecorationsPerRoom)
+    public CaveGenerator(int width, int height, int maxPlayersCount, int maxRoomsCount, int maxTreasuresPerRoomCount, int maxDecorationsPerRoom)
     {
         GridWidth = width;
         GridHeight = height;
+        MaxPlayersCount = maxPlayersCount;
         MaxRoomsCount = maxRoomsCount;
         MaxTreasuresPerRoom = maxTreasuresPerRoomCount;
         MaxDecorationsPerRoom = maxDecorationsPerRoom;
@@ -53,6 +55,8 @@ public class CaveGenerator
         GenerateRoomData();
         FindPaths(rooms, mst);
         CleanUpBlocks();
+        GeenrateStartPoints();
+        GenerateExitRoom();
 
         return data;
     }
@@ -414,6 +418,30 @@ public class CaveGenerator
         }
     }
 
+    private void GeenrateStartPoints()
+    {
+        int currentStartPoints = 0;
+
+        while (currentStartPoints < MaxPlayersCount)
+        {
+            int roomIndex = (int)GD.RandRange(0, rooms.Count);
+
+            if (!rooms[roomIndex].IsStartPoint)
+            {
+                rooms[roomIndex].IsStartPoint = true;
+                currentStartPoints++;
+            }
+        }
+    }
+
+    private void GenerateExitRoom()
+    {
+        foreach (Room room in rooms)
+        {
+
+        }
+    }
+
     public class Triangle
     {
         public Vector2 pointA;
@@ -425,6 +453,9 @@ public class CaveGenerator
     {
         public Rect2 Area;
 
+        public bool IsExit;
+        public bool IsStartPoint;
+
         public List<Vector2> Treasures;
         public List<Vector2> Decorations;
 
@@ -433,6 +464,8 @@ public class CaveGenerator
             Area = new Rect2(x, y, width, height);
             Treasures = new List<Vector2>();
             Decorations = new List<Vector2>();
+            IsExit = false;
+            IsStartPoint = false;
         }
     }
 }

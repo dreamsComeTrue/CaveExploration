@@ -50,8 +50,9 @@ public class Player : KinematicBody
     private void OnMapGenerated()
     {
         CaveGeneratorNode caveGenerator = GetParent().GetNode<CaveGeneratorNode>("CaveGenerator");
-        List<CaveGenerator.Room> rooms = caveGenerator.rooms;
-        CaveGenerator.Room room = rooms[(int)GD.RandRange(0, rooms.Count)];
+        List<CaveGenerator.Room> startingPointRooms = caveGenerator.rooms.FindAll(x => x.IsStartPoint);
+
+        CaveGenerator.Room room = startingPointRooms[(int)GD.RandRange(0, startingPointRooms.Count)];
         Vector2 middlePoint = (room.Area.Position + room.Area.Size / 2) * 0.5f;
 
         Vector3 newTranslation = new Vector3(middlePoint.x, Translation.y, middlePoint.y);
@@ -97,7 +98,7 @@ public class Player : KinematicBody
         {
             footStepsAudio.Playing = movedThisFrame;
         }
-        
+
         if (!movedThisFrame)
         {
             footStepsAudio.Playing = false;

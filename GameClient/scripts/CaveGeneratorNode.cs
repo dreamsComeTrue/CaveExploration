@@ -14,6 +14,9 @@ public class CaveGeneratorNode : Spatial
 
     private int MapSize = 64;
 
+    [Export]
+    public int MaxPlayers = 4;
+
     public CaveGenerator.CellType[,] mapData;
     public List<CaveGenerator.Room> rooms;
     public List<CaveGenerator.Triangle> triangles;
@@ -25,7 +28,7 @@ public class CaveGeneratorNode : Spatial
         groundTileScene = (PackedScene)ResourceLoader.Load("res://scenes/GroundTile.tscn");
         treasureScene = (PackedScene)ResourceLoader.Load("res://scenes/Treasure.tscn");
         decorationScene = (PackedScene)ResourceLoader.Load("res://scenes/LevelDecoration.tscn");
-        caveGenerator = new CaveGenerator(MapSize, MapSize, 16, 2, 5);
+        caveGenerator = new CaveGenerator(MapSize, MapSize, MaxPlayers, 16, 2, 5);
 
         signals = (Signals)GetNode("/root/Signals");
 
@@ -198,7 +201,7 @@ public class CaveGeneratorNode : Spatial
     {
         Spatial decoration = (Spatial)decorationScene.Instance();
         decoration.Translation = new Vector3(x, 0.0f, y);
-        
+
         int randAngle = (int)(GD.Randi() % 24) * 15;
         decoration.RotationDegrees = new Vector3(0.0f, randAngle, 0.0f);
 
