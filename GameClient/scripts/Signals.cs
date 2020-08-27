@@ -28,4 +28,11 @@ public class Signals : Node
 
     [Signal]
     public delegate void UnFocusMenuButton();
+
+    //  AUDIO   
+    [Signal]
+    public delegate void SoundsMuted(bool muted);
+
+    [Signal]
+    public delegate void MusicMuted(bool muted);
 }

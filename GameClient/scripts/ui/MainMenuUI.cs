@@ -14,6 +14,7 @@ public class MainMenuUI : Control
     private MenuButton buttonPlay;
     private MenuButton buttonOptions;
     private MenuButton buttonExit;
+    private MessageNotifier messageNotifier;
 
     private MenuButton selectedButton;
 
@@ -26,6 +27,7 @@ public class MainMenuUI : Control
         buttonPlay = GetNode<MenuButton>("UIFrame/VBoxContainer/MenuButtonPlay");
         buttonOptions = GetNode<MenuButton>("UIFrame/VBoxContainerBottom/MenuButtonOptions");
         buttonExit = GetNode<MenuButton>("UIFrame/VBoxContainerBottom/MenuButtonExit");
+        messageNotifier = GetNode<MessageNotifier>("MessageNotifier");
 
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
@@ -35,6 +37,8 @@ public class MainMenuUI : Control
         audioManager = (AudioManager)GetNode("/root/AudioManager");
         signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
         signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+        signals.Connect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
+        signals.Connect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
 
         ToggleVisibility();
 
@@ -192,6 +196,30 @@ public class MainMenuUI : Control
     {
         selectedButton?.UnfocusButton();
         selectedButton = null;
+    }
+
+    private void OnSoundsMuted(bool muted)
+    {
+        if (muted)
+        {
+            messageNotifier.AddMessage("Sounds disabled...");
+        }
+        else
+        {
+            messageNotifier.AddMessage("Sounds enabled...");
+        }
+    }
+
+    private void OnMusicMuted(bool muted)
+    {
+        if (muted)
+        {
+            messageNotifier.AddMessage("Music disabled...");
+        }
+        else
+        {
+            messageNotifier.AddMessage("Music enabled...");
+        }
     }
 
     public void _on_MenuButtonPlay_pressed()

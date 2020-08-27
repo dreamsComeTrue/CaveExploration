@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=2]
 [ext_resource path="res://scenes/ui/MenuButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://gfx/ui/frame_blue_single.png" type="Texture" id=4]
 [ext_resource path="res://scripts/ui/MainMenuUI.cs" type="Script" id=5]
+[ext_resource path="res://scenes/ui/MessageNotifier.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -170,7 +171,7 @@ outline_size = 1
 outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=13]
 resource_name = "pulsate"
 loop = true
 tracks/0/type = "value"
@@ -186,7 +187,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.98, 0.98 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="DynamicFont" id=14]
 size = 20
 font_data = ExtResource( 1 )
 
@@ -399,7 +400,7 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TitleLabel"]
 autoplay = "pulsate"
-anims/pulsate = SubResource( 14 )
+anims/pulsate = SubResource( 13 )
 
 [node name="CompanyLabel" type="Label" parent="."]
 anchor_top = 1.0
@@ -407,20 +408,14 @@ anchor_bottom = 1.0
 margin_left = 8.0
 margin_top = -14.0
 margin_right = 128.0
-custom_fonts/font = SubResource( 13 )
+custom_fonts/font = SubResource( 14 )
 custom_colors/font_color = Color( 0.4, 0.392157, 0.392157, 1 )
 text = "AGADO Studio | v.0.1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-rect_scale = Vector2( 0.995, 0.995 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="MessageNotifier" parent="." instance=ExtResource( 6 )]
 [connection signal="gui_input" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_gui_input"]
 [connection signal="text_changed" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_text_changed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonPlay" to="." method="_on_MenuButtonPlay_pressed"]

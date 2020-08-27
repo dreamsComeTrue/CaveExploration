@@ -14,9 +14,11 @@ public class GameUI : Control
 
     private Signals signals;
 
+    private MessageNotifier messageNotifier;
+
     private Control overlays;
     private Control uiElements;
-    
+
     private AudioManager audioManager;
 
     public bool enabled = false;
@@ -35,12 +37,16 @@ public class GameUI : Control
 
         overlays = GetTree().Root.GetNode<Control>("Gameplay/GameUI/CanvasLayer/Overlays");
 
+        messageNotifier = GetNode<MessageNotifier>("CanvasLayer/MessageNotifier");
+
         signals = (Signals)GetNode("/root/Signals");
         signals.Connect(nameof(Signals.PulseGameplayTimer), this, nameof(OnPulseGameplayTimer));
         signals.Connect(nameof(Signals.LightBarsChanged), this, nameof(OnLightBarsChanged));
         signals.Connect(nameof(Signals.FlashLightToggled), this, nameof(OnFlashLightToggled));
         signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
-        
+        signals.Connect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
+        signals.Connect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
@@ -144,5 +150,29 @@ public class GameUI : Control
         }
 
         countdownLabel.Text = timeString;
+    }
+
+    private void OnSoundsMuted(bool muted)
+    {
+        if (muted)
+        {
+            messageNotifier.AddMessage("Sounds disabled...");
+        }
+        else
+        {
+            messageNotifier.AddMessage("Sounds enabled...");
+        }
+    }
+
+    private void OnMusicMuted(bool muted)
+    {
+        if (muted)
+        {
+            messageNotifier.AddMessage("Music disabled...");
+        }
+        else
+        {
+            messageNotifier.AddMessage("Music enabled...");
+        }
     }
 }

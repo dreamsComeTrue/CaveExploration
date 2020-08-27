@@ -3,6 +3,8 @@ using System;
 
 public class AudioManager : Node
 {
+    private Signals signals;
+    
     private AudioStreamPlayer menuMusicPlayer;
     private AudioStreamPlayer menuTypeWriterPlayer;
     private AudioStreamPlayer menuRolloutSoundPlayer;
@@ -33,6 +35,8 @@ public class AudioManager : Node
 
         menuTypeWriterPlayer = AddSound("res://sounds/ui/Menu_Select_00.wav");
         menuTypeWriterPlayer.VolumeDb = SOUND_VOLUME;
+        
+        signals = (Signals)GetNode("/root/Signals");
     }
 
     private AudioStreamPlayer AddSound(string resPath)
@@ -101,12 +105,14 @@ public class AudioManager : Node
             if (pressedKey == KeyList.F10)
             {
                 SoundsMuted = !SoundsMuted;
+                signals.EmitSignal(nameof(Signals.SoundsMuted), SoundsMuted);
             }
 
             if (pressedKey == KeyList.F11)
             {
                 MusicMuted = !MusicMuted;
                 menuMusicPlayer.Playing = !MusicMuted;
+                signals.EmitSignal(nameof(Signals.MusicMuted), MusicMuted);
             }
         }
     }

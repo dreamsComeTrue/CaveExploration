@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/ui/MessageNotifierItem.cs" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 34
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "show"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 2.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 2.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 35, 670 ), Vector2( 35, 630 ), Vector2( 35, 630 ), Vector2( 35, 600 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 2.9, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "BeforeDestroy"
+}, {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[node name="MessageNotifierItem" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MessageNotifierLabel" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 35.0
+margin_top = 630.0
+margin_right = 191.0
+margin_bottom = 650.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0.631373, 0.631373, 0.631373, 1 )
+text = "Message text"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MessageNotifierLabel"]
+autoplay = "show"
+anims/show = SubResource( 2 )
