@@ -9,8 +9,11 @@ public class AudioManager : Node
     private AudioStreamPlayer menuFocusSoundPlayer;
     private AudioStreamPlayer menuOpenSoundPlayer;
     private AudioStreamPlayer menuSelectSoundPlayer;
-    
+
     private const float SOUND_VOLUME = -12.0f;
+
+    public bool MusicMuted = false;
+    public bool SoundsMuted = false;
 
     public override void _Ready()
     {
@@ -35,7 +38,7 @@ public class AudioManager : Node
     private AudioStreamPlayer AddSound(string resPath)
     {
         AudioStreamPlayer player = new AudioStreamPlayer();
-        player.Stream = ResourceLoader.Load<AudioStream>(resPath);        
+        player.Stream = ResourceLoader.Load<AudioStream>(resPath);
         AddChild(player);
 
         return player;
@@ -43,31 +46,68 @@ public class AudioManager : Node
 
     public void PlayMainMenuMusic()
     {
-        menuMusicPlayer.Play();
+        if (!MusicMuted)
+        {
+            menuMusicPlayer.Play();
+        }
     }
 
     public void PlayMenuFocusOptionSound()
     {
-        menuFocusSoundPlayer.Play();
+        if (!SoundsMuted)
+        {
+            menuFocusSoundPlayer.Play();
+        }
     }
 
     public void PlayMenuSelectSound()
     {
-        menuSelectSoundPlayer.Play();
+        if (!SoundsMuted)
+        {
+            menuSelectSoundPlayer.Play();
+        }
     }
 
     public void PlayMenuRolloutSound()
     {
-        menuRolloutSoundPlayer.Play();
+        if (!SoundsMuted)
+        {
+            menuRolloutSoundPlayer.Play();
+        }
     }
 
     public void PlayMenuOpenSound()
     {
-        menuOpenSoundPlayer.Play();
+        if (!SoundsMuted)
+        {
+            menuOpenSoundPlayer.Play();
+        }
     }
 
     public void PlayTypeWriterSound()
     {
-        menuTypeWriterPlayer.Play();
+        if (!SoundsMuted)
+        {
+            menuTypeWriterPlayer.Play();
+        }
+    }
+
+    public override void _UnhandledKeyInput(InputEventKey @event)
+    {
+        if (@event.Pressed)
+        {
+            KeyList pressedKey = (KeyList)@event.Scancode;
+
+            if (pressedKey == KeyList.F10)
+            {
+                SoundsMuted = !SoundsMuted;
+            }
+
+            if (pressedKey == KeyList.F11)
+            {
+                MusicMuted = !MusicMuted;
+                menuMusicPlayer.Playing = !MusicMuted;
+            }
+        }
     }
 }
