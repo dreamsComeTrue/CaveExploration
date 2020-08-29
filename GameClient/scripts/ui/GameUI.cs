@@ -53,6 +53,16 @@ public class GameUI : Control
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
+    public override void _ExitTree()
+    {
+        signals.Disconnect(nameof(Signals.PulseGameplayTimer), this, nameof(OnPulseGameplayTimer));
+        signals.Disconnect(nameof(Signals.LightBarsChanged), this, nameof(OnLightBarsChanged));
+        signals.Disconnect(nameof(Signals.FlashLightToggled), this, nameof(OnFlashLightToggled));
+        signals.Disconnect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
+        signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
+        signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+    }
+
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
         if (@event.Pressed)

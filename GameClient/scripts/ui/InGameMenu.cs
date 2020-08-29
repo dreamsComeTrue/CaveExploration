@@ -39,10 +39,16 @@ public class InGameMenu : Control
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
+    public override void _ExitTree()
+    {
+        signals.Disconnect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
+        signals.Disconnect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+    }
+
     public bool ToggleVisibility()
     {
         bool shown = false;
-        
+
         if (!Visible)
         {
             animationPlayer.Play("slide");
@@ -58,7 +64,7 @@ public class InGameMenu : Control
                 FocusButton(selectedButton);
                 selectedButton?.FocusButton();
             }
-            
+
             shown = true;
         }
         else
@@ -66,7 +72,7 @@ public class InGameMenu : Control
             animationPlayer.PlayBackwards("slide");
             signals.EmitSignal(nameof(Signals.InGameMenuVisibilityChanged), false);
             selectedButton?.UnfocusButton();
-            
+
             shown = false;
         }
 

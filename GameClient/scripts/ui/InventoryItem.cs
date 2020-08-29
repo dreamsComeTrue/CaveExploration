@@ -14,6 +14,11 @@ public class InventoryItem : NinePatchRect
         signals.Connect(nameof(Signals.FocusInventoryItem), this, nameof(OnFocusInventoryItem));
     }
 
+    public override void _ExitTree()
+    {
+        signals.Disconnect(nameof(Signals.FocusInventoryItem), this, nameof(OnFocusInventoryItem));
+    }
+
     private void OnFocusInventoryItem(InventoryItem item)
     {
         if (item == this)

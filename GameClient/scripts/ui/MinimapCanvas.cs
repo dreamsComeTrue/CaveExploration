@@ -13,6 +13,12 @@ public class MinimapCanvas : Control
         signals.Connect(nameof(Signals.PlayerMoved), this, nameof(OnPlayerMoved));
     }
 
+    public override void _ExitTree()
+    {
+        signals.Disconnect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
+        signals.Disconnect(nameof(Signals.PlayerMoved), this, nameof(OnPlayerMoved));
+    }
+
     private void OnMapGenerated()
     {
         CaveGeneratorNode generator = GetTree().Root.GetNode<CaveGeneratorNode>("Gameplay/ViewportContainer/Viewport/CaveGenerator");

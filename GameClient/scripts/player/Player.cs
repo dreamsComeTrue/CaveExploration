@@ -25,7 +25,7 @@ public class Player : KinematicBody
     private Tween cameraMovemenetTween;
     private Camera gameplayCamera;
     private Label nameOverlay;
-    private Vector3 cameraPlayerOffset = new Vector3(0, 1.5f, 1.5f);    
+    private Vector3 cameraPlayerOffset = new Vector3(0, 1.5f, 1.5f);
     private AudioManager audioManager;
 
     private AudioStreamPlayer3D footStepsAudio;
@@ -44,11 +44,17 @@ public class Player : KinematicBody
         gameplayCamera = GetTree().Root.GetNode<Camera>("Gameplay/ViewportContainer/Viewport/GameplayCamera");
         nameOverlay = GetTree().Root.GetNode<Label>("Gameplay/GameUI/CanvasLayer/Overlays/PlayerNameLabel");
         footStepsAudio = GetNode<AudioStreamPlayer3D>("FootStepsAudioStreamPlayer3D");
-        
+
         audioManager = (AudioManager)GetNode("/root/AudioManager");
-        
+
         cameraMovemenetTween = new Tween();
         AddChild(cameraMovemenetTween);
+    }
+
+    public override void _ExitTree()
+    {
+        signals.Disconnect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
+        signals.Disconnect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
     }
 
     private void OnMapGenerated()

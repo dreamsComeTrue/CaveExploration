@@ -26,6 +26,11 @@ public class FlashLight : SpotLight
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
+    public override void _ExitTree()
+    {
+        signals.Disconnect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
+    }
+
     private void OnMapGenerated()
     {
         currentLightBars = DEFAULT_MAX_LIGHTBARS;
