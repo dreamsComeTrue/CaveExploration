@@ -1,4 +1,5 @@
-Binaries/
+Binaries/data_unHIDDEN
+Binaries/unHIDDEN*
 GameClient/.import/
 GameClient/.mono/
 GameServer/bin/

@@ -71,6 +71,11 @@ action_tool={
  ]
 }
 
+[mono]
+
+export/export_assemblies_inside_pck=false
+export/i18n_codesets=0
+
 [rendering]
 
 quality/2d/use_nvidia_rect_flicker_workaround=true
