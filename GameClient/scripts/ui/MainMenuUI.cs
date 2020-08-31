@@ -7,6 +7,7 @@ public class MainMenuUI : Control
     AnimationPlayer animationPlayer;
     private ScenesFadeTransition scenesFadeTransition;
     private Signals signals;
+    private GameManager gameManager;
     private AudioManager audioManager;
 
     private LineEdit nameLineEdit;
@@ -40,6 +41,8 @@ public class MainMenuUI : Control
         signals.Connect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
         signals.Connect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
 
+        gameManager = (GameManager)GetNode("/root/GameManager");
+
         ToggleVisibility();
 
         FocusButton(null);
@@ -52,8 +55,26 @@ public class MainMenuUI : Control
         nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
 
         audioManager.PlayMainMenuMusic();
+
+        RecoverPreviousPlayerName();
     }
 
+    public override void _ExitTree()
+    {
+        signals.Disconnect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
+        signals.Disconnect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+        signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
+        signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+    }
+
+    private void RecoverPreviousPlayerName()
+    {
+        if (!string.IsNullOrEmpty(gameManager.PlayerName))
+        {
+            nameLineEdit.Text = gameManager.PlayerName;
+            nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
+        }
+    }
     public void ToggleVisibility()
     {
         if (!Visible)
@@ -227,7 +248,6 @@ public class MainMenuUI : Control
         if (!buttonPlay.Disabled)
         {
             audioManager.PlayMenuOpenSound();
-            GameManager gameManager = (GameManager)GetNode("/root/GameManager");
             gameManager.PlayerName = nameLineEdit.Text;
 
             scenesFadeTransition.Run("res://scenes/GameplayScene.tscn");
@@ -315,7 +335,8 @@ public class MainMenuUI : Control
     {
         KeyList[] codes = { KeyList.Space, KeyList.Backspace, KeyList.Left, KeyList.Right, KeyList.Minus,
                             KeyList.Plus, KeyList.Ampersand, KeyList.Bracketleft, KeyList.Bracketright, KeyList.Semicolon,
-                            KeyList.Apostrophe, KeyList.Backslash, KeyList.Comma, KeyList.Period, KeyList.Slash };
+                            KeyList.Apostrophe, KeyList.Backslash, KeyList.Comma, KeyList.Period, KeyList.Slash,
+                            KeyList.Home, KeyList.End, KeyList.Delete };
         return (key >= KeyList.A && key <= KeyList.Z) || (key >= KeyList.Key0 && key <= KeyList.Key9) || Array.IndexOf(codes, key) != -1;
     }
 

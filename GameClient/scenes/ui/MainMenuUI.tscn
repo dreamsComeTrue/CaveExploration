@@ -304,6 +304,7 @@ custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 0, 1 )
 text = "Player"
 align = 1
+max_length = 16
 clear_button_enabled = true
 placeholder_text = "Enter name here..."
 placeholder_alpha = 0.4
