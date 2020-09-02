@@ -128,18 +128,17 @@ public class AudioManager : Node
 
             if (pressedKey == KeyList.F10)
             {
-                SoundsMuted = !SoundsMuted;
+                menuSelectSoundPlayer.Play();
 
-                if (!SoundsMuted)
-                {
-                    PlayMenuSelectSound();
-                }
+                SoundsMuted = !SoundsMuted;
 
                 signals.EmitSignal(nameof(Signals.SoundsMuted), SoundsMuted);
             }
 
             if (pressedKey == KeyList.F11)
             {
+                menuSelectSoundPlayer.Play();
+
                 MusicMuted = !MusicMuted;
 
                 menuMusicPlayer.Playing = !MusicMuted;
