@@ -411,9 +411,10 @@ anims/pulsate = SubResource( 13 )
 [node name="CompanyLabel" type="Label" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = -14.0
-margin_right = 128.0
+margin_left = 16.0
+margin_top = -22.0
+margin_right = 165.0
+margin_bottom = -8.0
 custom_fonts/font = SubResource( 14 )
 custom_colors/font_color = Color( 0.4, 0.392157, 0.392157, 1 )
 text = "AGADO Studio | v.0.1"

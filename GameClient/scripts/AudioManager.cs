@@ -141,7 +141,7 @@ public class AudioManager : Node
 
                 MusicMuted = !MusicMuted;
 
-                menuMusicPlayer.Playing = !MusicMuted;
+                menuMusicPlayer.StreamPaused = MusicMuted;
                 signals.EmitSignal(nameof(Signals.MusicMuted), MusicMuted);
             }
         }
