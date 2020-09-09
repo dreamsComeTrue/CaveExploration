@@ -47,6 +47,7 @@ public class MainMenuUI : Control
 
         FocusButton(null);
 
+        GetNode<ColorRect>("UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameRect/ColorRect").Color = new Color("9d087987");
         nameLineEdit.GrabFocus();
         nameLineAnimationPlayer.Play("pulsate");
         nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
@@ -186,6 +187,7 @@ public class MainMenuUI : Control
 
     private void GrabNameEditFocus()
     {
+        GetNode<ColorRect>("UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameRect/ColorRect").Color = new Color("9d087987");
         nameLineEdit.GrabFocus();
         nameLineAnimationPlayer.Play("pulsate");
         nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
@@ -194,6 +196,7 @@ public class MainMenuUI : Control
 
     private void UnfocusNameEdit()
     {
+        GetNode<ColorRect>("UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameRect/ColorRect").Color = new Color("1a1831");
         nameLineEdit.ReleaseFocus();
         nameLineAnimationPlayer.Stop(true);
     }
@@ -314,6 +317,16 @@ public class MainMenuUI : Control
                 {
                     _on_MenuButtonPlay_pressed();
                 }
+            }
+        }
+        else if (@event is InputEventMouseButton)
+        {
+            InputEventMouseButton mouseButtonEvent = (@event as InputEventMouseButton);
+
+            if (mouseButtonEvent.Pressed)
+            {
+                FocusButton(null);
+                GrabNameEditFocus();
             }
         }
     }

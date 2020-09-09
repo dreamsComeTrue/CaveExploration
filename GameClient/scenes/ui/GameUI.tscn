@@ -206,9 +206,9 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 4.0
+margin_top = 3.52807
 margin_right = -4.00002
-margin_bottom = -4.0
+margin_bottom = -4.47192
 script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -391,7 +391,7 @@ margin_top = 2.0
 margin_right = 184.0
 margin_bottom = 16.0
 custom_fonts/font = SubResource( 11 )
-custom_colors/font_color = Color( 0.0117647, 0.662745, 0.956863, 1 )
+custom_colors/font_color = Color( 0.552941, 1, 0, 1 )
 text = "W A S D - Move"
 valign = 1
 
@@ -400,7 +400,7 @@ margin_top = 20.0
 margin_right = 184.0
 margin_bottom = 34.0
 custom_fonts/font = SubResource( 11 )
-custom_colors/font_color = Color( 0.0117647, 0.662745, 0.956863, 1 )
+custom_colors/font_color = Color( 0.552941, 1, 0, 1 )
 text = "      F - Flashlight"
 valign = 1
 
@@ -409,7 +409,7 @@ margin_top = 38.0
 margin_right = 184.0
 margin_bottom = 52.0
 custom_fonts/font = SubResource( 11 )
-custom_colors/font_color = Color( 0.0117647, 0.662745, 0.956863, 1 )
+custom_colors/font_color = Color( 0.552941, 1, 0, 1 )
 text = "  SPACE - Interact"
 valign = 1
 
@@ -418,7 +418,7 @@ margin_top = 56.0
 margin_right = 184.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 11 )
-custom_colors/font_color = Color( 0.0117647, 0.662745, 0.956863, 1 )
+custom_colors/font_color = Color( 0.552941, 1, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "      M - Minimap"
 valign = 1
