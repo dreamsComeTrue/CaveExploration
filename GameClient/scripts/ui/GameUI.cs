@@ -61,6 +61,10 @@ public class GameUI : Control
         signals.Disconnect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
         signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
         signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+        
+        //  Bring back normal flashlight icon
+        AtlasTexture atlas = GetNode<TextureRect>("CanvasLayer/UIElements/FlashLight").Texture as AtlasTexture;
+        atlas.Region = new Rect2(Vector2.Zero, atlas.Region.Size);
     }
 
     public override void _UnhandledKeyInput(InputEventKey @event)

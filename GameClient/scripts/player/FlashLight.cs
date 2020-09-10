@@ -29,6 +29,12 @@ public class FlashLight : SpotLight
     public override void _ExitTree()
     {
         signals.Disconnect(nameof(Signals.MapGenerated), this, nameof(OnMapGenerated));
+
+        if (!this.Visible)
+        {
+            (mesh.GetSurfaceMaterial(0) as SpatialMaterial).FlagsDisableAmbientLight = false;
+            (mesh.GetSurfaceMaterial(1) as SpatialMaterial).FlagsDisableAmbientLight = false;
+        }
     }
 
     private void OnMapGenerated()
