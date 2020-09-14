@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://gfx/ui/frame_violet_single.png" type="Texture" id=1]
 [ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://scripts/ui/MenuButton.cs" type="Script" id=3]
+[ext_resource path="res://gfx/ui/gradient_checker_violet.png" type="Texture" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 size = 44
@@ -54,13 +54,11 @@ __meta__ = {
 }
 
 [node name="MenuButtonTexture" type="NinePatchRect" parent="."]
-self_modulate = Color( 0.623529, 0.623529, 0.623529, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 100, 40 )
 rect_pivot_offset = Vector2( 120, 20 )
 mouse_filter = 1
-texture = ExtResource( 1 )
 patch_margin_left = 7
 patch_margin_top = 5
 patch_margin_right = 5
@@ -69,16 +67,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.0
-margin_top = 1.0
-margin_right = -1.00002
-margin_bottom = -1.0
-mouse_filter = 2
-color = Color( 0.14, 0.14, 0.35, 1 )
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+texture = ExtResource( 4 )
+patch_margin_left = 8
+patch_margin_top = 7
+patch_margin_right = 8
+patch_margin_bottom = 9
 __meta__ = {
 "_edit_use_anchors_": false
 }

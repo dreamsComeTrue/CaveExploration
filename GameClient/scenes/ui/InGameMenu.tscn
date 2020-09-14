@@ -98,6 +98,7 @@ tracks/0/keys = {
 }
 
 [node name="InGameMenu" type="Control"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -121,7 +122,6 @@ __meta__ = {
 }
 
 [node name="UIFrame" type="NinePatchRect" parent="."]
-self_modulate = Color( 0.631373, 0.631373, 0.631373, 1 )
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -163,9 +163,6 @@ __meta__ = {
 rect_min_size = Vector2( 240, 40 )
 focus_next = NodePath("../MenuButtonOptions")
 focus_previous = NodePath("../MenuButtonQuit")
-
-[node name="ColorRect" parent="UIFrame/VBoxContainer/MenuButtonResume" index="1"]
-color = Color( 0.141176, 0.141176, 0.34902, 1 )
 
 [node name="Label" parent="UIFrame/VBoxContainer/MenuButtonResume" index="2"]
 margin_left = -93.5

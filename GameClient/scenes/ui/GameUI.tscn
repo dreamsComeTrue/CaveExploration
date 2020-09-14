@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://gfx/ui/light_bar.png" type="Texture" id=1]
 [ext_resource path="res://gfx/ui/minimap_frame.png" type="Texture" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://scenes/ui/MessageNotifier.tscn" type="PackedScene" id=13]
 [ext_resource path="res://gfx/ui/menu_frame.png" type="Texture" id=14]
 [ext_resource path="res://gfx/ui/heat.png" type="Texture" id=15]
+[ext_resource path="res://gfx/ui/perks_back.png" type="Texture" id=16]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -311,17 +312,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UIElements"]
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.933333
 anchor_top = 0.17037
 anchor_right = 0.970833
 anchor_bottom = 0.237037
-color = Color( 0.137255, 0.435294, 0.952941, 1 )
+texture = ExtResource( 16 )
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="HungerTexture" type="TextureRect" parent="CanvasLayer/UIElements/ColorRect"]
+[node name="HungerTexture" type="TextureRect" parent="CanvasLayer/UIElements/NinePatchRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 2.0
@@ -335,24 +340,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/UIElements"]
+[node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.933333
-anchor_top = 0.251852
+anchor_top = 0.253333
 anchor_right = 0.970833
-anchor_bottom = 0.318519
-margin_top = -1.52588e-05
-color = Color( 0.137255, 0.435294, 0.952941, 1 )
+anchor_bottom = 0.32
+texture = ExtResource( 16 )
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="OxygenTexture" type="TextureRect" parent="CanvasLayer/UIElements/ColorRect2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = -2.0
-margin_bottom = -2.0
+[node name="OxygenTexture" type="TextureRect" parent="CanvasLayer/UIElements/NinePatchRect2"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.5
+margin_top = -20.5
+margin_right = 20.5
+margin_bottom = 20.5
 texture = ExtResource( 12 )
 expand = true
 stretch_mode = 6
@@ -360,20 +370,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/UIElements"]
+[node name="NinePatchRect3" type="NinePatchRect" parent="CanvasLayer/UIElements"]
 anchor_left = 0.933333
-anchor_top = 0.333333
+anchor_top = 0.336296
 anchor_right = 0.970833
-anchor_bottom = 0.4
-margin_top = 1.52588e-05
-color = Color( 0.137255, 0.435294, 0.952941, 1 )
+anchor_bottom = 0.402963
+texture = ExtResource( 16 )
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="HeatTexture" type="TextureRect" parent="CanvasLayer/UIElements/ColorRect3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="HeatTexture" type="TextureRect" parent="CanvasLayer/UIElements/NinePatchRect3"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -22.5
+margin_top = -22.5
+margin_right = 22.5
+margin_bottom = 22.5
 texture = ExtResource( 15 )
 expand = true
 stretch_mode = 6
@@ -382,7 +401,7 @@ __meta__ = {
 }
 
 [node name="KeysInfoRect" type="NinePatchRect" parent="CanvasLayer/UIElements"]
-modulate = Color( 1, 1, 1, 0.745098 )
+self_modulate = Color( 1, 1, 1, 0.305882 )
 margin_left = 978.0
 margin_top = 543.0
 margin_right = 1183.0

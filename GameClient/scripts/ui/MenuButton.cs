@@ -7,11 +7,11 @@ public class MenuButton : TextureButton
     private AnimationPlayer focusAnimationPlayer;
 
     private NinePatchRect menuButtonTexture;
-    private ColorRect colorRect;
+    private NinePatchRect ninePatchRect;
     private Texture blueFrameTexture;
     private Texture violetFrameTexture;
-    private Color normalColor = new Color(0.14f, 0.14f, 0.3f);
-    private Color pressedColor = new Color(0.16f, 0.16f, 0.35f);
+    private Color normalColor = Colors.White;
+    private Color pressedColor = new Color(1.0f, 1.4f, 1.0f);
 
     private Signals signals;
     private AudioManager audioManager;
@@ -22,7 +22,7 @@ public class MenuButton : TextureButton
         pulsateAnimationPlayer = GetNode<AnimationPlayer>("PulsateAnimationPlayer");
         focusAnimationPlayer = GetNode<AnimationPlayer>("FocusAnimationPlayer");
         menuButtonTexture = GetNode<NinePatchRect>("MenuButtonTexture");
-        colorRect = GetNode<ColorRect>("ColorRect");
+        ninePatchRect = GetNode<NinePatchRect>("NinePatchRect");
 
         blueFrameTexture = ResourceLoader.Load("res://gfx/ui/frame_blue_single.png") as Texture;
         violetFrameTexture = ResourceLoader.Load("res://gfx/ui/frame_violet_single.png") as Texture;
@@ -56,20 +56,20 @@ public class MenuButton : TextureButton
             focusAnimationPlayer.PlayBackwards("focus");
         }
 
-        menuButtonTexture.Texture = violetFrameTexture;
-        colorRect.Color = normalColor;
+        menuButtonTexture.Texture = null;
+        ninePatchRect.SelfModulate = normalColor;
     }
 
     public void _on_MenuButton_button_down()
     {
         menuButtonTexture.Texture = blueFrameTexture;
-        colorRect.Color = pressedColor;
+        ninePatchRect.SelfModulate = pressedColor;
     }
 
     public void _on_MenuButton_button_up()
     {
-        menuButtonTexture.Texture = violetFrameTexture;
-        colorRect.Color = normalColor;
+        menuButtonTexture.Texture = null;
+        ninePatchRect.SelfModulate = normalColor;
 
         audioManager.PlayMenuSelectSound();
     }
