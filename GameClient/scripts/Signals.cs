@@ -6,6 +6,9 @@ public class Signals : Node
     public delegate void InGameMenuVisibilityChanged(bool shown);
 
     [Signal]
+    public delegate void OptionsMenuVisibilityChanged(bool shown);
+
+    [Signal]
     public delegate void PulseGameplayTimer(float timeLeft);
 
     [Signal]

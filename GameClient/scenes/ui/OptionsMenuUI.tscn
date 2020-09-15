@@ -1,0 +1,278 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://gfx/ui/menu_frame.png" type="Texture" id=1]
+[ext_resource path="res://scenes/ui/MenuButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://scripts/ui/OptionsMenuUI.cs" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "pulsate"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.97, 0.97 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "focus"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1.6, 1.6, 1.6, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "pulsate"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.97, 0.97 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "focus"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1.6, 1.6, 1.6, 1 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.97, 0.97 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1.6, 1.6, 1.6, 1 ) ]
+}
+
+[node name="OptionsMenuUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UIFrame" type="NinePatchRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -181.0
+margin_top = -115.0
+margin_right = 181.0
+margin_bottom = 115.0
+texture = ExtResource( 1 )
+patch_margin_left = 12
+patch_margin_top = 14
+patch_margin_right = 13
+patch_margin_bottom = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIFrame"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -159.5
+margin_top = -98.0
+margin_right = 159.5
+margin_bottom = 98.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicButtonHBoxContainer" type="HBoxContainer" parent="UIFrame/VBoxContainer"]
+margin_right = 319.0
+margin_bottom = 40.0
+custom_constants/separation = 20
+
+[node name="MusicMenuButton" parent="UIFrame/VBoxContainer/MusicButtonHBoxContainer" instance=ExtResource( 2 )]
+margin_right = 263.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="Label" parent="UIFrame/VBoxContainer/MusicButtonHBoxContainer/MusicMenuButton" index="2"]
+margin_left = -42.5
+margin_top = -13.0
+margin_right = 42.5
+margin_bottom = 13.0
+text = "Music"
+
+[node name="MusicLabel" type="Label" parent="UIFrame/VBoxContainer/MusicButtonHBoxContainer"]
+margin_left = 283.0
+margin_top = 6.0
+margin_right = 319.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 1, 1, 1 )
+text = "ON"
+align = 1
+valign = 2
+
+[node name="SoundsButtonHBoxContainer" type="HBoxContainer" parent="UIFrame/VBoxContainer"]
+margin_top = 44.0
+margin_right = 319.0
+margin_bottom = 84.0
+custom_constants/separation = 20
+
+[node name="SoundsMenuButton" parent="UIFrame/VBoxContainer/SoundsButtonHBoxContainer" instance=ExtResource( 2 )]
+margin_right = 263.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="Label" parent="UIFrame/VBoxContainer/SoundsButtonHBoxContainer/SoundsMenuButton" index="2"]
+margin_left = -51.0
+margin_top = -13.0
+margin_right = 51.0
+margin_bottom = 13.0
+text = "Sounds"
+
+[node name="PulsateAnimationPlayer" parent="UIFrame/VBoxContainer/SoundsButtonHBoxContainer/SoundsMenuButton" index="3"]
+anims/pulsate = SubResource( 2 )
+
+[node name="FocusAnimationPlayer" parent="UIFrame/VBoxContainer/SoundsButtonHBoxContainer/SoundsMenuButton" index="4"]
+anims/focus = SubResource( 3 )
+
+[node name="SoundsLabel" type="Label" parent="UIFrame/VBoxContainer/SoundsButtonHBoxContainer"]
+margin_left = 283.0
+margin_top = 6.0
+margin_right = 319.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 1, 1, 1 )
+text = "ON"
+align = 1
+valign = 2
+
+[node name="CameraLagHBoxContainer" type="HBoxContainer" parent="UIFrame/VBoxContainer"]
+margin_top = 88.0
+margin_right = 319.0
+margin_bottom = 128.0
+custom_constants/separation = 20
+
+[node name="CameraLagMenuButton" parent="UIFrame/VBoxContainer/CameraLagHBoxContainer" instance=ExtResource( 2 )]
+margin_right = 263.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="Label" parent="UIFrame/VBoxContainer/CameraLagHBoxContainer/CameraLagMenuButton" index="2"]
+margin_left = -85.0
+margin_top = -13.0
+margin_right = 85.0
+margin_bottom = 13.0
+text = "Camera Lag"
+
+[node name="PulsateAnimationPlayer" parent="UIFrame/VBoxContainer/CameraLagHBoxContainer/CameraLagMenuButton" index="3"]
+anims/pulsate = SubResource( 4 )
+
+[node name="FocusAnimationPlayer" parent="UIFrame/VBoxContainer/CameraLagHBoxContainer/CameraLagMenuButton" index="4"]
+anims/focus = SubResource( 5 )
+
+[node name="CameraLagLabel" type="Label" parent="UIFrame/VBoxContainer/CameraLagHBoxContainer"]
+margin_left = 283.0
+margin_top = 6.0
+margin_right = 319.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 1, 1, 1 )
+text = "ON"
+align = 1
+valign = 2
+
+[node name="Spacer" type="Control" parent="UIFrame/VBoxContainer"]
+margin_top = 132.0
+margin_right = 319.0
+margin_bottom = 152.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="BackMenuButton" parent="UIFrame/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 156.0
+margin_right = 319.0
+margin_bottom = 196.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="Label" parent="UIFrame/VBoxContainer/BackMenuButton" index="2"]
+margin_left = -34.0
+margin_top = -13.0
+margin_right = 34.0
+margin_bottom = 13.0
+text = "Back"
+
+[node name="PulsateAnimationPlayer" parent="UIFrame/VBoxContainer/BackMenuButton" index="3"]
+anims/pulsate = SubResource( 6 )
+
+[node name="FocusAnimationPlayer" parent="UIFrame/VBoxContainer/BackMenuButton" index="4"]
+anims/focus = SubResource( 7 )
+[connection signal="pressed" from="UIFrame/VBoxContainer/MusicButtonHBoxContainer/MusicMenuButton" to="." method="_on_MenuButtonMusic_pressed"]
+[connection signal="pressed" from="UIFrame/VBoxContainer/SoundsButtonHBoxContainer/SoundsMenuButton" to="." method="_on_MenuButtonSounds_pressed"]
+[connection signal="pressed" from="UIFrame/VBoxContainer/CameraLagHBoxContainer/CameraLagMenuButton" to="." method="_on_MenuButtonCameraLag_pressed"]
+[connection signal="pressed" from="UIFrame/VBoxContainer/BackMenuButton" to="." method="_on_MenuButtonBack_pressed"]
+
+[editable path="UIFrame/VBoxContainer/MusicButtonHBoxContainer/MusicMenuButton"]
+
+[editable path="UIFrame/VBoxContainer/SoundsButtonHBoxContainer/SoundsMenuButton"]
+
+[editable path="UIFrame/VBoxContainer/CameraLagHBoxContainer/CameraLagMenuButton"]
+
+[editable path="UIFrame/VBoxContainer/BackMenuButton"]

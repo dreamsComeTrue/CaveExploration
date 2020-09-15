@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="unHIDDEN"
+config/name="unHidden"
 run/main_scene="res://scenes/ui/MainMenuScene.tscn"
 boot_splash/image="res://icon.png"
 boot_splash/fullsize=false

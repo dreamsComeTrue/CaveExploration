@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://gfx/ui/menu_frame.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://gfx/ui/frame_blue_single.png" type="Texture" id=4]
 [ext_resource path="res://scripts/ui/MainMenuUI.cs" type="Script" id=5]
 [ext_resource path="res://scenes/ui/MessageNotifier.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/ui/OptionsMenuUI.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -163,14 +164,112 @@ tracks/3/keys = {
 "values": [  ]
 }
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="Animation" id=12]
+resource_name = "slide"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("UIFrame:rect_position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 435, 204.5 ), Vector2( 120, 204.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("OptionsMenuUI:rect_position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 900, 0 ), Vector2( 110, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("UIFrame:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.235294 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("OptionsMenuUI")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.01, 0.29 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ false ],
+"method": "ShowMenu"
+}, {
+"args": [ true ],
+"method": "ShowMenu"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.01, 0.29 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ true ],
+"method": "ShowMenu"
+}, {
+"args": [ false ],
+"method": "ShowMenu"
+} ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath(".:mouse_filter")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.01, 0.29 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1, 2 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("OptionsMenuUI:mouse_filter")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.01, 0.29 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2, 1 ]
+}
+
+[sub_resource type="DynamicFont" id=13]
 size = 100
 outline_size = 1
 outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="Animation" id=13]
-resource_name = "pulsate"
+[sub_resource type="Animation" id=14]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_scale")
@@ -185,7 +284,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.98, 0.98 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="DynamicFont" id=14]
+[sub_resource type="DynamicFont" id=15]
 size = 20
 font_data = ExtResource( 1 )
 
@@ -220,7 +319,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -165.0
 margin_top = -133.0
-margin_right = 165.0
+margin_right = 164.999
 margin_bottom = 133.0
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
@@ -410,8 +509,23 @@ anims/pulsate = SubResource( 9 )
 [node name="FocusAnimationPlayer" parent="UIFrame/VBoxContainerBottom/MenuButtonExit" index="4"]
 anims/focus = SubResource( 10 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="OptionsMenuUI" parent="." instance=ExtResource( 7 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 300.0
+margin_top = -337.5
+margin_right = 1500.0
+margin_bottom = 337.5
+mouse_filter = 2
+
+[node name="MainAnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "slide"
 anims/slide = SubResource( 11 )
+
+[node name="OptionsAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/slide = SubResource( 12 )
 
 [node name="TitleLabel" type="Label" parent="."]
 anchor_left = 0.5
@@ -421,16 +535,16 @@ margin_top = 40.0
 margin_right = 152.0
 margin_bottom = 97.0
 rect_pivot_offset = Vector2( 152, 29 )
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 13 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
-text = "unHIDDEN"
+text = "unHidden"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TitleLabel"]
 autoplay = "pulsate"
-anims/pulsate = SubResource( 13 )
+anims/pulsate = SubResource( 14 )
 
 [node name="CompanyLabel" type="Label" parent="."]
 anchor_top = 1.0
@@ -439,7 +553,7 @@ margin_left = 16.0
 margin_top = -22.0
 margin_right = 165.0
 margin_bottom = -8.0
-custom_fonts/font = SubResource( 14 )
+custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 0.4, 0.392157, 0.392157, 1 )
 text = "AGADO Studio | v.0.1"
 __meta__ = {
@@ -448,13 +562,14 @@ __meta__ = {
 
 [node name="MessageNotifier" parent="." instance=ExtResource( 6 )]
 margin_left = 14.3384
-margin_top = 6.42419
+margin_top = 5.48031
 margin_right = 14.3384
-margin_bottom = 6.42419
+margin_bottom = 5.48029
 [connection signal="focus_entered" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_focus_entered"]
 [connection signal="gui_input" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_gui_input"]
 [connection signal="text_changed" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_text_changed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonPlay" to="." method="_on_MenuButtonPlay_pressed"]
+[connection signal="pressed" from="UIFrame/VBoxContainerBottom/MenuButtonOptions" to="." method="_on_MenuButtonOptions_pressed"]
 [connection signal="pressed" from="UIFrame/VBoxContainerBottom/MenuButtonExit" to="." method="_on_MenuButtonExit_pressed"]
 
 [editable path="UIFrame/VBoxContainer/MenuButtonPlay"]

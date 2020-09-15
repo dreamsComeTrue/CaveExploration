@@ -120,6 +120,35 @@ public class AudioManager : Node
         }
     }
 
+    public void ToggleSounds()
+    {
+        menuSelectSoundPlayer.Play();
+
+        SoundsMuted = !SoundsMuted;
+
+        signals.EmitSignal(nameof(Signals.SoundsMuted), SoundsMuted);
+    }
+
+    public void ToggleMusic()
+    {
+        menuSelectSoundPlayer.Play();
+
+        MusicMuted = !MusicMuted;
+
+        menuMusicPlayer.StreamPaused = MusicMuted;
+        signals.EmitSignal(nameof(Signals.MusicMuted), MusicMuted);
+    }
+
+    public bool IsMusicEnabled()
+    {
+        return !MusicMuted;
+    }
+
+    public bool IsSoundsEnabled()
+    {
+        return !SoundsMuted;
+    }
+
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
         if (@event.Pressed)
@@ -128,21 +157,12 @@ public class AudioManager : Node
 
             if (pressedKey == KeyList.F10)
             {
-                menuSelectSoundPlayer.Play();
-
-                SoundsMuted = !SoundsMuted;
-
-                signals.EmitSignal(nameof(Signals.SoundsMuted), SoundsMuted);
+                ToggleSounds();
             }
 
             if (pressedKey == KeyList.F11)
             {
-                menuSelectSoundPlayer.Play();
-
-                MusicMuted = !MusicMuted;
-
-                menuMusicPlayer.StreamPaused = MusicMuted;
-                signals.EmitSignal(nameof(Signals.MusicMuted), MusicMuted);
+                ToggleMusic();
             }
         }
     }

@@ -4,7 +4,8 @@ using System;
 public class MainMenuUI : Control
 {
     private static Color disabledModulateColor = new Color(1.0f, 1.0f, 1.0f, 50.0f / 255.0f);
-    AnimationPlayer animationPlayer;
+    AnimationPlayer mainAnimationPlayer;
+    AnimationPlayer optionsAnimationPlayer;
     private ScenesFadeTransition scenesFadeTransition;
     private Signals signals;
     private GameManager gameManager;
@@ -19,6 +20,8 @@ public class MainMenuUI : Control
 
     private MenuButton selectedButton;
 
+    private bool isConnected = false;
+
     public override void _Ready()
     {
         Visible = false;
@@ -30,16 +33,14 @@ public class MainMenuUI : Control
         buttonExit = GetNode<MenuButton>("UIFrame/VBoxContainerBottom/MenuButtonExit");
         messageNotifier = GetNode<MessageNotifier>("MessageNotifier");
 
-        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        mainAnimationPlayer = GetNode<AnimationPlayer>("MainAnimationPlayer");
+        optionsAnimationPlayer = GetNode<AnimationPlayer>("OptionsAnimationPlayer");
 
         scenesFadeTransition = (ScenesFadeTransition)GetNode("/root/ScenesFadeTransition");
 
         signals = (Signals)GetNode("/root/Signals");
         audioManager = (AudioManager)GetNode("/root/AudioManager");
-        signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
-        signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
-        signals.Connect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
-        signals.Connect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+        ConfigureSignalsCallbacks(true);
 
         gameManager = (GameManager)GetNode("/root/GameManager");
 
@@ -57,18 +58,74 @@ public class MainMenuUI : Control
 
         audioManager.PlayMainMenuMusic();
 
-        RecoverPreviousPlayerName();
+        RecoverPlayerName();
     }
 
     public override void _ExitTree()
     {
-        signals.Disconnect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
-        signals.Disconnect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
-        signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
-        signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+        ConfigureSignalsCallbacks(false);
     }
 
-    private void RecoverPreviousPlayerName()
+    public void ConfigureSignalsCallbacks(bool enable)
+    {
+        if (isConnected == enable)
+        {
+            return;
+        }
+
+        if (enable)
+        {
+            signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
+            signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+            signals.Connect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
+            signals.Connect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+
+            if (signals.IsConnected(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged)))
+            {
+                signals.Disconnect(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged));
+            }
+        }
+        else
+        {
+            signals.Disconnect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
+            signals.Disconnect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+            signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
+            signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+            signals.Connect(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged));
+        }
+
+        isConnected = enable;
+    }
+
+    public void ShowMenu(bool show)
+    {
+        if (show)
+        {
+            SetProcessUnhandledKeyInput(true);
+            ConfigureSignalsCallbacks(true);
+
+            UnfocusNameEdit();
+            selectedButton?.UnfocusButton();
+            selectedButton = buttonOptions;
+            selectedButton?.FocusButton();
+        }
+        else
+        {
+            SetProcessUnhandledKeyInput(false);
+            ConfigureSignalsCallbacks(false);
+            OnUnFocusButton();
+        }
+    }
+
+    private void OnOptionsMenuVisibilityChanged(bool visible)
+    {
+        if (!visible)
+        {
+            optionsAnimationPlayer.PlayBackwards("slide");
+        }
+    }
+
+    private void RecoverPlayerName()
     {
         if (!string.IsNullOrEmpty(gameManager.PlayerName))
         {
@@ -80,7 +137,7 @@ public class MainMenuUI : Control
     {
         if (!Visible)
         {
-            animationPlayer.Play("slide");
+            mainAnimationPlayer.Play("slide");
         }
     }
 
@@ -171,15 +228,15 @@ public class MainMenuUI : Control
             {
                 if (selectedButton == buttonPlay && !buttonPlay.Disabled)
                 {
-                    _on_MenuButtonPlay_pressed();
+                    OnPlayPressed();
                 }
                 else if (selectedButton == buttonOptions)
                 {
-                    _on_MenuButtonOptions_pressed();
+                    OnOptionsPressed();
                 }
                 else if (selectedButton == buttonExit)
                 {
-                    _on_MenuButtonExit_pressed();
+                    OnExitPressed();
                 }
             }
         }
@@ -248,6 +305,13 @@ public class MainMenuUI : Control
 
     public void _on_MenuButtonPlay_pressed()
     {
+        buttonPlay._on_MenuButton_button_down();
+        OnUnFocusButton();
+        OnPlayPressed();
+    }
+
+    private void OnPlayPressed()
+    {
         if (!buttonPlay.Disabled)
         {
             audioManager.PlayMenuOpenSound();
@@ -259,10 +323,24 @@ public class MainMenuUI : Control
 
     public void _on_MenuButtonOptions_pressed()
     {
-        scenesFadeTransition.Run("res://scenes/GameplayScene.tscn");
+        buttonOptions._on_MenuButton_button_down();
+        OnUnFocusButton();
+        OnOptionsPressed();
+    }
+
+    private void OnOptionsPressed()
+    {
+        optionsAnimationPlayer.Play("slide");
     }
 
     public void _on_MenuButtonExit_pressed()
+    {
+        buttonExit._on_MenuButton_button_down();
+        OnUnFocusButton();
+        OnExitPressed();
+    }
+
+    private void OnExitPressed()
     {
         GetTree().Quit();
     }
