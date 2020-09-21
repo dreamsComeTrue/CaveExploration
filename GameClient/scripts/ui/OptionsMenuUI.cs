@@ -99,95 +99,102 @@ public class OptionsMenuUI : Control
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
         GD.Print("OPTIONS MENU");
-        
-        if (@event.Pressed)
-        {
-            if ((KeyList)@event.Scancode == KeyList.Up)
-            {
-                if (selectedButton == null)
-                {
-                    FocusButton(buttonMusic);
-                }
-                else if (selectedButton == buttonMusic)
-                {
-                    FocusButton(buttonBack);
-                }
-                else if (selectedButton == buttonSounds)
-                {
-                    FocusButton(buttonMusic);
-                }
-                else if (selectedButton == buttonCameraLag)
-                {
-                    FocusButton(buttonSounds);
-                }
-                else if (selectedButton == buttonBack)
-                {
-                    FocusButton(buttonCameraLag);
-                }
-
-                audioManager.PlayMenuFocusOptionSound();
-            }
-            else if ((KeyList)@event.Scancode == KeyList.Down)
-            {
-                if (selectedButton == null)
-                {
-                    FocusButton(buttonMusic);
-                }
-                else if (selectedButton == buttonMusic)
-                {
-                    FocusButton(buttonSounds);
-                }
-                else if (selectedButton == buttonSounds)
-                {
-                    FocusButton(buttonCameraLag);
-                }
-                else if (selectedButton == buttonCameraLag)
-                {
-                    FocusButton(buttonBack);
-                }
-                else if (selectedButton == buttonBack)
-                {
-                    FocusButton(buttonMusic);
-                }
-
-                audioManager.PlayMenuFocusOptionSound();
-            }
-        }
 
         KeyList key = (KeyList)@event.Scancode;
 
-        if (key == KeyList.Enter || key == KeyList.KpEnter)
+        if (@event.Pressed)
         {
-            if (@event.Pressed)
+            if (key == KeyList.Up)
             {
-                if (selectedButton != null)
+                if (selectedButton == null)
                 {
-                    if (selectedButton != buttonMusic && selectedButton != buttonSounds)
-                    {
-                        audioManager.PlayMenuSelectSound();
-                    }
-
-                    selectedButton._on_MenuButton_button_down();
+                    FocusButton(buttonMusic);
                 }
-            }
-            else
-            {
-                if (selectedButton == buttonMusic)
+                else if (selectedButton == buttonMusic)
                 {
-                    OnMusicPressed();
+                    FocusButton(buttonBack);
                 }
                 else if (selectedButton == buttonSounds)
                 {
-                    OnSoundsPressed();
+                    FocusButton(buttonMusic);
                 }
                 else if (selectedButton == buttonCameraLag)
                 {
-                    audioManager.PlayMenuSelectSound();
-                    OnCameraLagPressed();
+                    FocusButton(buttonSounds);
                 }
                 else if (selectedButton == buttonBack)
                 {
-                    OnBackPressed();
+                    FocusButton(buttonCameraLag);
+                }
+
+                audioManager.PlayMenuFocusOptionSound();
+            }
+            else if (key == KeyList.Down)
+            {
+                if (selectedButton == null)
+                {
+                    FocusButton(buttonMusic);
+                }
+                else if (selectedButton == buttonMusic)
+                {
+                    FocusButton(buttonSounds);
+                }
+                else if (selectedButton == buttonSounds)
+                {
+                    FocusButton(buttonCameraLag);
+                }
+                else if (selectedButton == buttonCameraLag)
+                {
+                    FocusButton(buttonBack);
+                }
+                else if (selectedButton == buttonBack)
+                {
+                    FocusButton(buttonMusic);
+                }
+
+                audioManager.PlayMenuFocusOptionSound();
+            }
+
+            if (key == KeyList.Escape)
+            {
+                OnBackPressed();
+            }
+        }
+        else
+        {
+            if (key == KeyList.Enter || key == KeyList.KpEnter)
+            {
+                if (@event.Pressed)
+                {
+                    if (selectedButton != null)
+                    {
+                        if (selectedButton != buttonMusic && selectedButton != buttonSounds)
+                        {
+                            audioManager.PlayMenuSelectSound();
+                        }
+
+                        selectedButton._on_MenuButton_button_down();
+                    }
+                }
+                else
+                {
+                    if (selectedButton == buttonMusic)
+                    {
+                        OnMusicPressed();
+                    }
+                    else if (selectedButton == buttonSounds)
+                    {
+                        OnSoundsPressed();
+                    }
+                    else if (selectedButton == buttonCameraLag)
+                    {
+                        audioManager.PlayMenuSelectSound();
+                        OnCameraLagPressed();
+                    }
+                    else if (selectedButton == buttonBack)
+                    {
+                        OnBackPressed();
+                    }
                 }
             }
         }
@@ -252,6 +259,7 @@ public class OptionsMenuUI : Control
 
     private void OnBackPressed()
     {
+        audioManager.PlayMenuSelectSound();
         signals.EmitSignal(nameof(Signals.OptionsMenuVisibilityChanged), false);
     }
 

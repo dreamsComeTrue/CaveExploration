@@ -87,15 +87,17 @@ public class InGameMenu : Control
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
         GD.Print("IN-GAME MENU");
-        
+
         if (!Visible)
         {
             return;
         }
 
+        KeyList key = (KeyList)@event.Scancode;
+
         if (@event.Pressed)
         {
-            if ((KeyList)@event.Scancode == KeyList.Up)
+            if (key == KeyList.Up)
             {
                 if (selectedButton == null)
                 {
@@ -120,7 +122,7 @@ public class InGameMenu : Control
 
                 audioManager.PlayMenuFocusOptionSound();
             }
-            else if ((KeyList)@event.Scancode == KeyList.Down)
+            else if (key == KeyList.Down)
             {
                 if (selectedButton == null)
                 {
@@ -146,8 +148,6 @@ public class InGameMenu : Control
                 audioManager.PlayMenuFocusOptionSound();
             }
         }
-
-        KeyList key = (KeyList)@event.Scancode;
 
         if (key == KeyList.Enter || key == KeyList.KpEnter)
         {
