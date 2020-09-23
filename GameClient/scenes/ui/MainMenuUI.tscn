@@ -166,7 +166,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id=12]
 resource_name = "slide"
-length = 0.3
+length = 0.4
 step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("UIFrame:rect_position")
@@ -175,22 +175,22 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector2( 435, 204.5 ), Vector2( 120, 204.5 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("OptionsMenuUI:rect_position")
-tracks/1/interp = 2
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.34, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 900, 0 ), Vector2( 110, 0 ) ]
+"values": [ Vector2( 900, 0 ), Vector2( 90, 0 ), Vector2( 110, 0 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("UIFrame:modulate")
@@ -199,7 +199,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3 ),
+"times": PoolRealArray( 0, 0.4 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.235294 ) ]
@@ -211,7 +211,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0.01, 0.29 ),
+"times": PoolRealArray( 0.01, 0.39 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ false ],
@@ -228,7 +228,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.01, 0.29 ),
+"times": PoolRealArray( 0.01, 0.39 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ true ],
@@ -245,7 +245,7 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0.01, 0.29 ),
+"times": PoolRealArray( 0.01, 0.39 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 1, 2 ]
@@ -257,7 +257,7 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0.01, 0.29 ),
+"times": PoolRealArray( 0.01, 0.39 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 2, 1 ]
@@ -319,7 +319,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -165.0
 margin_top = -133.0
-margin_right = 164.999
+margin_right = 164.998
 margin_bottom = 133.0
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
