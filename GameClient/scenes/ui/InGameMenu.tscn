@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/ui/InGameMenu.cs" type="Script" id=1]
 [ext_resource path="res://fonts/coders_crux.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://gfx/ui/menu_frame.png" type="Texture" id=3]
 [ext_resource path="res://scenes/ui/MenuButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ui/OptionsMenuUI.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "slide"
@@ -75,14 +76,112 @@ tracks/4/keys = {
 } ]
 }
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="Animation" id=2]
+resource_name = "slide"
+length = 0.4
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("UIFrame:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 435, 212.5 ), Vector2( 120, 212.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("UIFrame:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.235294 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("OptionsMenuUI:rect_position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.34, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 900, 0 ), Vector2( 90, 0 ), Vector2( 110, 0 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath("OptionsMenuUI")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.01, 0.39 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ false ],
+"method": "ShowMenu"
+}, {
+"args": [ true ],
+"method": "ShowMenu"
+} ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("OptionsMenuUI:mouse_filter")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.01, 0.39 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2, 1 ]
+}
+tracks/5/type = "method"
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.01, 0.39 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ true ],
+"method": "ShowMenu"
+}, {
+"args": [ false ],
+"method": "ShowMenu"
+} ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:mouse_filter")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0.01, 0.39 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1, 2 ]
+}
+
+[sub_resource type="DynamicFont" id=3]
 size = 100
 outline_size = 1
 outline_color = Color( 0.47451, 0.917647, 0.988235, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="Animation" id=3]
-resource_name = "pulsate"
+[sub_resource type="Animation" id=4]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_scale")
@@ -98,7 +197,6 @@ tracks/0/keys = {
 }
 
 [node name="InGameMenu" type="Control"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -108,7 +206,6 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="."]
-modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -0.369995
@@ -130,7 +227,6 @@ margin_left = -165.0
 margin_top = -125.0
 margin_right = 165.0
 margin_bottom = 125.0
-rect_scale = Vector2( 1e-05, 1e-05 )
 rect_pivot_offset = Vector2( 165, 125 )
 mouse_filter = 1
 texture = ExtResource( 3 )
@@ -242,8 +338,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="OptionsMenuUI" parent="." instance=ExtResource( 5 )]
+margin_left = 900.0
+margin_right = 900.0
+mouse_filter = 2
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/slide = SubResource( 1 )
+
+[node name="OptionsAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/slide = SubResource( 2 )
 
 [node name="TitleContainer" type="Control" parent="."]
 anchor_left = 0.5
@@ -259,11 +363,11 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = 428.0
-margin_top = -50.0
+margin_top = 40.0
 margin_right = 732.0
-margin_bottom = 7.0
+margin_bottom = 97.0
 rect_pivot_offset = Vector2( 152, 29 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
 text = "unHIDDEN"
 __meta__ = {
@@ -272,8 +376,9 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TitleContainer/TitleLabel"]
 autoplay = "pulsate"
-anims/pulsate = SubResource( 3 )
+anims/pulsate = SubResource( 4 )
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonResume" to="." method="_on_MenuButtonResume_pressed"]
+[connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonOptions" to="." method="_on_MenuButtonOptions_pressed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonLeave" to="." method="_on_MenuButtonLeave_pressed"]
 [connection signal="pressed" from="UIFrame/VBoxContainer/MenuButtonQuit" to="." method="_on_MenuButtonQuit_pressed"]
 

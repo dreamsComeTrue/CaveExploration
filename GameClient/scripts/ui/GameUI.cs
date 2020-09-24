@@ -4,6 +4,7 @@ using System;
 public class GameUI : Control
 {
     private InGameMenu inGameMenu;
+    private OptionsMenuUI optionsMenu;
     private TextureRect flashLightTexture;
     private NinePatchRect miniMapTexture;
     private Label countdownLabel;
@@ -30,6 +31,7 @@ public class GameUI : Control
     public override void _Ready()
     {
         inGameMenu = GetNode<InGameMenu>("CanvasLayer/InGameMenu");
+        optionsMenu = GetNode<OptionsMenuUI>("CanvasLayer/InGameMenu/OptionsMenuUI");
         miniMapTexture = GetNode<NinePatchRect>("CanvasLayer/UIElements/MinimapTexture");
         flashLightTexture = GetNode<TextureRect>("CanvasLayer/UIElements/FlashLightTextureFrame/FlashLightTexture");
         countdownLabel = GetNode<Label>("CanvasLayer/UIElements/Countdown/CountdownTimer");
@@ -61,7 +63,7 @@ public class GameUI : Control
         signals.Disconnect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
         signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
         signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
-        
+
         //  Bring back normal flashlight icon
         AtlasTexture atlas = GetNode<TextureRect>("CanvasLayer/UIElements/FlashLight").Texture as AtlasTexture;
         atlas.Region = new Rect2(Vector2.Zero, atlas.Region.Size);
@@ -76,10 +78,23 @@ public class GameUI : Control
             switch (key)
             {
                 case KeyList.Escape:
-                    audioManager.PlayMenuRolloutSound();
+                    if (inGameMenu.optionsAnimationPlayer.IsPlaying())
+                    {
+                        return;
+                    }
 
-                    bool shown = inGameMenu.ToggleVisibility();
-                    OnInGameMenuVisibilityChanged(shown);
+                    if (optionsMenu.isShown)
+                    {
+                        audioManager.PlayMenuRolloutSound();
+                        signals.EmitSignal(nameof(Signals.OptionsMenuVisibilityChanged), false);
+                    }
+                    else
+                    {
+                        audioManager.PlayMenuRolloutSound();
+
+                        bool shown = inGameMenu.ToggleVisibility();
+                        OnInGameMenuVisibilityChanged(shown);
+                    }
                     break;
 
                 case KeyList.M:

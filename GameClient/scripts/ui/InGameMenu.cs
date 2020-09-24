@@ -3,6 +3,7 @@ using Godot;
 public class InGameMenu : Control
 {
     AnimationPlayer animationPlayer;
+    public AnimationPlayer optionsAnimationPlayer;
     private Signals signals;
     private AudioManager audioManager;
 
@@ -17,6 +18,8 @@ public class InGameMenu : Control
 
     private ScenesFadeTransition scenesFadeTransition;
 
+    private bool isConnected = false;
+
     public override void _Ready()
     {
         Visible = false;
@@ -29,20 +32,73 @@ public class InGameMenu : Control
         overlays = GetTree().Root.GetNode<Control>("Gameplay/GameUI/CanvasLayer/Overlays");
 
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        optionsAnimationPlayer = GetNode<AnimationPlayer>("OptionsAnimationPlayer");
 
         scenesFadeTransition = (ScenesFadeTransition)GetNode("/root/ScenesFadeTransition");
 
         signals = (Signals)GetNode("/root/Signals");
-        signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
-        signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+        ConfigureSignalsCallbacks(true);
 
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
 
     public override void _ExitTree()
     {
-        signals.Disconnect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
-        signals.Disconnect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+        ConfigureSignalsCallbacks(false);
+    }
+
+    public void ConfigureSignalsCallbacks(bool enable)
+    {
+        if (isConnected == enable)
+        {
+            return;
+        }
+
+        if (enable)
+        {
+            signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
+            signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+
+            if (signals.IsConnected(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged)))
+            {
+                signals.Disconnect(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged));
+            }
+        }
+        else
+        {
+            signals.Disconnect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
+            signals.Disconnect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
+            signals.Connect(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged));
+        }
+
+        isConnected = enable;
+    }
+
+    public void ShowMenu(bool show)
+    {
+        if (show)
+        {
+            SetProcessUnhandledKeyInput(true);
+            ConfigureSignalsCallbacks(true);
+
+            selectedButton?.UnfocusButton();
+            selectedButton = buttonOptions;
+            selectedButton?.FocusButton();
+        }
+        else
+        {
+            SetProcessUnhandledKeyInput(false);
+            ConfigureSignalsCallbacks(false);
+            OnUnFocusButton();
+        }
+    }
+
+    private void OnOptionsMenuVisibilityChanged(bool visible)
+    {
+        if (!visible)
+        {
+            optionsAnimationPlayer.PlayBackwards("slide");
+        }
     }
 
     public bool ToggleVisibility()
@@ -155,7 +211,11 @@ public class InGameMenu : Control
             {
                 if (selectedButton != null)
                 {
-                    audioManager.PlayMenuSelectSound();
+                    if (selectedButton != buttonOptions)
+                    {
+                        audioManager.PlayMenuSelectSound();
+                    }
+
                     selectedButton._on_MenuButton_button_down();
                 }
             }
@@ -163,19 +223,19 @@ public class InGameMenu : Control
             {
                 if (selectedButton == buttonResume)
                 {
-                    _on_MenuButtonResume_pressed();
+                    OnResumePressed();
                 }
                 else if (selectedButton == buttonOptions)
                 {
-                    _on_MenuButtonResume_pressed();
+                    OnOptionsPressed();
                 }
                 else if (selectedButton == buttonLeave)
                 {
-                    _on_MenuButtonLeave_pressed();
+                    OnLeavePressed();
                 }
                 else if (selectedButton == buttonQuit)
                 {
-                    _on_MenuButtonQuit_pressed();
+                    OnQuitPressed();
                 }
             }
         }
@@ -206,13 +266,39 @@ public class InGameMenu : Control
         ToggleVisibility();
     }
 
+    private void OnResumePressed()
+    {
+        _on_MenuButtonResume_pressed();
+    }
+
+    private void _on_MenuButtonOptions_pressed()
+    {
+        OnOptionsPressed();
+    }
+
+    private void OnOptionsPressed()
+    {
+        audioManager.PlayMenuRolloutSound();
+        optionsAnimationPlayer.Play("slide");        
+    }
+
     private void _on_MenuButtonLeave_pressed()
     {
         scenesFadeTransition.Run("res://scenes/ui/MainMenuScene.tscn");
     }
 
+    private void OnLeavePressed()
+    {
+        _on_MenuButtonLeave_pressed();
+    }
+
     private void _on_MenuButtonQuit_pressed()
     {
         GetTree().Quit();
+    }
+
+    private void OnQuitPressed()
+    {
+        _on_MenuButtonQuit_pressed();
     }
 }

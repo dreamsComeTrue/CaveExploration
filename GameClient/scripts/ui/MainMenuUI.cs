@@ -217,7 +217,7 @@ public class MainMenuUI : Control
                     }
                     else
                     {
-                        if (selectedButton != buttonPlay)
+                        if (selectedButton == buttonExit)
                         {
                             audioManager.PlayMenuSelectSound();
                         }
@@ -332,6 +332,7 @@ public class MainMenuUI : Control
 
     private void OnOptionsPressed()
     {
+        audioManager.PlayMenuRolloutSound();
         optionsAnimationPlayer.Play("slide");
     }
 

@@ -13,6 +13,8 @@ public class OptionsMenuUI : Control
     private MenuButton selectedButton;
 
     private bool isConnected = false;
+    
+    public bool isShown = false;
 
     public override void _Ready()
     {
@@ -87,12 +89,14 @@ public class OptionsMenuUI : Control
             }
 
             selectedButton?.FocusButton();
+            isShown = true;
         }
         else
         {
             SetProcessUnhandledKeyInput(false);
             ConfigureSignalsCallbacks(false);
             OnUnFocusButton();
+            isShown = false;
         }
     }
 
@@ -259,7 +263,7 @@ public class OptionsMenuUI : Control
 
     private void OnBackPressed()
     {
-        audioManager.PlayMenuSelectSound();
+        audioManager.PlayMenuRolloutSound();
         signals.EmitSignal(nameof(Signals.OptionsMenuVisibilityChanged), false);
     }
 
