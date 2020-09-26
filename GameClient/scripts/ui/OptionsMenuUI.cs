@@ -15,6 +15,8 @@ public class OptionsMenuUI : Control
     private bool isConnected = false;
     
     public bool isShown = false;
+    
+    private bool isHiding = false;
 
     public override void _Ready()
     {
@@ -98,6 +100,8 @@ public class OptionsMenuUI : Control
             OnUnFocusButton();
             isShown = false;
         }
+        
+        isHiding = false;
     }
 
     public override void _UnhandledKeyInput(InputEventKey @event)
@@ -159,7 +163,7 @@ public class OptionsMenuUI : Control
                 audioManager.PlayMenuFocusOptionSound();
             }
 
-            if (key == KeyList.Escape)
+            if (key == KeyList.Escape && !isHiding)
             {
                 OnBackPressed();
             }
@@ -263,6 +267,8 @@ public class OptionsMenuUI : Control
 
     private void OnBackPressed()
     {
+        isHiding = true;
+        
         audioManager.PlayMenuRolloutSound();
         signals.EmitSignal(nameof(Signals.OptionsMenuVisibilityChanged), false);
     }

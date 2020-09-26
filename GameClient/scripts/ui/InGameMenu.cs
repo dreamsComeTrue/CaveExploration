@@ -37,7 +37,8 @@ public class InGameMenu : Control
         scenesFadeTransition = (ScenesFadeTransition)GetNode("/root/ScenesFadeTransition");
 
         signals = (Signals)GetNode("/root/Signals");
-        ConfigureSignalsCallbacks(true);
+        ConfigureSignalsCallbacks(false);
+        SetProcessUnhandledKeyInput(false);
 
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
@@ -131,6 +132,9 @@ public class InGameMenu : Control
 
             shown = false;
         }
+        
+        ConfigureSignalsCallbacks(shown);
+        SetProcessUnhandledKeyInput(shown);
 
         return shown;
     }
