@@ -38,4 +38,8 @@ public class Signals : Node
 
     [Signal]
     public delegate void MusicMuted(bool muted);
+
+    //  GameSettings
+    [Signal]
+    public delegate void GameSettingsUpdated();
 }

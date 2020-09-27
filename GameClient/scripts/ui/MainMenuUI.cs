@@ -56,8 +56,6 @@ public class MainMenuUI : Control
         _on_PlayerNameLineEdit_text_changed(nameLineEdit.Text);
         nameLineEdit.CaretPosition = nameLineEdit.Text.Length;
 
-        audioManager.PlayMainMenuMusic();
-
         RecoverPlayerName();
     }
 

@@ -3,6 +3,8 @@ using System;
 
 public class AudioManager : Node
 {
+    private GameSettings gameSettings;
+    
     private Signals signals;
 
     private AudioStreamPlayer menuMusicPlayer;
@@ -16,11 +18,10 @@ public class AudioManager : Node
 
     private const float SOUND_VOLUME = -15.0f;
 
-    public bool MusicMuted = false;
-    public bool SoundsMuted = false;
-
     public override void _Ready()
     {
+        gameSettings = (GameSettings)GetNode("/root/GameSettings");
+        
         menuMusicPlayer = AddSound("res://music/doodle.ogg");
 
         menuFocusSoundPlayer = AddSound("res://sounds/ui/sfx_movement_footsteps5.wav");
@@ -45,6 +46,8 @@ public class AudioManager : Node
         toggleSoundPlayer.VolumeDb = SOUND_VOLUME;
 
         signals = (Signals)GetNode("/root/Signals");
+        
+        PlayMainMenuMusic();
     }
 
     private AudioStreamPlayer AddSound(string resPath)
@@ -58,7 +61,7 @@ public class AudioManager : Node
 
     public void PlayMainMenuMusic()
     {
-        if (!MusicMuted)
+        if (!gameSettings.MusicMuted)
         {
             menuMusicPlayer.Play();
         }
@@ -66,7 +69,7 @@ public class AudioManager : Node
 
     public void PlayMenuFocusOptionSound()
     {
-        if (!SoundsMuted)
+        if (!gameSettings.SoundsMuted)
         {
             menuFocusSoundPlayer.Play();
         }
@@ -74,7 +77,7 @@ public class AudioManager : Node
 
     public void PlayMenuSelectSound()
     {
-        if (!SoundsMuted)
+        if (!gameSettings.SoundsMuted)
         {
             menuSelectSoundPlayer.Play();
         }
@@ -82,7 +85,7 @@ public class AudioManager : Node
 
     public void PlayMenuRolloutSound()
     {
-        if (!SoundsMuted)
+        if (!gameSettings.SoundsMuted)
         {
             menuRolloutSoundPlayer.Play();
         }
@@ -90,7 +93,7 @@ public class AudioManager : Node
 
     public void PlayMenuOpenSound()
     {
-        if (!SoundsMuted)
+        if (!gameSettings.SoundsMuted)
         {
             menuOpenSoundPlayer.Play();
         }
@@ -98,7 +101,7 @@ public class AudioManager : Node
 
     public void PlayTypeWriterSound()
     {
-        if (!SoundsMuted)
+        if (!gameSettings.SoundsMuted)
         {
             menuTypeWriterPlayer.Play();
         }
@@ -106,7 +109,7 @@ public class AudioManager : Node
 
     public void PlayFlashlightSound()
     {
-        if (!SoundsMuted)
+        if (!gameSettings.SoundsMuted)
         {
             flashlightSoundPlayer.Play();
         }
@@ -114,7 +117,7 @@ public class AudioManager : Node
 
     public void PlayToggleSound()
     {
-        if (!SoundsMuted)
+        if (!gameSettings.SoundsMuted)
         {
             toggleSoundPlayer.Play();
         }
@@ -124,29 +127,36 @@ public class AudioManager : Node
     {
         menuSelectSoundPlayer.Play();
 
-        SoundsMuted = !SoundsMuted;
+        gameSettings.SoundsMuted = !gameSettings.SoundsMuted;
 
-        signals.EmitSignal(nameof(Signals.SoundsMuted), SoundsMuted);
+        signals.EmitSignal(nameof(Signals.SoundsMuted), gameSettings.SoundsMuted);
+        signals.EmitSignal(nameof(Signals.GameSettingsUpdated));
     }
 
     public void ToggleMusic()
     {
         menuSelectSoundPlayer.Play();
 
-        MusicMuted = !MusicMuted;
-
-        menuMusicPlayer.StreamPaused = MusicMuted;
-        signals.EmitSignal(nameof(Signals.MusicMuted), MusicMuted);
+        gameSettings.MusicMuted = !gameSettings.MusicMuted;
+        
+        if (!menuMusicPlayer.Playing)
+        {
+            menuMusicPlayer.Play();
+        }
+        
+        menuMusicPlayer.StreamPaused = gameSettings.MusicMuted;
+        signals.EmitSignal(nameof(Signals.MusicMuted), gameSettings.MusicMuted);
+        signals.EmitSignal(nameof(Signals.GameSettingsUpdated));
     }
 
     public bool IsMusicEnabled()
     {
-        return !MusicMuted;
+        return !gameSettings.MusicMuted;
     }
 
     public bool IsSoundsEnabled()
     {
-        return !SoundsMuted;
+        return !gameSettings.SoundsMuted;
     }
 
     public override void _UnhandledKeyInput(InputEventKey @event)

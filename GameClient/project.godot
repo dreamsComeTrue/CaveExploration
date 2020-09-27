@@ -25,6 +25,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Signals="*res://scripts/Signals.cs"
+GameSettings="*res://scripts/GameSettings.cs"
 GameManager="*res://scripts/GameManager.cs"
 ScenesFadeTransition="*res://scenes/ScenesFadeTransition.tscn"
 NetworkClient="*res://scripts/network/NetworkClient.cs"

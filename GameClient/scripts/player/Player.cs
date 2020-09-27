@@ -20,6 +20,7 @@ public class Player : KinematicBody
 
     private ObjectFloater objectFloater;
 
+    private GameSettings gameSettings;
     private Signals signals;
 
     private Tween cameraMovemenetTween;
@@ -33,6 +34,7 @@ public class Player : KinematicBody
     public override void _Ready()
     {
         signals = (Signals)GetNode("/root/Signals");
+        gameSettings = (GameSettings)GetNode("/root/GameSettings");
         mesh = GetNode<MeshInstance>("Mesh");
         footStepsParticles = GetNode<Particles>("FootStepsParticles");
         objectFloater = new ObjectFloater();
@@ -98,8 +100,15 @@ public class Player : KinematicBody
         {
             signals.EmitSignal(nameof(Signals.PlayerMoved), this.Translation);
 
-            cameraMovemenetTween.InterpolateProperty(gameplayCamera, "translation", gameplayCamera.Translation, this.Translation + cameraPlayerOffset, 0.1f, 0, 0);
-            cameraMovemenetTween.Start();
+            if (gameSettings.CameraLagEnabled)
+            {
+                cameraMovemenetTween.InterpolateProperty(gameplayCamera, "translation", gameplayCamera.Translation, this.Translation + cameraPlayerOffset, 0.1f, 0, 0);
+                cameraMovemenetTween.Start();
+            }
+            else
+            {
+                gameplayCamera.Translation = this.Translation + cameraPlayerOffset;
+            }
         }
 
         footStepsParticles.Emitting = movedThisFrame;
@@ -114,7 +123,7 @@ public class Player : KinematicBody
 
     private void PlayFootstepsAudio(bool movedThisFrame)
     {
-        if (!footStepsAudio.Playing && !audioManager.SoundsMuted)
+        if (!footStepsAudio.Playing && audioManager.IsSoundsEnabled())
         {
             footStepsAudio.Playing = movedThisFrame;
         }

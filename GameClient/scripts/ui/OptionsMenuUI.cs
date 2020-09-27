@@ -3,6 +3,7 @@ using Godot;
 public class OptionsMenuUI : Control
 {
     private Signals signals;
+    private GameSettings gameSettings;
     private AudioManager audioManager;
 
     private MenuButton buttonMusic;
@@ -13,9 +14,9 @@ public class OptionsMenuUI : Control
     private MenuButton selectedButton;
 
     private bool isConnected = false;
-    
+
     public bool isShown = false;
-    
+
     private bool isHiding = false;
 
     public override void _Ready()
@@ -26,6 +27,7 @@ public class OptionsMenuUI : Control
         buttonBack = GetNode<MenuButton>("UIFrame/VBoxContainer/BackMenuButton");
 
         signals = (Signals)GetNode("/root/Signals");
+        gameSettings = (GameSettings)GetNode("/root/GameSettings");
         audioManager = (AudioManager)GetNode("/root/AudioManager");
 
         //  Disabled by default
@@ -75,6 +77,11 @@ public class OptionsMenuUI : Control
         Label soundsLabel = GetNode<Label>("UIFrame/VBoxContainer/SoundsButtonHBoxContainer/SoundsLabel");
         soundsLabel.Text = soundsEnabled ? "ON" : "OFF";
         soundsLabel.Set("custom_colors/font_color", soundsEnabled ? Colors.Cyan : Colors.Orange);
+
+        bool cameraLagEnabled = gameSettings.CameraLagEnabled;
+        Label cameraLagLabel = GetNode<Label>("UIFrame/VBoxContainer/CameraLagHBoxContainer/CameraLagLabel");
+        cameraLagLabel.Text = cameraLagEnabled ? "ON" : "OFF";
+        cameraLagLabel.Set("custom_colors/font_color", cameraLagEnabled ? Colors.Cyan : Colors.Orange);
     }
 
     public void ShowMenu(bool show)
@@ -100,7 +107,7 @@ public class OptionsMenuUI : Control
             OnUnFocusButton();
             isShown = false;
         }
-        
+
         isHiding = false;
     }
 
@@ -257,6 +264,9 @@ public class OptionsMenuUI : Control
 
     private void OnCameraLagPressed()
     {
+        gameSettings.CameraLagEnabled = !gameSettings.CameraLagEnabled;
+        
+        signals.EmitSignal(nameof(Signals.GameSettingsUpdated));
         UpdateLabels();
     }
 
@@ -268,7 +278,7 @@ public class OptionsMenuUI : Control
     private void OnBackPressed()
     {
         isHiding = true;
-        
+
         audioManager.PlayMenuRolloutSound();
         signals.EmitSignal(nameof(Signals.OptionsMenuVisibilityChanged), false);
     }
