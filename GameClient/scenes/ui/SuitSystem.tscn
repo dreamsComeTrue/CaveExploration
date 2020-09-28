@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://gfx/ui/perks_back.png" type="Texture" id=1]
+[ext_resource path="res://gfx/ui/suit_systems/dinner.png" type="Texture" id=2]
+[ext_resource path="res://scripts/ui/SuitSystem.cs" type="Script" id=3]
+[ext_resource path="res://gfx/ui/suit_system_frame.png" type="Texture" id=4]
+
+[node name="SuitSystem" type="Control"]
+anchor_right = 0.0708333
+anchor_bottom = 0.0740741
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonBack" type="NinePatchRect" parent="HBoxContainer"]
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+size_flags_horizontal = 3
+texture = ExtResource( 1 )
+patch_margin_left = 11
+patch_margin_top = 11
+patch_margin_right = 11
+patch_margin_bottom = 11
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="SystemTexture" type="TextureRect" parent="HBoxContainer/ButtonBack"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = -2.0
+margin_bottom = -2.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+margin_left = 52.0
+margin_right = 85.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}

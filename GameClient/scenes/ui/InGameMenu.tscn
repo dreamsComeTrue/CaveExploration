@@ -369,7 +369,7 @@ margin_bottom = 97.0
 rect_pivot_offset = Vector2( 152, 29 )
 custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.169189, 0.684578, 0.773438, 1 )
-text = "unHIDDEN"
+text = "unHidden"
 __meta__ = {
 "_edit_use_anchors_": false
 }

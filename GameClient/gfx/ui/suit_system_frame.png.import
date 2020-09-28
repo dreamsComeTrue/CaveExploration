@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/dinner.png-c32577973401c2744b5169fab0e82c7d.stex"
+path="res://.import/suit_system_frame.png-6ccc799ae8e3d5609eaf7b6d0b9e9012.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gfx/ui/dinner.png"
-dest_files=[ "res://.import/dinner.png-c32577973401c2744b5169fab0e82c7d.stex" ]
+source_file="res://gfx/ui/suit_system_frame.png"
+dest_files=[ "res://.import/suit_system_frame.png-6ccc799ae8e3d5609eaf7b6d0b9e9012.stex" ]
 
 [params]
 
