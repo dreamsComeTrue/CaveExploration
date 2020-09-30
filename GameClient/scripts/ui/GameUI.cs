@@ -49,8 +49,7 @@ public class GameUI : Control
         signals.Connect(nameof(Signals.LightBarsChanged), this, nameof(OnLightBarsChanged));
         signals.Connect(nameof(Signals.FlashLightToggled), this, nameof(OnFlashLightToggled));
         signals.Connect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
-        signals.Connect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
-        signals.Connect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+        signals.Connect(nameof(Signals.MessageNotify), this, nameof(OnMessageNotify));
 
         audioManager = (AudioManager)GetNode("/root/AudioManager");
     }
@@ -61,8 +60,7 @@ public class GameUI : Control
         signals.Disconnect(nameof(Signals.LightBarsChanged), this, nameof(OnLightBarsChanged));
         signals.Disconnect(nameof(Signals.FlashLightToggled), this, nameof(OnFlashLightToggled));
         signals.Disconnect(nameof(Signals.InGameMenuVisibilityChanged), this, nameof(OnInGameMenuVisibilityChanged));
-        signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
-        signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+        signals.Disconnect(nameof(Signals.MessageNotify), this, nameof(OnMessageNotify));
 
         //  Bring back normal flashlight icon
         AtlasTexture atlas = GetNode<TextureRect>("CanvasLayer/UIElements/FlashLight").Texture as AtlasTexture;
@@ -191,28 +189,9 @@ public class GameUI : Control
 
         countdownLabel.Text = timeString;
     }
-
-    private void OnSoundsMuted(bool muted)
+    
+    private void OnMessageNotify(string message)
     {
-        if (muted)
-        {
-            messageNotifier.AddMessage("Sounds disabled...");
-        }
-        else
-        {
-            messageNotifier.AddMessage("Sounds enabled...");
-        }
-    }
-
-    private void OnMusicMuted(bool muted)
-    {
-        if (muted)
-        {
-            messageNotifier.AddMessage("Music disabled...");
-        }
-        else
-        {
-            messageNotifier.AddMessage("Music enabled...");
-        }
+         messageNotifier.AddMessage(message);
     }
 }

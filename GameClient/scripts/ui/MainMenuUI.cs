@@ -75,8 +75,7 @@ public class MainMenuUI : Control
         {
             signals.Connect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
             signals.Connect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
-            signals.Connect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
-            signals.Connect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+            signals.Connect(nameof(Signals.MessageNotify), this, nameof(OnMessageNotify));
 
             if (signals.IsConnected(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged)))
             {
@@ -87,8 +86,7 @@ public class MainMenuUI : Control
         {
             signals.Disconnect(nameof(Signals.FocusMenuButton), this, nameof(FocusButton));
             signals.Disconnect(nameof(Signals.UnFocusMenuButton), this, nameof(OnUnFocusButton));
-            signals.Disconnect(nameof(Signals.SoundsMuted), this, nameof(OnSoundsMuted));
-            signals.Disconnect(nameof(Signals.MusicMuted), this, nameof(OnMusicMuted));
+            signals.Disconnect(nameof(Signals.MessageNotify), this, nameof(OnMessageNotify));
             signals.Connect(nameof(Signals.OptionsMenuVisibilityChanged), this, nameof(OnOptionsMenuVisibilityChanged));
         }
 
@@ -142,7 +140,7 @@ public class MainMenuUI : Control
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
         GD.Print("MAIN MENU");
-        
+
         if (@event.Pressed)
         {
             if ((KeyList)@event.Scancode == KeyList.Up)
@@ -279,28 +277,9 @@ public class MainMenuUI : Control
         selectedButton = null;
     }
 
-    private void OnSoundsMuted(bool muted)
+    private void OnMessageNotify(string message)
     {
-        if (muted)
-        {
-            messageNotifier.AddMessage("Sounds disabled...");
-        }
-        else
-        {
-            messageNotifier.AddMessage("Sounds enabled...");
-        }
-    }
-
-    private void OnMusicMuted(bool muted)
-    {
-        if (muted)
-        {
-            messageNotifier.AddMessage("Music disabled...");
-        }
-        else
-        {
-            messageNotifier.AddMessage("Music enabled...");
-        }
+        messageNotifier.AddMessage(message);
     }
 
     public void _on_MenuButtonPlay_pressed()

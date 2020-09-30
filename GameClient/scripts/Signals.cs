@@ -42,4 +42,7 @@ public class Signals : Node
     //  GameSettings
     [Signal]
     public delegate void GameSettingsUpdated();
+    
+    [Signal]
+    public delegate void MessageNotify(string message);
 }

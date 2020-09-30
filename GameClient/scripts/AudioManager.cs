@@ -4,7 +4,7 @@ using System;
 public class AudioManager : Node
 {
     private GameSettings gameSettings;
-    
+
     private Signals signals;
 
     private AudioStreamPlayer menuMusicPlayer;
@@ -21,7 +21,7 @@ public class AudioManager : Node
     public override void _Ready()
     {
         gameSettings = (GameSettings)GetNode("/root/GameSettings");
-        
+
         menuMusicPlayer = AddSound("res://music/doodle.ogg");
 
         menuFocusSoundPlayer = AddSound("res://sounds/ui/sfx_movement_footsteps5.wav");
@@ -46,7 +46,7 @@ public class AudioManager : Node
         toggleSoundPlayer.VolumeDb = SOUND_VOLUME;
 
         signals = (Signals)GetNode("/root/Signals");
-        
+
         PlayMainMenuMusic();
     }
 
@@ -138,12 +138,12 @@ public class AudioManager : Node
         menuSelectSoundPlayer.Play();
 
         gameSettings.MusicMuted = !gameSettings.MusicMuted;
-        
+
         if (!menuMusicPlayer.Playing)
         {
             menuMusicPlayer.Play();
         }
-        
+
         menuMusicPlayer.StreamPaused = gameSettings.MusicMuted;
         signals.EmitSignal(nameof(Signals.MusicMuted), gameSettings.MusicMuted);
         signals.EmitSignal(nameof(Signals.GameSettingsUpdated));
@@ -168,11 +168,29 @@ public class AudioManager : Node
             if (pressedKey == KeyList.F10)
             {
                 ToggleSounds();
+
+                if (gameSettings.SoundsMuted)
+                {
+                    signals.EmitSignal(nameof(Signals.MessageNotify), "Sounds disabled...");
+                }
+                else
+                {
+                    signals.EmitSignal(nameof(Signals.MessageNotify), "Sounds enabled...");
+                }
             }
 
             if (pressedKey == KeyList.F11)
             {
                 ToggleMusic();
+
+                if (gameSettings.MusicMuted)
+                {
+                    signals.EmitSignal(nameof(Signals.MessageNotify), "Music disabled...");
+                }
+                else
+                {
+                    signals.EmitSignal(nameof(Signals.MessageNotify), "Music enabled...");
+                }
             }
         }
     }

@@ -48,7 +48,7 @@ tracks/0/keys = {
 [sub_resource type="StyleBoxEmpty" id=5]
 
 [sub_resource type="DynamicFont" id=6]
-size = 30
+size = 45
 font_data = ExtResource( 1 )
 
 [sub_resource type="Animation" id=7]
@@ -353,9 +353,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -120.0
+margin_left = -144.999
 margin_top = -110.0
-margin_right = 120.0
+margin_right = 148.001
 margin_bottom = 78.0
 custom_constants/separation = 15
 __meta__ = {
@@ -363,7 +363,7 @@ __meta__ = {
 }
 
 [node name="PlayerNameContainer" type="Control" parent="UIFrame/VBoxContainer"]
-margin_right = 240.0
+margin_right = 293.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 240, 40 )
 
@@ -402,9 +402,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -114.0
+margin_left = -139.5
 margin_top = -17.0
-margin_right = 115.0
+margin_right = 140.5
 margin_bottom = 19.0
 focus_next = NodePath("../../MenuButtonOptions")
 focus_previous = NodePath("../../MenuButtonPlay")
@@ -417,7 +417,7 @@ text = "Player"
 align = 1
 max_length = 16
 clear_button_enabled = true
-placeholder_text = "Enter name here..."
+placeholder_text = "Enter name..."
 placeholder_alpha = 0.4
 caret_blink = true
 caret_blink_speed = 0.3
@@ -428,9 +428,9 @@ __meta__ = {
 [node name="MenuButtonPlay" parent="UIFrame/VBoxContainer" groups=[
 "InGameMenuButton",
 ] instance=ExtResource( 3 )]
-margin_left = 5.0
+margin_left = 31.0
 margin_top = 55.0
-margin_right = 235.0
+margin_right = 261.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 230, 40 )
 focus_next = NodePath("../PlayerNameRect/PlayerNameLineEdit")
@@ -561,10 +561,9 @@ __meta__ = {
 }
 
 [node name="MessageNotifier" parent="." instance=ExtResource( 6 )]
-margin_left = 14.3384
-margin_top = 5.48031
-margin_right = 14.3384
-margin_bottom = 5.48029
+anchor_top = -0.0444444
+anchor_bottom = 0.992593
+margin_top = -1.90735e-06
 [connection signal="focus_entered" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_focus_entered"]
 [connection signal="gui_input" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_gui_input"]
 [connection signal="text_changed" from="UIFrame/VBoxContainer/PlayerNameContainer/PlayerNameLineEdit" to="." method="_on_PlayerNameLineEdit_text_changed"]
