@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/frame_violet_single.png-4adf0e415ea592d8016af4013e55686b.stex"
+path="res://.import/minimap_frame.png-d7824465e11f2206736f88360fd04614.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/ui/frame_violet_single.png"
-dest_files=[ "res://.import/frame_violet_single.png-4adf0e415ea592d8016af4013e55686b.stex" ]
+source_file="res://gfx/ui/minimap_frame.png"
+dest_files=[ "res://.import/minimap_frame.png-d7824465e11f2206736f88360fd04614.stex" ]
 
 [params]
 

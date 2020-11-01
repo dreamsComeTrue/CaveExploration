@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/flash_light.png-7ccc757b6ec91223e7379d728b453d4b.stex"
+path="res://.import/ChestBlue.png-a36dfab3683d61e523c5869d93bef0cb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/ui/flash_light.png"
-dest_files=[ "res://.import/flash_light.png-7ccc757b6ec91223e7379d728b453d4b.stex" ]
+source_file="res://gfx/ChestBlue.png"
+dest_files=[ "res://.import/ChestBlue.png-a36dfab3683d61e523c5869d93bef0cb.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ChestBlue.png-53448de5d1b6dfa9a26a0686aab4e8da.stex"
+path="res://.import/light_bar.png-0a96c6352eefd0b1eae062b014cb9609.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/ChestBlue.png"
-dest_files=[ "res://.import/ChestBlue.png-53448de5d1b6dfa9a26a0686aab4e8da.stex" ]
+source_file="res://gfx/ui/light_bar.png"
+dest_files=[ "res://.import/light_bar.png-0a96c6352eefd0b1eae062b014cb9609.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

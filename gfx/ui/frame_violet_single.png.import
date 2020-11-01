@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/wall.png-5a1f2908d392899694c194f6f48e6341.stex"
+path="res://.import/frame_violet_single.png-e97a4c89072028435addb0f4454f7601.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/wall.png"
-dest_files=[ "res://.import/wall.png-5a1f2908d392899694c194f6f48e6341.stex" ]
+source_file="res://gfx/ui/frame_violet_single.png"
+dest_files=[ "res://.import/frame_violet_single.png-e97a4c89072028435addb0f4454f7601.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

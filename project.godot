@@ -19,7 +19,7 @@ config/name="Cave Escape"
 run/main_scene="res://scenes/GameplayScene.tscn"
 run/disable_stdout=true
 run/disable_stderr=true
-config/icon="res://textures/ui/flash_light.png"
+config/icon="res://gfx/ui/flash_light.png"
 
 [autoload]
 
