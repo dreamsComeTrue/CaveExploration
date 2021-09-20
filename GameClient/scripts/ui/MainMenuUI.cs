@@ -143,6 +143,8 @@ public class MainMenuUI : Control
 
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
+        GD.Print("MAIN MENU");
+        
         if (@event.Pressed)
         {
             if ((KeyList)@event.Scancode == KeyList.Up)

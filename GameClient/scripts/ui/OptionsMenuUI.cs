@@ -98,6 +98,8 @@ public class OptionsMenuUI : Control
 
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
+        GD.Print("OPTIONS MENU");
+        
         if (@event.Pressed)
         {
             if ((KeyList)@event.Scancode == KeyList.Up)

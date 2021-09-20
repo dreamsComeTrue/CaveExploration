@@ -86,6 +86,8 @@ public class InGameMenu : Control
 
     public override void _UnhandledKeyInput(InputEventKey @event)
     {
+        GD.Print("IN-GAME MENU");
+        
         if (!Visible)
         {
             return;
